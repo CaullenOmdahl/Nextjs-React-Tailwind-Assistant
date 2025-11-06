@@ -1,0 +1,3 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config/smithery-yaml
+# For TypeScript runtime, only 'runtime', 'target', and 'env' fields are allowed
+runtime: "typescript"

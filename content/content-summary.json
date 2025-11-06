@@ -1,0 +1,270 @@
+{
+  "lastUpdated": "2025-11-06T18:30:00.000Z",
+  "documentation": {
+    "nextjs": {
+      "files": ["nextjs-full.txt"],
+      "size": "~2.5MB",
+      "lineCount": 77480,
+      "coverage": "100% - Complete Next.js 15+ documentation",
+      "topics": [
+        "App Router architecture",
+        "Server Components and Client Components",
+        "Routing, layouts, and pages",
+        "Data fetching patterns",
+        "Server Actions",
+        "Middleware",
+        "Deployment and optimization"
+      ]
+    },
+    "tailwind": {
+      "files": ["tailwind-docs-full.txt"],
+      "size": "~2.1MB",
+      "coverage": "100% - All utility classes and concepts",
+      "topics": [
+        "Utility classes",
+        "Responsive design",
+        "Dark mode",
+        "Customization",
+        "Plugins",
+        "Core concepts"
+      ]
+    }
+  },
+  "components": {
+    "catalyst": {
+      "count": 27,
+      "categories": [
+        "forms",
+        "navigation",
+        "layout",
+        "feedback",
+        "data-display",
+        "advanced"
+      ],
+      "components": [
+        "alert",
+        "auth-layout",
+        "avatar",
+        "badge",
+        "button",
+        "checkbox",
+        "combobox",
+        "description-list",
+        "dialog",
+        "divider",
+        "dropdown",
+        "fieldset",
+        "heading",
+        "input",
+        "link",
+        "listbox",
+        "navbar",
+        "pagination",
+        "radio",
+        "select",
+        "sidebar-layout",
+        "sidebar",
+        "stacked-layout",
+        "switch",
+        "table",
+        "textarea",
+        "text"
+      ],
+      "technologies": [
+        "TypeScript",
+        "React",
+        "Tailwind CSS",
+        "Headless UI"
+      ]
+    }
+  },
+  "patterns": {
+    "layouts": {
+      "count": 4,
+      "patterns": [
+        {
+          "name": "app-header",
+          "file": "layouts/app-header.md",
+          "description": "Responsive header with scroll effects, mobile menu, dark mode"
+        },
+        {
+          "name": "sidebar-layout",
+          "file": "layouts/sidebar-layout.md",
+          "description": "Documentation/dashboard sidebar with mobile support"
+        },
+        {
+          "name": "auth-layout",
+          "file": "layouts/auth-layout.md",
+          "description": "Authentication page layouts for login, registration, password reset"
+        },
+        {
+          "name": "overlay-navigation",
+          "file": "layouts/overlay-navigation.md",
+          "description": "Full-screen overlay navigation with animations"
+        }
+      ]
+    },
+    "pages": {
+      "count": 3,
+      "patterns": [
+        {
+          "name": "hero-section",
+          "file": "pages/hero-section.md",
+          "description": "Landing page hero variants with gradients and CTAs"
+        },
+        {
+          "name": "pricing-page",
+          "file": "pages/pricing-page.md",
+          "description": "Pricing layouts with toggles, comparison tables, and feature lists"
+        },
+        {
+          "name": "blog-layout",
+          "file": "pages/blog-layout.md",
+          "description": "Blog index and article layouts with MDX support"
+        }
+      ]
+    },
+    "features": {
+      "count": 6,
+      "patterns": [
+        {
+          "name": "animations",
+          "file": "features/animations.md",
+          "description": "Framer Motion animation patterns for smooth, performant animations"
+        },
+        {
+          "name": "dark-mode",
+          "file": "features/dark-mode.md",
+          "description": "Dark mode implementation with next-themes and Tailwind"
+        },
+        {
+          "name": "visual-effects",
+          "file": "features/visual-effects.md",
+          "description": "Gradients, glows, animated backgrounds, decorative SVGs, bento grids, and image treatments"
+        },
+        {
+          "name": "component-library",
+          "file": "features/component-library.md",
+          "description": "Reusable component patterns: buttons, cards, badges, inputs, avatars, dividers, alerts, tooltips"
+        },
+        {
+          "name": "color-systems",
+          "file": "features/color-systems.md",
+          "description": "Color palettes and systems: professional, modern SaaS, bold/creative, minimal, semantic, and dark mode"
+        },
+        {
+          "name": "typography",
+          "file": "features/typography.md",
+          "description": "Font systems, type scales, heading hierarchy, text styling, and responsive typography"
+        }
+      ]
+    }
+  },
+  "designElements": {
+    "visualEffects": [
+      "Gradient backgrounds (subtle to bold)",
+      "Radial glows and blur effects",
+      "Starfield animations",
+      "Animated gradient meshes",
+      "Decorative SVG elements",
+      "Bento grid layouts",
+      "Ring and border effects",
+      "Backdrop blur (frosted glass)",
+      "Image treatments (grayscale, overlays)"
+    ],
+    "componentPatterns": [
+      "Button variants (solid, outline, ghost, text)",
+      "Card styles (standard, interactive, gradient, feature)",
+      "Badge and pill components",
+      "Form field components",
+      "Avatar components",
+      "Dividers with optional text",
+      "Loading states and skeletons",
+      "Alert and toast components",
+      "Tooltip components"
+    ],
+    "colorSystems": [
+      "Professional/Corporate (blues, grays)",
+      "Modern SaaS (indigo, purple, cyan)",
+      "Bold/Creative (multi-color, high contrast)",
+      "Minimal/Monochrome (black, white, grays)",
+      "Semantic (success, warning, error, info)",
+      "Dark mode optimized palettes",
+      "CSS Variables approach"
+    ],
+    "typography": [
+      "Font system setup (system fonts, custom fonts)",
+      "Common font pairings by use case",
+      "Type scale systems",
+      "Heading hierarchy patterns",
+      "Body text and paragraph styles",
+      "Font weight systems",
+      "Letter spacing (tracking)",
+      "Text color hierarchies",
+      "Link styles",
+      "Responsive typography"
+    ]
+  },
+  "templateAnalysis": {
+    "templatesAnalyzed": 11,
+    "templates": [
+      "commit",
+      "compass",
+      "keynote",
+      "pocket",
+      "primer",
+      "protocol",
+      "radiant",
+      "salient",
+      "spotlight",
+      "studio",
+      "syntax",
+      "transmit"
+    ],
+    "commonPatterns": [
+      "Framer Motion animations",
+      "Headless UI components",
+      "Responsive design with mobile-first approach",
+      "Dark mode support",
+      "Form validation patterns",
+      "Route groups for layout organization",
+      "TypeScript strict mode",
+      "Tailwind CSS utility classes",
+      "Gradient backgrounds and effects",
+      "Component variant systems"
+    ],
+    "uniqueCharacteristics": {
+      "commit": "Fixed decorative sidebar with glow effects, starfield animation",
+      "compass": "Video-based learning platform, course module structure",
+      "keynote": "Conference/event focused, speaker schedule",
+      "pocket": "Mobile app showcase with phone mockups, animated circles",
+      "primer": "Book/course landing page with table of contents",
+      "protocol": "Documentation site with sidebar navigation",
+      "radiant": "Modern SaaS design with bento grid layout, bold gradients",
+      "salient": "Classic SaaS marketing with pricing comparison",
+      "spotlight": "Personal portfolio with blog focus, ring effects",
+      "studio": "Agency showcase with case studies, grayscale image transitions",
+      "syntax": "Documentation site with advanced search",
+      "transmit": "Podcast platform with persistent audio player"
+    }
+  },
+  "usage": {
+    "searchTools": {
+      "recommended": true,
+      "reason": "Full documentation tools return very large responses (320k-730k tokens). Search tools provide targeted results with smaller context."
+    },
+    "fullDocs": {
+      "caution": "Only use with LLMs supporting 100k+ (Next.js) or 200k+ (Tailwind) token contexts",
+      "alternatives": "Prefer search_nextjs_docs and search_tailwind_docs for most use cases"
+    },
+    "patterns": {
+      "total": 13,
+      "breakdown": {
+        "layouts": 4,
+        "pages": 3,
+        "features": 6
+      },
+      "coverage": "Architecture, visual design, components, colors, typography"
+    }
+  }
+}
