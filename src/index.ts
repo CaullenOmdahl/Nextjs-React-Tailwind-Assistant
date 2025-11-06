@@ -36,7 +36,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.1.3",
+    version: "0.1.4",
   });
 
   // Register resources for documentation
@@ -170,17 +170,17 @@ export default function createServer() {
    * Returns the complete Next.js 15+ documentation
    * WARNING: ~2.5MB, ~320k tokens - use with LLMs supporting 100k+ token contexts
    */
-  server.setToolHandler(
+  server.registerTool(
     "get_nextjs_full_docs",
-    z.object({}),
     {
       title: "Get Complete Next.js Documentation",
       description: "Get the complete Next.js 15+ documentation (~2.5MB, ~320,000 tokens). WARNING: This returns ~320,000 tokens. Only use with LLMs that support large context windows (100k+ tokens). For smaller contexts, use 'search_nextjs_docs' instead. Covers: App Router, Server Components, Client Components, routing, layouts, pages, data fetching, Server Actions, middleware, deployment, and optimization.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
-      }
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
     },
     async (request) => {
       createAuditLog('info', 'tool_request', {
@@ -226,17 +226,17 @@ export default function createServer() {
    * Returns the complete Tailwind CSS documentation
    * WARNING: ~2.1MB, ~730k tokens - use with LLMs supporting 200k+ token contexts
    */
-  server.setToolHandler(
+  server.registerTool(
     "get_tailwind_full_docs",
-    z.object({}),
     {
       title: "Get Complete Tailwind CSS Documentation",
       description: "Get the complete Tailwind CSS documentation (~2.1MB, ~730,000 tokens). WARNING: This returns ~730,000 tokens. Only use with LLMs that support very large context windows (200k+ tokens). For smaller contexts, use 'search_tailwind_docs' instead. Covers all utility classes, concepts, responsive design, dark mode, customization, and plugins.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
-      }
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
     },
     async (request) => {
       createAuditLog('info', 'tool_request', {
@@ -281,19 +281,19 @@ export default function createServer() {
    * Tool: search_nextjs_docs
    * Searches within Next.js documentation with keyword matching
    */
-  server.setToolHandler(
+  server.registerTool(
     "search_nextjs_docs",
-    z.object({
-      query: z.string().min(2).max(100).describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
-      limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
-    }),
     {
       title: "Search Next.js Documentation",
       description: "Search within the Next.js documentation for specific topics or keywords. Returns relevant excerpts matching the query. Recommended for most use cases as it provides targeted results without the full 320k token context.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        query: z.string().min(2).max(100).describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
+        limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
       }
     },
     async (request) => {
@@ -348,19 +348,19 @@ export default function createServer() {
    * Tool: search_tailwind_docs
    * Searches within Tailwind CSS documentation with keyword matching
    */
-  server.setToolHandler(
+  server.registerTool(
     "search_tailwind_docs",
-    z.object({
-      query: z.string().min(2).max(100).describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
-      limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
-    }),
     {
       title: "Search Tailwind CSS Documentation",
       description: "Search within the Tailwind CSS documentation for specific utility classes or concepts. Returns relevant excerpts matching the query. Recommended for most use cases as it provides targeted results without the full 730k token context.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        query: z.string().min(2).max(100).describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
+        limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
       }
     },
     async (request) => {
@@ -415,18 +415,18 @@ export default function createServer() {
    * Tool: get_catalyst_component
    * Retrieves a specific Catalyst UI component TypeScript source
    */
-  server.setToolHandler(
+  server.registerTool(
     "get_catalyst_component",
-    z.object({
-      component_name: z.string().min(1).max(50).describe("Name of the Catalyst component (e.g., 'button', 'dialog', 'table')")
-    }),
     {
       title: "Get Catalyst UI Component",
       description: "Retrieve the TypeScript source code for a specific Catalyst UI component. Components include forms (button, checkbox, input, etc.), navigation (navbar, sidebar, dropdown), layout (divider, heading), feedback (alert, badge, dialog), and data display (avatar, table, pagination). All components are production-ready TypeScript React components with Tailwind styling and Headless UI integration.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        component_name: z.string().min(1).max(50).describe("Name of the Catalyst component (e.g., 'button', 'dialog', 'table')")
       }
     },
     async (request) => {
@@ -486,17 +486,17 @@ export default function createServer() {
    * Tool: list_catalyst_components
    * Lists all 28 available Catalyst UI components with categories
    */
-  server.setToolHandler(
+  server.registerTool(
     "list_catalyst_components",
-    z.object({}),
     {
       title: "List Catalyst UI Components",
       description: "List all 28 available Catalyst UI components organized by category. Categories include: forms (button, checkbox, fieldset, input, radio, select, switch, textarea), navigation (navbar, sidebar, dropdown, link), layout (divider, heading, stacked-layout, auth-layout), feedback (alert, badge, dialog), data-display (avatar, description-list, listbox, pagination, table, text), and advanced (combobox).",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
-      }
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
     },
     async (request) => {
       createAuditLog('info', 'tool_request', {
@@ -569,19 +569,19 @@ export default function createServer() {
    * Tool: get_pattern
    * Retrieves a specific abstracted template pattern
    */
-  server.setToolHandler(
+  server.registerTool(
     "get_pattern",
-    z.object({
-      category: z.enum(['layouts', 'pages', 'features']).describe("Pattern category: 'layouts', 'pages', or 'features'"),
-      pattern_name: z.string().min(1).max(50).describe("Name of the pattern (e.g., 'app-header', 'pricing-page', 'dark-mode')")
-    }),
     {
       title: "Get Abstracted Pattern",
       description: "Retrieve documentation for a specific abstracted pattern. Patterns are organized into: layouts (app-header, sidebar-layout, auth-layout, overlay-navigation), pages (hero-section, pricing-page, blog-layout), and features (animations, dark-mode). Patterns include implementation details, code examples, accessibility considerations, and dependencies.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        category: z.enum(['layouts', 'pages', 'features']).describe("Pattern category: 'layouts', 'pages', or 'features'"),
+        pattern_name: z.string().min(1).max(50).describe("Name of the pattern (e.g., 'app-header', 'pricing-page', 'dark-mode')")
       }
     },
     async (request) => {
@@ -643,17 +643,17 @@ export default function createServer() {
    * Tool: list_patterns
    * Lists all available abstracted patterns organized by category
    */
-  server.setToolHandler(
+  server.registerTool(
     "list_patterns",
-    z.object({}),
     {
       title: "List Available Patterns",
       description: "List all available abstracted template patterns organized by category (layouts, pages, features). Patterns are abstracted from professional Next.js templates and include common architectural approaches, not template-specific implementations. Each pattern includes multiple variants, dependencies, accessibility guidelines, and dark mode support.",
       annotations: {
-        readOnly: true,
-        destructive: false,
-        idempotent: true
-      }
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
     },
     async (request) => {
       createAuditLog('info', 'tool_request', {
