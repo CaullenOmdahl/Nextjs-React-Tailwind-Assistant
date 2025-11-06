@@ -12,8 +12,8 @@ MCP_SERVER_REVIEW.md
 test-server.mjs
 
 # Documentation site (test/development only)
-docs/
-website/
+/docs/
+/website/
 
 # Smithery build artifacts
 .smithery/

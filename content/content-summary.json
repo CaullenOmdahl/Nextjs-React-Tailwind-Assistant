@@ -205,22 +205,8 @@
       "Responsive typography"
     ]
   },
-  "templateAnalysis": {
-    "templatesAnalyzed": 11,
-    "templates": [
-      "commit",
-      "compass",
-      "keynote",
-      "pocket",
-      "primer",
-      "protocol",
-      "radiant",
-      "salient",
-      "spotlight",
-      "studio",
-      "syntax",
-      "transmit"
-    ],
+  "patternOrigins": {
+    "source": "Abstracted from professional Next.js templates",
     "commonPatterns": [
       "Framer Motion animations",
       "Headless UI components",
@@ -232,21 +218,7 @@
       "Tailwind CSS utility classes",
       "Gradient backgrounds and effects",
       "Component variant systems"
-    ],
-    "uniqueCharacteristics": {
-      "commit": "Fixed decorative sidebar with glow effects, starfield animation",
-      "compass": "Video-based learning platform, course module structure",
-      "keynote": "Conference/event focused, speaker schedule",
-      "pocket": "Mobile app showcase with phone mockups, animated circles",
-      "primer": "Book/course landing page with table of contents",
-      "protocol": "Documentation site with sidebar navigation",
-      "radiant": "Modern SaaS design with bento grid layout, bold gradients",
-      "salient": "Classic SaaS marketing with pricing comparison",
-      "spotlight": "Personal portfolio with blog focus, ring effects",
-      "studio": "Agency showcase with case studies, grayscale image transitions",
-      "syntax": "Documentation site with advanced search",
-      "transmit": "Podcast platform with persistent audio player"
-    }
+    ]
   },
   "usage": {
     "searchTools": {
