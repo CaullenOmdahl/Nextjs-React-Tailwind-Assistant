@@ -1,3 +1,14 @@
 # Smithery configuration file: https://smithery.ai/docs/build/project-config/smithery-yaml
 # For TypeScript runtime, only 'runtime', 'target', and 'env' fields are allowed
 runtime: "typescript"
+
+# Server Description
+# Your comprehensive AI companion for building modern Next.js applications with React and Tailwind CSS.
+# Provides instant access to complete documentation, 27 production-ready Catalyst UI components,
+# and 13 battle-tested design patterns abstracted from professional templates.
+#
+# Features:
+# - Complete Next.js 15+ and Tailwind CSS 3+ documentation with smart search
+# - 27 Catalyst UI components (TypeScript, React, Tailwind, Headless UI)
+# - 13 design patterns: visual effects, components, color systems, typography, layouts, pages
+# - All patterns include accessibility, performance, and dark mode support

@@ -1,7 +1,7 @@
 {
   "name": "nextjs-react-tailwind-assistant-mcp-server",
-  "version": "0.1.1",
-  "description": "Provides Next.js, React, and Tailwind CSS documentation, Catalyst UI components, and template patterns.",
+  "version": "0.1.2",
+  "description": "Comprehensive AI companion for Next.js + React + Tailwind CSS with complete documentation, 27 Catalyst components, and 13 design patterns from professional templates.",
   "homepage": "https://github.com/CaullenOmdahl/Nextjs-React-Tailwind-Assistant",
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "icon.svg"
   ],
   "scripts": {
-    "build": "npx @smithery/cli build",
+    "build": "npx @smithery/cli build && npm run copy-content",
+    "copy-content": "cp -r content .smithery/ 2>/dev/null || true",
     "dev": "npx @smithery/cli dev",
     "prepare": "npm run build",
     "watch": "tsc --watch",
