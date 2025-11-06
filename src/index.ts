@@ -717,7 +717,7 @@ export default function createServer() {
     }
   );
 
-  return server;
+  return server.server;
 }
 
 // =========================
