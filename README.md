@@ -2,6 +2,8 @@
 
 Your comprehensive AI companion for building modern Next.js applications with React and Tailwind CSS.
 
+[![smithery badge](https://smithery.ai/badge/@CaullenOmdahl/nextjs-react-tailwind-assistant)](https://smithery.ai/server/@CaullenOmdahl/nextjs-react-tailwind-assistant)
+
 ## Features
 
 ### 📚 Complete Documentation
