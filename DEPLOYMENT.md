@@ -1,21 +1,27 @@
 # Deployment Status
 
-## Current State
+## Current State (v0.1.4)
 
-### ✅ What's Working
-- **Build Process**: Server builds successfully (1.67 MB)
-- **Content**: All documentation, components, and patterns properly organized (5.3 MB)
-- **Local Testing**: Server starts and runs without errors locally
-- **Architecture**: Mirrors the working Svelte server architecture exactly
+### ✅ CRITICAL FIX APPLIED
+**Root Cause Identified and Fixed**: The server was using `setToolHandler()` API instead of `registerTool()` API.
 
-### ❌ Smithery Deployment Issue
-The server deploys successfully but fails during initialization with a 500 error.
+**The Issue:**
+- Next.js server used newer `setToolHandler()` with separate Zod schemas
+- Working Svelte server uses `registerTool()` with inline `inputSchema`
+- Smithery initialization failed with `setToolHandler()` calls
 
-**Error Details:**
-```
-HTTP POST → 500 Internal Server Error
-{"jsonrpc":"2.0","error":{"code":-32603,"message":"Error initializing server."},"id":null}
-```
+**The Fix (v0.1.4):**
+- ✅ Converted all 8 tools from `setToolHandler` → `registerTool`
+- ✅ Moved Zod schemas into `inputSchema` property
+- ✅ Updated annotations: `readOnly` → `readOnlyHint`, etc.
+- ✅ Simplified `smithery.yaml` to match Svelte server exactly
+- ✅ Build: 1.67 MB (successful)
+- ✅ Local testing: Server initializes correctly
+
+### 🚀 Status: DEPLOYED
+Version 0.1.4 pushed to main. Smithery will rebuild automatically.
+
+**Expected Result:** Server should now initialize successfully on Smithery without the 500 error.
 
 ## Recent Changes
 
