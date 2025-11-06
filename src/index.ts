@@ -9,6 +9,10 @@ import {
   SearchDocsArgs,
   CatalystComponentArgs,
   PatternArgs,
+  StarterKitArgs,
+  RecommendTemplateArgs,
+  QuestionnaireArgs,
+  LibraryDocsArgs,
   ServerConfig
 } from './types.js';
 import { validateToolInput } from './utils/security.js';
@@ -26,6 +30,8 @@ export default function createServer() {
     tailwindDocsPath: path.join(process.cwd(), 'content', 'docs', 'tailwind', 'tailwind-docs-full.txt'),
     catalystComponentsPath: path.join(process.cwd(), 'content', 'components', 'catalyst'),
     patternsPath: path.join(process.cwd(), 'content', 'patterns'),
+    templatesPath: path.join(process.cwd(), 'content', 'templates', 'starter-kits.json'),
+    libraryDocsPath: path.join(process.cwd(), 'content', 'docs', 'libraries'),
     maxFileSize: 1 * 1024 * 1024, // 1MB for components and patterns
     largeFileSize: 5 * 1024 * 1024, // 5MB for large documentation files
     cacheTimeout: 5 * 60 * 1000 // 5 minutes cache timeout
@@ -36,7 +42,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.1.4",
+    version: "0.2.0",
   });
 
   // Register resources for documentation
@@ -717,7 +723,578 @@ export default function createServer() {
     }
   );
 
+  /**
+   * Tool: list_starter_kits
+   * Lists all available template starter kits with details
+   */
+  server.registerTool(
+    "list_starter_kits",
+    {
+      title: "List Template Starter Kits",
+      description: "List all available template starter kits with their features, use cases, and complexity levels. Includes: Documentation Site, SaaS Marketing, Portfolio & Blog, Agency/Studio, Content Platform, Event/Conference, App Marketing, Podcast/Media, and CMS-Integrated templates.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
+    },
+    async (request) => {
+      createAuditLog('info', 'tool_request', {
+        tool: 'list_starter_kits',
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        const content = await fs.readFile(CONFIG.templatesPath, 'utf-8');
+        const data = JSON.parse(content);
+        const kits = data.starterKits;
+
+        let output = `# Template Starter Kits (${kits.length} total)\n\n`;
+        output += `Pre-configured template setups for different use cases. Each includes library recommendations, features, and complexity ratings.\n\n`;
+
+        for (const kit of kits) {
+          output += `## ${kit.name}\n`;
+          output += `**ID**: \`${kit.id}\`\n`;
+          output += `**Description**: ${kit.description}\n`;
+          output += `**Use Cases**: ${kit.useCases.join(', ')}\n`;
+          output += `**Complexity**: ${kit.complexity}\n`;
+          output += `**Animations**: ${kit.animations}\n`;
+          output += `**Color Scheme**: ${kit.colorScheme}\n`;
+          output += `**Key Features**: ${kit.features.slice(0, 3).join(', ')}${kit.features.length > 3 ? '...' : ''}\n\n`;
+        }
+
+        output += `\nUse \`get_starter_kit\` with the template ID to get full details including all libraries and dependencies.`;
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'list_starter_kits',
+          kitsCount: kits.length
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: output
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'list_starter_kits',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'list_starter_kits')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: get_starter_kit
+   * Gets detailed information about a specific starter kit
+   */
+  server.registerTool(
+    "get_starter_kit",
+    {
+      title: "Get Starter Kit Details",
+      description: "Get detailed information about a specific template starter kit including all features, libraries, dependencies, and implementation guidance. Use list_starter_kits to see available template IDs.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        id: z.string().min(1).max(50).describe("The starter kit ID (e.g., 'documentation', 'saas-marketing', 'portfolio-blog')")
+      }
+    },
+    async (request) => {
+      const args = request.params.arguments as StarterKitArgs;
+
+      createAuditLog('info', 'tool_request', {
+        tool: 'get_starter_kit',
+        id: args.id,
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        validateToolInput('get_starter_kit', args);
+
+        const content = await fs.readFile(CONFIG.templatesPath, 'utf-8');
+        const data = JSON.parse(content);
+        const kit = data.starterKits.find((k: any) => k.id === args.id);
+
+        if (!kit) {
+          throw new McpError(
+            ErrorCode.InvalidRequest,
+            `Starter kit '${args.id}' not found. Use list_starter_kits to see available templates.`
+          );
+        }
+
+        let output = `# ${kit.name}\n\n`;
+        output += `**ID**: \`${kit.id}\`\n\n`;
+        output += `## Description\n${kit.description}\n\n`;
+        output += `## Use Cases\n${kit.useCases.map((u: string) => `- ${u}`).join('\n')}\n\n`;
+
+        output += `## Project Specifications\n`;
+        output += `- **Complexity**: ${kit.complexity}\n`;
+        output += `- **Animation Level**: ${kit.animations}\n`;
+        output += `- **Color Scheme**: ${kit.colorScheme}\n`;
+        if (kit.basedOn) {
+          output += `- **Template References**: ${kit.basedOn.join(', ')}\n`;
+        }
+        output += `\n`;
+
+        output += `## Features\n${kit.features.map((f: string) => `- ${f}`).join('\n')}\n\n`;
+
+        output += `## Required Libraries\n\n`;
+        for (const [category, libs] of Object.entries(kit.libraries)) {
+          output += `### ${category.charAt(0).toUpperCase() + category.slice(1)}\n`;
+          output += `\`\`\`bash\nnpm install ${(libs as string[]).join(' ')}\n\`\`\`\n\n`;
+        }
+
+        output += `## Getting Started\n\n`;
+        output += `1. Install Next.js and create your project\n`;
+        output += `2. Install the required libraries listed above\n`;
+        output += `3. Configure Tailwind CSS in your project\n`;
+        output += `4. Use \`get_catalyst_component\` to retrieve UI components\n`;
+        output += `5. Use \`get_library_docs\` to learn about specific libraries\n`;
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'get_starter_kit',
+          id: args.id
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: output
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'get_starter_kit',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'get_starter_kit')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: recommend_template
+   * Recommends templates based on user criteria
+   */
+  server.registerTool(
+    "recommend_template",
+    {
+      title: "Get Template Recommendations",
+      description: "Get template recommendations based on your project requirements. Provide criteria like purpose, color preferences, animation level, required features, and complexity. Returns ranked template suggestions with explanations.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        purpose: z.string().optional().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content"),
+        colorPreference: z.string().optional().describe("Color preference: professional, vibrant, creative, minimal, warm, modern"),
+        animations: z.string().optional().describe("Animation level: minimal, moderate, high"),
+        features: z.array(z.string()).optional().describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce"),
+        complexity: z.string().optional().describe("Complexity preference: beginner, intermediate, advanced")
+      }
+    },
+    async (request) => {
+      const args = request.params.arguments as RecommendTemplateArgs;
+
+      createAuditLog('info', 'tool_request', {
+        tool: 'recommend_template',
+        criteria: args,
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        const content = await fs.readFile(CONFIG.templatesPath, 'utf-8');
+        const data = JSON.parse(content);
+        const recommendations = calculateRecommendations(data, args);
+
+        let output = `# Template Recommendations\n\n`;
+        output += `Based on your criteria:\n`;
+        if (args.purpose) output += `- Purpose: ${args.purpose}\n`;
+        if (args.colorPreference) output += `- Colors: ${args.colorPreference}\n`;
+        if (args.animations) output += `- Animations: ${args.animations}\n`;
+        if (args.features && args.features.length > 0) output += `- Features: ${args.features.join(', ')}\n`;
+        if (args.complexity) output += `- Complexity: ${args.complexity}\n`;
+        output += `\n`;
+
+        for (let i = 0; i < Math.min(3, recommendations.length); i++) {
+          const rec = recommendations[i];
+          output += `## ${i + 1}. ${rec.kit.name} (${rec.score}% match)\n\n`;
+          output += `**ID**: \`${rec.kit.id}\`\n`;
+          output += `${rec.kit.description}\n\n`;
+          output += `**Why this matches:**\n${rec.reasons.map((r: string) => `- ${r}`).join('\n')}\n\n`;
+          output += `**Key Features**: ${rec.kit.features.slice(0, 4).join(', ')}\n\n`;
+        }
+
+        if (recommendations.length === 0) {
+          output += `No perfect matches found. Try using \`list_starter_kits\` to browse all available templates.\n`;
+        } else {
+          output += `\nUse \`get_starter_kit\` with the template ID to get full implementation details.\n`;
+        }
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'recommend_template',
+          recommendationsCount: recommendations.length
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: output
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'recommend_template',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'recommend_template')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: answer_questionnaire
+   * Processes questionnaire answers and returns recommendations
+   */
+  server.registerTool(
+    "answer_questionnaire",
+    {
+      title: "Answer Template Questionnaire",
+      description: "Submit answers to the template selection questionnaire and receive personalized recommendations. Provide answers as a key-value object where keys are question IDs (purpose, colorPreference, animations, features, complexity) and values are your choices.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        answers: z.record(z.union([z.string(), z.array(z.string())])).describe("Questionnaire answers as key-value pairs. Keys: purpose, colorPreference, animations, features (array), complexity")
+      }
+    },
+    async (request) => {
+      const args = request.params.arguments as QuestionnaireArgs;
+
+      createAuditLog('info', 'tool_request', {
+        tool: 'answer_questionnaire',
+        answersProvided: Object.keys(args.answers),
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        const content = await fs.readFile(CONFIG.templatesPath, 'utf-8');
+        const data = JSON.parse(content);
+
+        // Convert answers to recommendation criteria
+        const criteria: RecommendTemplateArgs = {
+          purpose: args.answers.purpose as string,
+          colorPreference: args.answers.colorPreference as string,
+          animations: args.answers.animations as string,
+          features: args.answers.features as string[],
+          complexity: args.answers.complexity as string
+        };
+
+        const recommendations = calculateRecommendations(data, criteria);
+
+        let output = `# Your Template Recommendations\n\n`;
+        output += `Thank you for completing the questionnaire! Based on your answers, here are our top recommendations:\n\n`;
+
+        for (let i = 0; i < Math.min(3, recommendations.length); i++) {
+          const rec = recommendations[i];
+          output += `## ${i + 1}. ${rec.kit.name} (${rec.score}% match)\n\n`;
+          output += `**ID**: \`${rec.kit.id}\`\n`;
+          output += `**Description**: ${rec.kit.description}\n\n`;
+          output += `**Why we recommend this:**\n${rec.reasons.map((r: string) => `- ${r}`).join('\n')}\n\n`;
+          output += `**Key Features**:\n${rec.kit.features.slice(0, 5).map((f: string) => `- ${f}`).join('\n')}\n\n`;
+          output += `**Complexity**: ${rec.kit.complexity} | **Animations**: ${rec.kit.animations}\n\n`;
+        }
+
+        output += `\nNext steps:\n`;
+        output += `1. Use \`get_starter_kit\` with your chosen template ID for full implementation details\n`;
+        output += `2. Use \`get_library_docs\` to learn about the required libraries\n`;
+        output += `3. Use \`get_catalyst_component\` to get UI component code\n`;
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'answer_questionnaire',
+          recommendationsCount: recommendations.length
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: output
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'answer_questionnaire',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'answer_questionnaire')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: get_library_docs
+   * Retrieves documentation for a specific library
+   */
+  server.registerTool(
+    "get_library_docs",
+    {
+      title: "Get Library Documentation",
+      description: "Get comprehensive documentation for commonly used libraries in Next.js projects. Available: framer-motion, mdx, headless-ui, next-themes, clsx, tailwind-plugins. Includes installation, usage examples, patterns, and best practices.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        library_name: z.string().min(1).max(50).describe("Library name (e.g., 'framer-motion', 'mdx', 'headless-ui', 'next-themes', 'clsx', 'tailwind-plugins')")
+      }
+    },
+    async (request) => {
+      const args = request.params.arguments as LibraryDocsArgs;
+
+      createAuditLog('info', 'tool_request', {
+        tool: 'get_library_docs',
+        library: args.library_name,
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        validateToolInput('get_library_docs', args);
+
+        const libraryPath = path.join(CONFIG.libraryDocsPath, `${args.library_name}.txt`);
+        const content = await fs.readFile(libraryPath, 'utf-8');
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'get_library_docs',
+          library: args.library_name,
+          contentSize: content.length
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: content
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'get_library_docs',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error.code === 'ENOENT') {
+          throw new McpError(
+            ErrorCode.InvalidRequest,
+            `Library documentation for '${args.library_name}' not found. Use list_library_docs to see available libraries.`
+          );
+        }
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'get_library_docs')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: list_library_docs
+   * Lists all available library documentation
+   */
+  server.registerTool(
+    "list_library_docs",
+    {
+      title: "List Available Library Documentation",
+      description: "List all available library documentation files. Includes commonly used libraries like Framer Motion, MDX, Headless UI, next-themes, clsx, and Tailwind plugins. Each provides installation, usage examples, and best practices.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
+    },
+    async (request) => {
+      createAuditLog('info', 'tool_request', {
+        tool: 'list_library_docs',
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        const files = await fs.readdir(CONFIG.libraryDocsPath);
+        const libraries = files
+          .filter(file => file.endsWith('.txt'))
+          .map(file => file.replace('.txt', ''))
+          .sort();
+
+        const descriptions: Record<string, string> = {
+          'framer-motion': 'Animation library for React with spring physics and gestures',
+          'mdx': 'Markdown with JSX components for rich content',
+          'headless-ui': 'Unstyled, accessible UI components by Tailwind Labs',
+          'next-themes': 'Perfect dark mode implementation for Next.js',
+          'clsx': 'Tiny utility for conditional className strings',
+          'tailwind-plugins': 'Official Tailwind CSS plugins (Typography, Forms, etc.)'
+        };
+
+        let output = `# Available Library Documentation (${libraries.length} libraries)\n\n`;
+        output += `Comprehensive documentation for commonly used libraries in Next.js + Tailwind projects.\n\n`;
+
+        for (const lib of libraries) {
+          output += `## ${lib}\n`;
+          if (descriptions[lib]) {
+            output += `${descriptions[lib]}\n`;
+          }
+          output += `Use \`get_library_docs\` with library_name \`"${lib}"\` to retrieve full documentation.\n\n`;
+        }
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'list_library_docs',
+          librariesCount: libraries.length
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: output
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'list_library_docs',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'list_library_docs')
+        );
+      }
+    }
+  );
+
   return server.server;
+}
+
+// =========================
+// HELPER FUNCTIONS
+// =========================
+
+/**
+ * Calculates template recommendations based on user criteria
+ */
+function calculateRecommendations(data: any, criteria: RecommendTemplateArgs): any[] {
+  const kits = data.starterKits;
+  const matching = data.questionnaire.matching;
+  const recommendations: any[] = [];
+
+  for (const kit of kits) {
+    let score = 0;
+    const reasons: string[] = [];
+    const matchData = matching[kit.id];
+
+    if (!matchData) continue;
+
+    // Purpose matching (highest weight)
+    if (criteria.purpose && matchData.purpose && matchData.purpose.includes(criteria.purpose)) {
+      score += 40;
+      reasons.push(`Perfect match for ${criteria.purpose} use case`);
+    }
+
+    // Color preference matching
+    if (criteria.colorPreference && matchData.colorPreference && matchData.colorPreference.includes(criteria.colorPreference)) {
+      score += 15;
+      reasons.push(`Matches ${criteria.colorPreference} color scheme preference`);
+    }
+
+    // Animation level matching
+    if (criteria.animations && matchData.animations && matchData.animations.includes(criteria.animations)) {
+      score += 20;
+      reasons.push(`Has ${criteria.animations} animation level`);
+    }
+
+    // Feature matching
+    if (criteria.features && criteria.features.length > 0 && matchData.features) {
+      const matchedFeatures = criteria.features.filter(f => matchData.features.includes(f));
+      const featureScore = (matchedFeatures.length / criteria.features.length) * 15;
+      score += featureScore;
+      if (matchedFeatures.length > 0) {
+        reasons.push(`Includes ${matchedFeatures.length} of your requested features`);
+      }
+    }
+
+    // Complexity matching
+    if (criteria.complexity && matchData.complexity && matchData.complexity.includes(criteria.complexity)) {
+      score += 10;
+      reasons.push(`Matches ${criteria.complexity} complexity level`);
+    }
+
+    if (score > 0) {
+      recommendations.push({
+        kit,
+        score: Math.round(score),
+        reasons
+      });
+    }
+  }
+
+  // Sort by score descending
+  recommendations.sort((a, b) => b.score - a.score);
+
+  return recommendations;
 }
 
 // =========================

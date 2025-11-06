@@ -28,6 +28,26 @@ export interface PatternArgs {
   pattern_name: string;
 }
 
+export interface StarterKitArgs {
+  id: string;
+}
+
+export interface RecommendTemplateArgs {
+  purpose?: string;
+  colorPreference?: string;
+  animations?: string;
+  features?: string[];
+  complexity?: string;
+}
+
+export interface QuestionnaireArgs {
+  answers: Record<string, string | string[]>;
+}
+
+export interface LibraryDocsArgs {
+  library_name: string;
+}
+
 export interface ValidationResult {
   isValid: boolean;
   sanitizedValue?: string;
@@ -45,6 +65,8 @@ export interface ServerConfig {
   tailwindDocsPath: string;
   catalystComponentsPath: string;
   patternsPath: string;
+  templatesPath: string;
+  libraryDocsPath: string;
   maxFileSize: number;
   largeFileSize: number; // For large documentation files (5MB)
   cacheTimeout: number;

@@ -1,0 +1,279 @@
+# Tailwind CSS Official Plugins
+
+## Overview
+Official plugins that extend Tailwind CSS with additional utilities and variants.
+
+## @tailwindcss/typography
+
+### Installation
+```bash
+npm install @tailwindcss/typography
+```
+
+### Configuration
+```javascript
+// tailwind.config.js
+module.exports = {
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
+}
+```
+
+### Usage
+```tsx
+<article className="prose prose-slate lg:prose-xl">
+  <h1>My Blog Post</h1>
+  <p>This content will be beautifully styled.</p>
+  <ul>
+    <li>Lists work great</li>
+    <li>With proper spacing</li>
+  </ul>
+</article>
+```
+
+### Modifiers
+```tsx
+{/* Size modifiers */}
+<div className="prose prose-sm">Small</div>
+<div className="prose">Base (default)</div>
+<div className="prose prose-lg">Large</div>
+<div className="prose prose-xl">Extra large</div>
+<div className="prose prose-2xl">2X large</div>
+
+{/* Color themes */}
+<div className="prose prose-gray">Gray theme</div>
+<div className="prose prose-slate">Slate theme</div>
+<div className="prose prose-zinc">Zinc theme</div>
+<div className="prose prose-stone">Stone theme</div>
+
+{/* Dark mode */}
+<div className="prose dark:prose-invert">
+  Inverts colors in dark mode
+</div>
+
+{/* Responsive */}
+<div className="prose md:prose-lg lg:prose-xl">
+  Responsive sizing
+</div>
+```
+
+### Customization
+```javascript
+module.exports = {
+  theme: {
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            color: '#333',
+            a: {
+              color: '#3182ce',
+              '&:hover': {
+                color: '#2c5282',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+### Not Prose
+```tsx
+<article className="prose">
+  <h1>Title</h1>
+  <p>Styled paragraph</p>
+  <div className="not-prose">
+    {/* This won't be affected by prose styles */}
+    <button className="custom-button">Click me</button>
+  </div>
+</article>
+```
+
+## @tailwindcss/forms
+
+### Installation
+```bash
+npm install @tailwindcss/forms
+```
+
+### Configuration
+```javascript
+// tailwind.config.js
+module.exports = {
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
+}
+```
+
+### Usage
+All form elements automatically get better default styling:
+
+```tsx
+{/* Inputs */}
+<input type="text" className="form-input" />
+<input type="email" className="form-input" />
+
+{/* Textarea */}
+<textarea className="form-textarea" />
+
+{/* Select */}
+<select className="form-select">
+  <option>Option 1</option>
+  <option>Option 2</option>
+</select>
+
+{/* Checkbox */}
+<input type="checkbox" className="form-checkbox" />
+
+{/* Radio */}
+<input type="radio" className="form-radio" />
+```
+
+### Customization
+```javascript
+module.exports = {
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'class', // Only apply to elements with .form-* classes
+    }),
+  ],
+}
+```
+
+### Styled Examples
+```tsx
+{/* Input with icon */}
+<div className="relative">
+  <input
+    type="text"
+    className="form-input pl-10"
+    placeholder="Search"
+  />
+  <SearchIcon className="absolute left-3 top-3 h-5 w-5" />
+</div>
+
+{/* Select with custom styling */}
+<select className="form-select rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+  <option>Option 1</option>
+  <option>Option 2</option>
+</select>
+
+{/* Checkbox with label */}
+<label className="flex items-center">
+  <input type="checkbox" className="form-checkbox text-blue-600" />
+  <span className="ml-2">Accept terms</span>
+</label>
+```
+
+## @tailwindcss/aspect-ratio
+
+### Installation
+```bash
+npm install @tailwindcss/aspect-ratio
+```
+
+### Configuration
+```javascript
+module.exports = {
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
+}
+```
+
+### Usage
+```tsx
+{/* 16:9 video */}
+<div className="aspect-w-16 aspect-h-9">
+  <iframe src="https://www.youtube.com/embed/..." />
+</div>
+
+{/* Square */}
+<div className="aspect-w-1 aspect-h-1">
+  <img src="..." />
+</div>
+
+{/* 4:3 */}
+<div className="aspect-w-4 aspect-h-3">
+  <img src="..." />
+</div>
+```
+
+## @tailwindcss/line-clamp
+
+### Installation
+```bash
+npm install @tailwindcss/line-clamp
+```
+
+### Configuration
+```javascript
+module.exports = {
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
+}
+```
+
+### Usage
+```tsx
+{/* Clamp to 2 lines */}
+<p className="line-clamp-2">
+  Long text that will be truncated after 2 lines...
+</p>
+
+{/* Clamp to 3 lines */}
+<p className="line-clamp-3">
+  Even longer text...
+</p>
+
+{/* Remove clamp on hover */}
+<p className="line-clamp-3 hover:line-clamp-none">
+  Expand on hover
+</p>
+```
+
+## @tailwindcss/container-queries
+
+### Installation
+```bash
+npm install @tailwindcss/container-queries
+```
+
+### Configuration
+```javascript
+module.exports = {
+  plugins: [
+    require('@tailwindcss/container-queries'),
+  ],
+}
+```
+
+### Usage
+```tsx
+{/* Define container */}
+<div className="@container">
+  {/* Child elements can use container queries */}
+  <div className="@md:grid @md:grid-cols-2">
+    <div>Column 1</div>
+    <div>Column 2</div>
+  </div>
+</div>
+
+{/* Named containers */}
+<div className="@container/main">
+  <div className="@lg/main:flex">
+    Content
+  </div>
+</div>
+```
+
+## Resources
+- Typography: https://tailwindcss.com/docs/typography-plugin
+- Forms: https://github.com/tailwindlabs/tailwindcss-forms
+- All Plugins: https://tailwindcss.com/docs/plugins

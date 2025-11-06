@@ -1,0 +1,295 @@
+# next-themes - Perfect Dark Mode in Next.js
+
+## Overview
+The easiest way to add dark mode to your Next.js app with no flash on load, system preference support, and more.
+
+## Installation
+```bash
+npm install next-themes
+```
+
+## Basic Setup
+
+### 1. Create Theme Provider
+```tsx
+// app/providers.tsx
+'use client'
+
+import { ThemeProvider } from 'next-themes'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <ThemeProvider attribute="class">{children}</ThemeProvider>
+}
+```
+
+### 2. Wrap App
+```tsx
+// app/layout.tsx
+import { Providers } from './providers'
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+### 3. Create Theme Toggle
+```tsx
+'use client'
+
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
+
+export function ThemeToggle() {
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
+  return (
+    <button
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-lg"
+    >
+      {theme === 'dark' ? '🌞' : '🌙'}
+    </button>
+  )
+}
+```
+
+## Configuration Options
+
+### Full Options
+```tsx
+<ThemeProvider
+  attribute="class"              // Use class attribute for dark mode
+  defaultTheme="system"         // Default theme
+  enableSystem={true}            // Use system preference
+  disableTransitionOnChange={false} // Disable transition when changing theme
+  storageKey="theme"            // localStorage key
+  themes={['light', 'dark', 'custom']} // Available themes
+>
+```
+
+### Multiple Themes
+```tsx
+<ThemeProvider themes={['light', 'dark', 'blue', 'green']}>
+  {children}
+</ThemeProvider>
+```
+
+## Theme Toggle Variants
+
+### Simple Toggle
+```tsx
+<button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+  Toggle
+</button>
+```
+
+### Dropdown
+```tsx
+<select value={theme} onChange={(e) => setTheme(e.target.value)}>
+  <option value="system">System</option>
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+</select>
+```
+
+### With Icons (Heroicons)
+```tsx
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      {theme === 'dark' ? (
+        <SunIcon className="h-6 w-6" />
+      ) : (
+        <MoonIcon className="h-6 w-6" />
+      )}
+    </button>
+  )
+}
+```
+
+### Three-way Toggle (System/Light/Dark)
+```tsx
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <div className="flex gap-2">
+      <button
+        onClick={() => setTheme('light')}
+        className={theme === 'light' ? 'font-bold' : ''}
+      >
+        Light
+      </button>
+      <button
+        onClick={() => setTheme('system')}
+        className={theme === 'system' ? 'font-bold' : ''}
+      >
+        System
+      </button>
+      <button
+        onClick={() => setTheme('dark')}
+        className={theme === 'dark' ? 'font-bold' : ''}
+      >
+        Dark
+      </button>
+    </div>
+  )
+}
+```
+
+## With Tailwind CSS
+
+### Configure tailwind.config.js
+```javascript
+module.exports = {
+  darkMode: 'class', // Use class-based dark mode
+  // ...rest of config
+}
+```
+
+### Using Dark Mode Classes
+```tsx
+<div className="bg-white dark:bg-gray-900 text-black dark:text-white">
+  This adapts to theme
+</div>
+```
+
+## Force Theme for Specific Pages
+```tsx
+'use client'
+
+import { useTheme } from 'next-themes'
+import { useEffect } from 'react'
+
+export default function ForcedDarkPage() {
+  const { setTheme } = useTheme()
+
+  useEffect(() => {
+    setTheme('dark')
+  }, [])
+
+  return <div>This page is always dark</div>
+}
+```
+
+## Advanced Patterns
+
+### Animated Toggle
+```tsx
+'use client'
+
+import { useTheme } from 'next-themes'
+import { motion } from 'framer-motion'
+
+export function AnimatedToggle() {
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <motion.button
+      whileTap={{ scale: 0.95 }}
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="relative w-14 h-8 rounded-full bg-gray-200 dark:bg-gray-700"
+    >
+      <motion.div
+        className="absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow"
+        animate={{ x: theme === 'dark' ? 24 : 0 }}
+      />
+    </motion.button>
+  )
+}
+```
+
+### Get Resolved Theme
+```tsx
+const { resolvedTheme } = useTheme()
+// 'dark' or 'light' (never 'system')
+```
+
+### Theme-specific Image
+```tsx
+import { useTheme } from 'next-themes'
+
+function Logo() {
+  const { resolvedTheme } = useTheme()
+
+  return (
+    <img
+      src={resolvedTheme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg'}
+      alt="Logo"
+    />
+  )
+}
+```
+
+## Prevent Flash on Load
+
+Always use `suppressHydrationWarning` on html tag:
+```tsx
+<html lang="en" suppressHydrationWarning>
+```
+
+## Storage
+
+By default, theme is saved to `localStorage`. Access it:
+```tsx
+const savedTheme = localStorage.getItem('theme')
+```
+
+## SSR Considerations
+
+```tsx
+// Always check if mounted before rendering theme-dependent content
+const [mounted, setMounted] = useState(false)
+
+useEffect(() => {
+  setMounted(true)
+}, [])
+
+if (!mounted) {
+  return <div>Loading...</div> // Or skeleton
+}
+```
+
+## Custom Themes
+
+```tsx
+<ThemeProvider themes={['light', 'dark', 'blue', 'pink']}>
+  {children}
+</ThemeProvider>
+```
+
+```css
+/* globals.css */
+[data-theme='blue'] {
+  --primary: #3b82f6;
+}
+
+[data-theme='pink'] {
+  --primary: #ec4899;
+}
+```
+
+## Resources
+- Docs: https://github.com/pacocoursey/next-themes
+- Demo: https://next-themes-example.vercel.app/

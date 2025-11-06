@@ -1,0 +1,282 @@
+# clsx - Conditional className Utility
+
+## Overview
+A tiny (228B) utility for constructing className strings conditionally.
+
+## Installation
+```bash
+npm install clsx
+```
+
+## Basic Usage
+
+### Simple Conditionals
+```tsx
+import clsx from 'clsx'
+
+<div className={clsx('base-class', isActive && 'active', 'another-class')} />
+// Result: "base-class active another-class" (if isActive is true)
+```
+
+### Object Syntax
+```tsx
+<div className={clsx({
+  'bg-blue-500': isPrimary,
+  'bg-gray-500': !isPrimary,
+  'text-white': true,
+  'rounded': hasRoundedCorners
+})} />
+```
+
+### Array Syntax
+```tsx
+<div className={clsx([
+  'base-class',
+  isActive && 'active',
+  isDisabled && 'disabled'
+])} />
+```
+
+### Mixed Syntax
+```tsx
+<div className={clsx(
+  'base-class',
+  {
+    'is-active': isActive,
+    'has-error': hasError
+  },
+  isLoading && 'loading'
+)} />
+```
+
+## Common Patterns
+
+### Button Variants
+```tsx
+function Button({ variant, size, children }) {
+  return (
+    <button
+      className={clsx(
+        'font-semibold rounded',
+        {
+          'bg-blue-500 text-white': variant === 'primary',
+          'bg-gray-200 text-gray-900': variant === 'secondary',
+          'bg-red-500 text-white': variant === 'danger',
+        },
+        {
+          'px-2 py-1 text-sm': size === 'small',
+          'px-4 py-2': size === 'medium',
+          'px-6 py-3 text-lg': size === 'large',
+        }
+      )}
+    >
+      {children}
+    </button>
+  )
+}
+```
+
+### Card States
+```tsx
+function Card({ isSelected, isDisabled, isHovered }) {
+  return (
+    <div className={clsx(
+      'rounded-lg border p-4',
+      {
+        'border-blue-500 bg-blue-50': isSelected,
+        'border-gray-200': !isSelected,
+        'opacity-50 cursor-not-allowed': isDisabled,
+        'shadow-lg': isHovered && !isDisabled
+      }
+    )} />
+  )
+}
+```
+
+### Dark Mode with Tailwind
+```tsx
+<div className={clsx(
+  'p-4',
+  {
+    'bg-white text-black': theme === 'light',
+    'bg-gray-900 text-white': theme === 'dark'
+  }
+)} />
+
+// Or with Tailwind dark: modifier
+<div className={clsx(
+  'p-4 bg-white dark:bg-gray-900',
+  'text-black dark:text-white'
+)} />
+```
+
+### Form Field States
+```tsx
+function Input({ hasError, isDisabled, isFocused }) {
+  return (
+    <input
+      className={clsx(
+        'w-full px-3 py-2 border rounded',
+        {
+          'border-red-500 bg-red-50': hasError,
+          'border-gray-300': !hasError,
+          'bg-gray-100 cursor-not-allowed': isDisabled,
+          'ring-2 ring-blue-500': isFocused && !hasError
+        }
+      )}
+    />
+  )
+}
+```
+
+### Navigation Items
+```tsx
+function NavItem({ isActive, href, children }) {
+  return (
+    <a
+      href={href}
+      className={clsx(
+        'px-3 py-2 rounded-md text-sm font-medium',
+        {
+          'bg-gray-900 text-white': isActive,
+          'text-gray-300 hover:bg-gray-700 hover:text-white': !isActive
+        }
+      )}
+    >
+      {children}
+    </a>
+  )
+}
+```
+
+## Advanced Usage
+
+### Extract to Variable
+```tsx
+const cardClasses = clsx(
+  'rounded-lg p-4',
+  {
+    'bg-white': !isDark,
+    'bg-gray-900': isDark
+  }
+)
+
+<div className={cardClasses} />
+```
+
+### Create Utility Function
+```tsx
+const buttonClasses = (variant: string, size: string) => {
+  return clsx(
+    'font-semibold rounded transition',
+    {
+      'bg-blue-500 hover:bg-blue-600': variant === 'primary',
+      'bg-gray-200 hover:bg-gray-300': variant === 'secondary',
+    },
+    {
+      'px-2 py-1 text-sm': size === 'sm',
+      'px-4 py-2': size === 'md',
+      'px-6 py-3 text-lg': size === 'lg',
+    }
+  )
+}
+
+<button className={buttonClasses('primary', 'md')}>Click</button>
+```
+
+### With TypeScript
+```typescript
+import clsx, { ClassValue } from 'clsx'
+
+type ButtonProps = {
+  variant?: 'primary' | 'secondary'
+  className?: ClassValue
+}
+
+function Button({ variant = 'primary', className, children }: ButtonProps) {
+  return (
+    <button
+      className={clsx(
+        'px-4 py-2 rounded',
+        {
+          'bg-blue-500': variant === 'primary',
+          'bg-gray-500': variant === 'secondary',
+        },
+        className // Allows overriding
+      )}
+    >
+      {children}
+    </button>
+  )
+}
+```
+
+## vs. Other Solutions
+
+### clsx vs. classnames
+```tsx
+// Both work identically
+import clsx from 'clsx'
+import classNames from 'classnames'
+
+clsx('foo', { bar: true }, ['baz', { qux: false }])
+classNames('foo', { bar: true }, ['baz', { qux: false }])
+// Result: 'foo bar baz'
+```
+
+### clsx vs. Template Literals
+```tsx
+// ❌ Template literals - hard to read
+className={`base ${isActive ? 'active' : ''} ${hasError ? 'error' : ''}`}
+
+// ✅ clsx - clean and readable
+className={clsx('base', isActive && 'active', hasError && 'error')}
+```
+
+## Best Practices
+
+1. **Base classes first**: Always put base/common classes first
+```tsx
+clsx('base-class', conditionals)
+```
+
+2. **Use objects for toggle states**:
+```tsx
+clsx({ 'active': isActive, 'disabled': isDisabled })
+```
+
+3. **Combine with Tailwind**:
+```tsx
+clsx('text-sm font-medium', { 'text-blue-500': isPrimary })
+```
+
+4. **Extract complex logic**:
+```tsx
+const classes = useMemo(
+  () => clsx(/* complex logic */),
+  [dependencies]
+)
+```
+
+5. **Allow className override**:
+```tsx
+function Component({ className }) {
+  return <div className={clsx('base-styles', className)} />
+}
+```
+
+## Performance
+
+- **Tiny size**: 228 bytes (vs classnames at 1.2kB)
+- **Fast**: Optimized for performance
+- **Tree-shakeable**: Works with modern bundlers
+
+## Alternatives
+
+- **classnames**: Larger but more features
+- **cva** (class-variance-authority): For component variants
+- **tailwind-merge**: Merge Tailwind classes intelligently
+
+## Resources
+- GitHub: https://github.com/lukeed/clsx
+- NPM: https://www.npmjs.com/package/clsx

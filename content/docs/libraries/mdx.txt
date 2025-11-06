@@ -1,0 +1,318 @@
+# MDX - Markdown for the Component Era
+
+## Overview
+MDX allows you to use JSX in your markdown content. Write markdown with embedded React components.
+
+## Installation
+
+### With Next.js App Router
+```bash
+npm install @mdx-js/loader @mdx-js/react @next/mdx
+```
+
+### Configuration (next.config.js)
+```javascript
+import createMDX from '@next/mdx'
+
+const nextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+}
+
+const withMDX = createMDX({
+  // Add markdown plugins here
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+
+export default withMDX(nextConfig)
+```
+
+## Basic Usage
+
+### Simple MDX File (app/blog/post.mdx)
+```mdx
+# Hello World
+
+This is **markdown** with a React component:
+
+<MyComponent />
+
+- List item 1
+- List item 2
+```
+
+### Importing MDX
+```tsx
+import Post from './post.mdx'
+
+export default function Page() {
+  return <Post />
+}
+```
+
+## Using Components in MDX
+
+### Custom Components
+```tsx
+// components/Button.tsx
+export function Button({ children }) {
+  return (
+    <button className="bg-blue-500 text-white px-4 py-2 rounded">
+      {children}
+    </button>
+  )
+}
+```
+
+```mdx
+# My Post
+
+Click this button:
+
+<Button>Click me!</Button>
+```
+
+### MDX Provider (App Router)
+```tsx
+// app/mdx-components.tsx
+import type { MDXComponents } from 'mdx/types'
+import { Button } from '@/components/Button'
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    // Map HTML elements to custom components
+    h1: ({ children }) => (
+      <h1 className="text-4xl font-bold mb-4">{children}</h1>
+    ),
+    // Add custom components
+    Button,
+    ...components,
+  }
+}
+```
+
+## Common Patterns
+
+### Blog Post with Frontmatter
+```mdx
+export const metadata = {
+  title: 'My Post',
+  date: '2024-01-01',
+  author: 'John Doe'
+}
+
+# {metadata.title}
+
+Published on {metadata.date}
+
+Blog content here...
+```
+
+### Code Blocks with Syntax Highlighting
+```mdx
+Install dependencies:
+
+\`\`\`bash
+npm install next react
+\`\`\`
+
+Example component:
+
+\`\`\`tsx
+export default function Hello() {
+  return <h1>Hello World</h1>
+}
+\`\`\`
+```
+
+### Callouts/Alerts
+```tsx
+// components/Callout.tsx
+export function Callout({ type = 'info', children }) {
+  const styles = {
+    info: 'bg-blue-50 border-blue-200 text-blue-800',
+    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+    error: 'bg-red-50 border-red-200 text-red-800',
+  }
+
+  return (
+    <div className={`border-l-4 p-4 ${styles[type]}`}>
+      {children}
+    </div>
+  )
+}
+```
+
+```mdx
+<Callout type="warning">
+This is an important warning!
+</Callout>
+```
+
+### Table of Contents
+```tsx
+// Auto-generate from headings
+export function TableOfContents({ headings }) {
+  return (
+    <nav>
+      <ul>
+        {headings.map(heading => (
+          <li key={heading.id}>
+            <a href={`#${heading.id}`}>{heading.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+```
+
+## Useful Plugins
+
+### Remark Plugins (Markdown processing)
+```javascript
+import remarkGfm from 'remark-gfm'
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [
+      remarkGfm, // GitHub Flavored Markdown
+    ],
+  },
+})
+```
+
+### Rehype Plugins (HTML processing)
+```javascript
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+
+const withMDX = createMDX({
+  options: {
+    rehypePlugins: [
+      rehypeSlug, // Add IDs to headings
+      rehypeAutolinkHeadings, // Add links to headings
+    ],
+  },
+})
+```
+
+## Dynamic MDX
+
+### Load MDX from File System
+```tsx
+import fs from 'fs'
+import path from 'path'
+import { compileMDX } from 'next-mdx-remote/rsc'
+
+async function getPost(slug: string) {
+  const filePath = path.join(process.cwd(), 'content', `${slug}.mdx`)
+  const source = fs.readFileSync(filePath, 'utf8')
+
+  const { content, frontmatter } = await compileMDX({
+    source,
+    options: { parseFrontmatter: true },
+    components: {
+      // Custom components
+    },
+  })
+
+  return { content, frontmatter }
+}
+```
+
+### Load from CMS
+```tsx
+import { compileMDX } from 'next-mdx-remote/rsc'
+
+async function getPost(id: string) {
+  const post = await fetchFromCMS(id)
+
+  const { content } = await compileMDX({
+    source: post.content,
+    components: {
+      // Custom components
+    },
+  })
+
+  return content
+}
+```
+
+## Syntax Highlighting
+
+### With Shiki
+```javascript
+import rehypeShiki from '@shikijs/rehype'
+
+const withMDX = createMDX({
+  options: {
+    rehypePlugins: [
+      [rehypeShiki, { theme: 'nord' }],
+    ],
+  },
+})
+```
+
+### With Prism
+```javascript
+import rehypePrism from '@mapbox/rehype-prism'
+
+const withMDX = createMDX({
+  options: {
+    rehypePlugins: [rehypePrism],
+  },
+})
+```
+
+## Common Use Cases
+
+### Documentation Site
+- Technical docs with code examples
+- API reference with interactive components
+- Guides with embedded demos
+
+### Blog
+- Rich blog posts with custom components
+- Interactive examples
+- Embedded media and charts
+
+### Portfolio
+- Project case studies
+- Process documentation
+- Interactive showcases
+
+## Best Practices
+
+1. **Keep components simple** - MDX components should be focused and reusable
+2. **Use TypeScript** - Type your custom components for better DX
+3. **Organize content** - Separate content from components
+4. **Cache compiled MDX** - Use Next.js caching for performance
+5. **Accessibility** - Ensure custom components are accessible
+6. **SEO** - Extract metadata for better SEO
+
+## Troubleshooting
+
+### Client Components in MDX
+```tsx
+'use client' // Mark as client component
+
+export function InteractiveDemo() {
+  const [count, setCount] = useState(0)
+  return <button onClick={() => setCount(count + 1)}>{count}</button>
+}
+```
+
+### Import Images
+```mdx
+import myImage from './image.jpg'
+
+<Image src={myImage} alt="Description" />
+```
+
+## Resources
+- Docs: https://mdxjs.com/
+- Next.js MDX: https://nextjs.org/docs/app/building-your-application/configuring/mdx
+- Plugins: https://github.com/remarkjs/remark/blob/main/doc/plugins.md

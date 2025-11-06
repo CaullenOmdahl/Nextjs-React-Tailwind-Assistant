@@ -14,6 +14,7 @@ test-server.mjs
 # Documentation site (test/development only)
 /docs/
 /website/
+/doc-site/
 
 # Smithery build artifacts
 .smithery/
