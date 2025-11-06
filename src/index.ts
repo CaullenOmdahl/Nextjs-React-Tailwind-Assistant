@@ -43,7 +43,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.4.2",
+    version: "0.4.3",
   });
 
   // Register resources for documentation
@@ -820,15 +820,23 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as AnalyzeSiteArgs;
+      const args = (request.params?.arguments || {}) as AnalyzeSiteArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'analyze_existing_site',
-        url: args.url,
+        url: args?.url || 'undefined',
         timestamp: new Date().toISOString()
       });
 
       try {
+        // Validate URL is provided
+        if (!args?.url) {
+          throw new McpError(
+            ErrorCode.InvalidRequest,
+            'URL parameter is required. Please provide a valid website URL to analyze.'
+          );
+        }
+
         // Validate URL format
         new URL(args.url);
 
