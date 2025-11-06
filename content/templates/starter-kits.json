@@ -4,8 +4,16 @@
       "id": "documentation",
       "name": "Documentation Site",
       "description": "Technical documentation with sidebar navigation, search, and MDX support",
-      "useCases": ["API docs", "Product docs", "Technical guides"],
-      "basedOn": ["protocol", "commit", "syntax"],
+      "useCases": [
+        "API docs",
+        "Product docs",
+        "Technical guides"
+      ],
+      "basedOn": [
+        "protocol",
+        "commit",
+        "syntax"
+      ],
       "features": [
         "Sidebar navigation with sections",
         "Search functionality",
@@ -144,7 +152,7 @@
             "Green accents (success states, positive associations)"
           ],
           "tradeoffs": "Blue is safest but common. Neutral is most minimal but can feel bland. Purple is trendy but may not suit all audiences. Consider brand identity vs conventions.",
-          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (documentation site, technical audience, professional scheme) and let the agent analyze the comprehensive color guidance (~20KB) to recommend specific palettes with rationale."
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (documentation site, technical audience, professional scheme) and let the agent analyze the comprehensive color guidance (~20KB) to recommend specific palettes with rationale."
         }
       },
       "colorScheme": "professional",
@@ -152,21 +160,49 @@
       "complexity": "medium",
       "recommendedLibraries": {
         "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
-        "core": ["next@15+", "react", "tailwindcss", "typescript"],
-        "ui": ["@headlessui/react or @radix-ui/react-*"],
-        "content": ["@mdx-js/loader", "@next/mdx", "gray-matter", "rehype-*", "remark-*"],
-        "syntax": ["shiki or @mapbox/rehype-prism"],
-        "search": ["flexsearch or pagefind"],
-        "theme": ["next-themes"],
-        "utilities": ["clsx"]
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@headlessui/react or @radix-ui/react-*"
+        ],
+        "content": [
+          "@mdx-js/loader",
+          "@next/mdx",
+          "gray-matter",
+          "rehype-*",
+          "remark-*"
+        ],
+        "syntax": [
+          "shiki or @mapbox/rehype-prism"
+        ],
+        "search": [
+          "flexsearch or pagefind"
+        ],
+        "theme": [
+          "next-themes"
+        ],
+        "utilities": [
+          "clsx"
+        ]
       }
     },
     {
       "id": "ecommerce-store",
       "name": "Full-Stack E-commerce",
       "description": "Complete e-commerce platform with storefront, admin panel, and payment integration",
-      "useCases": ["Online stores", "Digital marketplaces", "Product catalogs", "Multi-vendor platforms"],
-      "basedOn": ["next-prisma-tailwind-ecommerce"],
+      "useCases": [
+        "Online stores",
+        "Digital marketplaces",
+        "Product catalogs",
+        "Multi-vendor platforms"
+      ],
+      "basedOn": [
+        "next-prisma-tailwind-ecommerce"
+      ],
       "features": [
         "Product catalog with categories",
         "Shopping cart and checkout",
@@ -183,7 +219,7 @@
       "architecturalDecisions": {
         "dataLayer": {
           "decision": "Type-safe ORM for product catalog, orders, and user management",
-          "rationale": "E-commerce requires complex data relationships (products → categories, orders → items → products, users → orders). Type safety prevents costly errors in production.",
+          "rationale": "E-commerce requires complex data relationships (products \u2192 categories, orders \u2192 items \u2192 products, users \u2192 orders). Type safety prevents costly errors in production.",
           "patternReference": "data-layer-patterns.md",
           "considerations": [
             "Complex relational data (products, orders, users, inventory)",
@@ -313,7 +349,7 @@
             "Webhook reliability for order fulfillment"
           ],
           "alternativeApproaches": [
-            "Stripe (best DX, comprehensive, 2.9% + 30¢)",
+            "Stripe (best DX, comprehensive, 2.9% + 30\u00a2)",
             "PayPal (trusted brand, higher fees)",
             "Square (retail focus, reader hardware)",
             "Paddle (merchant of record, handles tax)",
@@ -380,7 +416,7 @@
             "Bold, saturated colors (budget/value positioning)"
           ],
           "tradeoffs": "Blue/green is safest for trust but common. Premium black/white works for luxury but can feel cold. Warm colors drive urgency but may not suit all products. Pastels are trendy but can look cheap if not done well. Consider target market and product category.",
-          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (e-commerce site, product category, target demographic, premium vs budget positioning) and let the agent analyze comprehensive color psychology and e-commerce best practices to recommend conversion-optimized palettes."
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (e-commerce site, product category, target demographic, premium vs budget positioning) and let the agent analyze comprehensive color psychology and e-commerce best practices to recommend conversion-optimized palettes."
         }
       },
       "colorScheme": "modern",
@@ -388,26 +424,66 @@
       "complexity": "high",
       "recommendedLibraries": {
         "note": "These are examples based on common choices for the architectural decisions above. Adapt to your specific needs.",
-        "core": ["next@15+", "react", "tailwindcss", "typescript"],
-        "database": ["@prisma/client + prisma OR drizzle-orm"],
-        "auth": ["next-auth OR jose + iron-session OR @clerk/nextjs"],
-        "ui": ["@radix-ui/react-* OR @headlessui/react", "lucide-react OR @heroicons/react"],
-        "data": ["@tanstack/react-table", "@tanstack/react-query OR swr"],
-        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
-        "state": ["zustand OR redux-toolkit"],
-        "uploads": ["next-cloudinary OR uploadthing OR @aws-sdk/client-s3"],
-        "email": ["@react-email/* + resend OR @sendgrid/mail"],
-        "payments": ["stripe OR @paddle/paddle-js"],
-        "content": ["next-mdx-remote OR contentlayer"],
-        "utilities": ["clsx", "date-fns", "next-themes"]
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "database": [
+          "@prisma/client + prisma OR drizzle-orm"
+        ],
+        "auth": [
+          "next-auth OR jose + iron-session OR @clerk/nextjs"
+        ],
+        "ui": [
+          "@radix-ui/react-* OR @headlessui/react",
+          "lucide-react OR @heroicons/react"
+        ],
+        "data": [
+          "@tanstack/react-table",
+          "@tanstack/react-query OR swr"
+        ],
+        "forms": [
+          "react-hook-form",
+          "@hookform/resolvers",
+          "zod"
+        ],
+        "state": [
+          "zustand OR redux-toolkit"
+        ],
+        "uploads": [
+          "next-cloudinary OR uploadthing OR @aws-sdk/client-s3"
+        ],
+        "email": [
+          "@react-email/* + resend OR @sendgrid/mail"
+        ],
+        "payments": [
+          "stripe OR @paddle/paddle-js"
+        ],
+        "content": [
+          "next-mdx-remote OR contentlayer"
+        ],
+        "utilities": [
+          "clsx",
+          "date-fns",
+          "next-themes"
+        ]
       }
     },
     {
       "id": "admin-dashboard",
       "name": "Admin Dashboard & Analytics",
       "description": "Full-featured admin dashboard with multiple layouts, charts, tables, and RBAC support",
-      "useCases": ["Admin panels", "Analytics dashboards", "CRM systems", "Internal tools"],
-      "basedOn": ["next-shadcn-admin-dashboard"],
+      "useCases": [
+        "Admin panels",
+        "Analytics dashboards",
+        "CRM systems",
+        "Internal tools"
+      ],
+      "basedOn": [
+        "next-shadcn-admin-dashboard"
+      ],
       "features": [
         "Multiple dashboard views",
         "Collapsible sidebar navigation",
@@ -601,7 +677,7 @@
             "Custom brand colors (for white-label products)"
           ],
           "tradeoffs": "Blue-gray is safest and most familiar but can feel generic. Neutral is most minimal but requires strong typography. Purple is modern and distinctive but may not suit traditional industries. Consider whether this is internal-only or customer-facing admin portal.",
-          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (admin dashboard, internal vs external users, data-heavy interface, dark mode requirement) and let the agent analyze professional color palettes that support data visualization and long-term usability."
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (admin dashboard, internal vs external users, data-heavy interface, dark mode requirement) and let the agent analyze professional color palettes that support data visualization and long-term usability."
         }
       },
       "colorScheme": "professional",
@@ -609,21 +685,1690 @@
       "complexity": "high",
       "recommendedLibraries": {
         "note": "Examples based on architectural decisions. Choose based on your specific needs.",
-        "core": ["next@15+", "react", "tailwindcss", "typescript"],
-        "ui": ["@radix-ui/react-*", "lucide-react OR @heroicons/react"],
-        "data": ["@tanstack/react-table", "@tanstack/react-query"],
-        "charts": ["recharts OR tremor OR nivo"],
-        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
-        "state": ["zustand OR jotai"],
-        "dnd": ["@dnd-kit/core", "@dnd-kit/sortable"],
-        "command": ["cmdk"],
-        "auth": ["next-auth OR @clerk/nextjs"],
-        "database": ["@prisma/client + prisma OR drizzle-orm"],
-        "utilities": ["clsx", "date-fns", "next-themes"]
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@radix-ui/react-*",
+          "lucide-react OR @heroicons/react"
+        ],
+        "data": [
+          "@tanstack/react-table",
+          "@tanstack/react-query"
+        ],
+        "charts": [
+          "recharts OR tremor OR nivo"
+        ],
+        "forms": [
+          "react-hook-form",
+          "@hookform/resolvers",
+          "zod"
+        ],
+        "state": [
+          "zustand OR jotai"
+        ],
+        "dnd": [
+          "@dnd-kit/core",
+          "@dnd-kit/sortable"
+        ],
+        "command": [
+          "cmdk"
+        ],
+        "auth": [
+          "next-auth OR @clerk/nextjs"
+        ],
+        "database": [
+          "@prisma/client + prisma OR drizzle-orm"
+        ],
+        "utilities": [
+          "clsx",
+          "date-fns",
+          "next-themes"
+        ]
+      }
+    },
+    {
+      "id": "saas-marketing",
+      "name": "SaaS Marketing Site",
+      "description": "Modern SaaS landing page with pricing, features, and CTAs",
+      "useCases": [
+        "SaaS product",
+        "B2B software",
+        "Platform marketing"
+      ],
+      "basedOn": [
+        "salient",
+        "radiant"
+      ],
+      "features": [
+        "Hero section with gradient backgrounds",
+        "Feature showcases with icons",
+        "Pricing tables with toggle",
+        "Testimonials/social proof",
+        "CTA sections",
+        "Email capture forms",
+        "Blog/resources section"
+      ],
+      "architecturalDecisions": {
+        "formHandling": {
+          "decision": "Form library with validation for lead capture and contact forms",
+          "rationale": "SaaS marketing sites need email capture, contact forms, and demo requests. Need clean UX with client-side validation for better conversion.",
+          "patternReference": "form-handling-patterns.md",
+          "considerations": [
+            "Email capture forms (newsletter, waitlist)",
+            "Contact/demo request forms",
+            "Real-time validation for better UX",
+            "Type-safe form data",
+            "Integration with email marketing tools"
+          ],
+          "alternativeApproaches": [
+            "React Hook Form + Zod (performant, type-safe, popular)",
+            "Server Actions with native forms (simplest, progressive enhancement)",
+            "Formik + Yup (mature, more features, heavier)",
+            "Netlify/Vercel Forms (no code, built-in spam protection)"
+          ],
+          "tradeoffs": "React Hook Form best for complex forms. Server Actions simplest for basic forms. Netlify/Vercel Forms easiest but limited customization. Choose based on form complexity."
+        },
+        "animations": {
+          "decision": "Scroll-based animations and micro-interactions",
+          "rationale": "SaaS marketing benefits from polished animations to demonstrate product quality and create engaging user experience.",
+          "patternReference": "None (animation library choice)",
+          "considerations": [
+            "Scroll-triggered reveal animations",
+            "Hover effects on CTAs and cards",
+            "Smooth page transitions",
+            "Performance (avoid layout shifts)",
+            "Accessibility (respect prefers-reduced-motion)"
+          ],
+          "alternativeApproaches": [
+            "Framer Motion (most popular, powerful, React-focused)",
+            "GSAP (animation-focused, powerful, learning curve)",
+            "Tailwind CSS utilities (simple, no JS, limited)",
+            "CSS animations only (lightweight, less control)"
+          ],
+          "tradeoffs": "Framer Motion is easiest for React developers. GSAP is more powerful but heavier. CSS-only is lightest but most limited. Balance polish vs performance."
+        },
+        "emailSystem": {
+          "decision": "Email integration for newsletter and lead capture",
+          "rationale": "SaaS marketing relies on building email lists for nurturing leads and product updates.",
+          "patternReference": "None (email patterns)",
+          "considerations": [
+            "Newsletter subscriptions",
+            "Welcome email automation",
+            "Email list management",
+            "Double opt-in for GDPR",
+            "Integration with marketing platform"
+          ],
+          "alternativeApproaches": [
+            "Email marketing platform (ConvertKit, Mailchimp - easiest, feature-rich)",
+            "Resend (developer-friendly, React Email templates)",
+            "SendGrid (established, API-focused)",
+            "Custom with AWS SES (cheapest, most work)"
+          ],
+          "tradeoffs": "Email marketing platforms easiest but ongoing costs. Resend great DX for transactional. SendGrid/SES for high volume. Choose based on marketing needs vs technical control."
+        },
+        "colorPalette": {
+          "decision": "Modern, vibrant color palette for SaaS marketing",
+          "rationale": "SaaS marketing sites need colors that convey innovation, build trust, and drive conversions. Vibrant but professional palettes (purple, blue, green gradients) are common in modern SaaS to stand out while maintaining credibility.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: SaaS/technology (innovation, trust, modernity)",
+            "Target audience: Business decision-makers and technical users",
+            "Conversion-focused (CTAs must pop)",
+            "Gradient backgrounds popular in SaaS (depth, modern feel)",
+            "Differentiation in crowded market",
+            "Professional but not boring",
+            "Brand consistency across marketing materials"
+          ],
+          "alternativeApproaches": [
+            "Purple/violet palette (innovation, creativity, Stripe/Linear style)",
+            "Blue gradient palette (trust, technology, traditional SaaS)",
+            "Green/teal palette (growth, modern, forward-thinking)",
+            "Multi-color vibrant (bold, playful, younger audiences)"
+          ],
+          "tradeoffs": "Purple is trendy and modern but may not suit all industries. Blue is safest but common. Green conveys growth but can look dated. Multi-color is distinctive but harder to execute well. Consider brand positioning.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (SaaS marketing, target market B2B/B2C, innovation vs enterprise positioning) and let the agent analyze color psychology for conversion-optimized, modern palettes that build trust while standing out."
+        }
+      },
+      "colorScheme": "vibrant",
+      "animations": "moderate",
+      "complexity": "medium",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*",
+          "@heroicons/react OR lucide-react"
+        ],
+        "animations": [
+          "framer-motion"
+        ],
+        "forms": [
+          "react-hook-form",
+          "@hookform/resolvers",
+          "zod"
+        ],
+        "email": [
+          "@react-email/* + resend OR email marketing platform API"
+        ],
+        "utilities": [
+          "clsx",
+          "next-themes"
+        ]
+      }
+    },
+    {
+      "id": "agency-showcase",
+      "name": "Agency/Studio Site",
+      "description": "Creative agency site with case studies and team",
+      "useCases": [
+        "Design agency",
+        "Development studio",
+        "Consulting firm"
+      ],
+      "basedOn": [
+        "studio"
+      ],
+      "features": [
+        "Case study layouts",
+        "Team member profiles",
+        "Services breakdown",
+        "Client logos/testimonials",
+        "Process/methodology section",
+        "Contact/inquiry forms",
+        "Image-heavy layouts"
+      ],
+      "architecturalDecisions": {
+        "contentManagement": {
+          "decision": "Content system for case studies and portfolio work",
+          "rationale": "Agencies need to showcase case studies with rich media. Need balance between developer control and design flexibility.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Case study layouts with images/videos",
+            "Team member profiles",
+            "Client testimonials",
+            "Blog for thought leadership",
+            "May have non-technical content editors"
+          ],
+          "alternativeApproaches": [
+            "MDX files (simple, version controlled, developer-friendly)",
+            "Headless CMS (Sanity, Contentful - for marketing team, more flexibility)",
+            "Notion API (if team uses Notion already)",
+            "Built into database (most control, most work)"
+          ],
+          "tradeoffs": "MDX is simplest for dev-centric teams. Headless CMS better if non-devs create content. Notion API great for content-first teams. Choose based on who manages content."
+        },
+        "imageOptimization": {
+          "decision": "Image optimization for portfolio and case studies",
+          "rationale": "Agency sites are image-heavy. Need fast loading without sacrificing visual quality for showcasing work.",
+          "patternReference": "None (image optimization)",
+          "considerations": [
+            "Large portfolio images",
+            "Multiple image formats (WebP, AVIF)",
+            "Responsive images for different screens",
+            "Lazy loading",
+            "CDN delivery",
+            "Maintaining visual quality"
+          ],
+          "alternativeApproaches": [
+            "Next.js Image (built-in, automatic optimization, free)",
+            "Cloudinary (powerful transforms, costs money)",
+            "Imgix (high performance, expensive)",
+            "Self-hosted Sharp (most control, more work)"
+          ],
+          "tradeoffs": "Next.js Image is free and excellent for most cases. Cloudinary/Imgix offer more features but cost money. Use Next.js Image unless you need advanced transforms."
+        },
+        "animations": {
+          "decision": "Rich animations for creative impression",
+          "rationale": "Agency sites need impressive animations to demonstrate creative capabilities and technical expertise.",
+          "patternReference": "None (animation library choice)",
+          "considerations": [
+            "Page transitions",
+            "Image reveal animations",
+            "Scroll-based parallax effects",
+            "Hover interactions",
+            "Performance vs visual impact",
+            "Accessibility (motion preferences)"
+          ],
+          "alternativeApproaches": [
+            "Framer Motion (React-focused, declarative, popular)",
+            "GSAP (most powerful, steep learning curve)",
+            "Lottie (vector animations, designer-friendly)",
+            "CSS + Intersection Observer (lightweight, manual)"
+          ],
+          "tradeoffs": "Framer Motion easiest for React devs. GSAP most powerful for complex animations. Lottie great for designer collaboration. CSS-only lightest. Choose based on animation complexity and team skills."
+        },
+        "colorPalette": {
+          "decision": "Creative, bold color palette for agency showcase",
+          "rationale": "Agency websites are a portfolio piece themselves - colors should be bold, creative, and demonstrate design expertise. Unique color combinations help agencies stand out and reflect their creative capabilities.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Creative services (creativity, expertise, uniqueness)",
+            "Target audience: Clients seeking creative work",
+            "Portfolio piece itself (demonstrates design skills)",
+            "Brand differentiation (must stand out from other agencies)",
+            "Visual hierarchy (colors guide eye through case studies)",
+            "Flexibility (may have multiple project themes)",
+            "Professional credibility while being creative"
+          ],
+          "alternativeApproaches": [
+            "Bold accent on neutral (black/white + vibrant accent, sophisticated)",
+            "Duotone palette (two bold colors, modern, distinctive)",
+            "Gradient-heavy (colorful, energetic, Instagram/Behance style)",
+            "Monochromatic with pops (minimal + strategic color, elegant)"
+          ],
+          "tradeoffs": "Bold accents are safest while staying interesting. Duotone is very distinctive but can be limiting. Gradients are trendy but can date quickly. Monochromatic is elegant but requires strong typography. Choose based on agency positioning.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (creative agency, portfolio showcase, target client type, design vs development focus) and let the agent analyze bold color strategies that demonstrate creative expertise while maintaining professional credibility."
+        }
+      },
+      "colorScheme": "creative",
+      "animations": "high",
+      "complexity": "medium",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*"
+        ],
+        "content": [
+          "@mdx-js/loader + @next/mdx OR next-sanity"
+        ],
+        "animations": [
+          "framer-motion OR gsap"
+        ],
+        "images": [
+          "next/image OR next-cloudinary"
+        ],
+        "utilities": [
+          "clsx",
+          "fast-glob"
+        ]
+      }
+    },
+    {
+      "id": "event-conference",
+      "name": "Event/Conference Site",
+      "description": "Event landing page with schedule, speakers, and tickets",
+      "useCases": [
+        "Conferences",
+        "Workshops",
+        "Meetups"
+      ],
+      "basedOn": [
+        "keynote"
+      ],
+      "features": [
+        "Event schedule/agenda",
+        "Speaker profiles",
+        "Ticket/registration",
+        "Venue information",
+        "Sponsor showcases",
+        "Countdown timers",
+        "Newsletter signup"
+      ],
+      "architecturalDecisions": {
+        "formHandling": {
+          "decision": "Registration and ticketing forms",
+          "rationale": "Event sites need robust registration forms with validation for attendee information and ticket purchases.",
+          "patternReference": "form-handling-patterns.md",
+          "considerations": [
+            "Multi-step registration flow",
+            "Ticket selection and quantities",
+            "Attendee information collection",
+            "Dietary restrictions, accessibility needs",
+            "Integration with payment/ticketing platform"
+          ],
+          "alternativeApproaches": [
+            "React Hook Form + Zod (complex multi-step forms)",
+            "Third-party ticketing (Eventbrite, Tito - easiest, handles payments)",
+            "Server Actions (simple registration)",
+            "Custom forms + Stripe Checkout (most control)"
+          ],
+          "tradeoffs": "Third-party ticketing is easiest but costs per ticket. React Hook Form for custom registration. Server Actions for simple forms. Choose based on ticketing complexity."
+        },
+        "animations": {
+          "decision": "Engaging animations for event excitement",
+          "rationale": "Event sites benefit from animations that create excitement and energy, especially countdowns and interactive elements.",
+          "patternReference": "None (animation library choice)",
+          "considerations": [
+            "Countdown timers",
+            "Schedule timeline animations",
+            "Speaker card reveals",
+            "Ticket CTA animations",
+            "Performance on mobile devices"
+          ],
+          "alternativeApproaches": [
+            "Framer Motion (React animations, popular)",
+            "CSS animations + React hooks (lightweight)",
+            "GSAP (complex timeline animations)",
+            "Lottie (vector animations for branding)"
+          ],
+          "tradeoffs": "Framer Motion best for React developers. CSS-only most performant. GSAP for complex sequences. Balance excitement vs page speed."
+        },
+        "colorPalette": {
+          "decision": "Energetic, vibrant color palette for events",
+          "rationale": "Event sites need colors that create excitement, urgency, and convey the event's energy. Bold, vibrant palettes help build anticipation and make CTAs (register, buy tickets) stand out.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Events/conferences (excitement, energy, urgency)",
+            "Target audience: Event attendees (varied, often enthusiastic)",
+            "Urgency (early bird pricing, limited tickets)",
+            "Brand alignment with event theme/topic",
+            "Countdown timers and deadlines need emphasis",
+            "Schedule and speaker info must be readable",
+            "Photo/video content needs good background colors"
+          ],
+          "alternativeApproaches": [
+            "Bold vibrant palette (electric colors, tech conferences, high energy)",
+            "Gradient backgrounds (modern, depth, dynamic feel)",
+            "Themed colors (match event topic - green for sustainability, etc)",
+            "Monochrome + accent (professional conferences, corporate events)"
+          ],
+          "tradeoffs": "Bold vibrant creates most excitement but can overwhelm. Gradients are modern but can reduce readability. Themed colors strengthen branding but limit flexibility. Monochrome is professional but less energetic. Consider event type and audience.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (event/conference site, event theme/industry, target audience demographics, professional vs casual tone) and let the agent recommend energetic palettes that create urgency and excitement while maintaining information clarity."
+        }
+      },
+      "colorScheme": "vibrant",
+      "animations": "high",
+      "complexity": "medium",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*",
+          "@heroicons/react OR lucide-react"
+        ],
+        "animations": [
+          "framer-motion"
+        ],
+        "forms": [
+          "react-hook-form",
+          "@hookform/resolvers",
+          "zod OR ticketing platform"
+        ],
+        "utilities": [
+          "clsx",
+          "dayjs OR date-fns"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-blog",
+      "name": "Portfolio & Blog",
+      "description": "Personal portfolio with blog, projects, and contact",
+      "useCases": [
+        "Developer portfolio",
+        "Designer showcase",
+        "Personal brand"
+      ],
+      "basedOn": [
+        "spotlight",
+        "studio"
+      ],
+      "features": [
+        "Project showcases with images",
+        "Blog with MDX",
+        "About/bio section",
+        "Skills/technologies list",
+        "Contact form",
+        "RSS feed",
+        "Image galleries"
+      ],
+      "architecturalDecisions": {
+        "contentManagement": {
+          "decision": "Simple file-based content for blog and projects",
+          "rationale": "Personal portfolios need simple content management without complexity. MDX provides markdown simplicity with React component power.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Blog posts with code snippets",
+            "Project showcases with metadata",
+            "Version control for content",
+            "Simple authoring workflow",
+            "No need for multiple authors"
+          ],
+          "alternativeApproaches": [
+            "MDX files (simplest, developer-friendly, recommended)",
+            "Contentlayer (type-safe MDX, build-time processing)",
+            "Notion API (if you write in Notion)",
+            "Git-based CMS (Tina, Decap - adds visual editor)"
+          ],
+          "tradeoffs": "MDX is simplest for developers. Contentlayer adds type safety. Notion API good if you already use Notion. Git CMS overkill for solo portfolios."
+        },
+        "colorPalette": {
+          "decision": "Personal, creative color palette for portfolio",
+          "rationale": "Personal portfolios are a reflection of individual style and creativity. Color choices should express personality while showcasing work effectively and maintaining professionalism.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Personal branding (personality, creativity, professionalism)",
+            "Target audience: Employers, clients, collaborators",
+            "Portfolio piece itself (demonstrates design sense)",
+            "Showcasing project work (neutral backgrounds for project images)",
+            "Readability for blog content",
+            "Memorability (colors help personal brand recognition)",
+            "Balance between creative expression and hirability"
+          ],
+          "alternativeApproaches": [
+            "Minimal monochrome + accent (clean, professional, Apple-esque)",
+            "Creative unique palette (bold, memorable, designer-focused)",
+            "Pastel modern (soft, contemporary, Gen-Z appeal)",
+            "Dark mode first (developer-focused, modern)"
+          ],
+          "tradeoffs": "Minimal is safest and most professional. Creative palette shows design skills but may not suit all industries. Pastels are trendy but can look amateur. Dark mode appeals to devs but may reduce accessibility. Choose based on target role/industry.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (personal portfolio, industry/role targeting, personality/brand adjectives, developer vs designer focus) and let the agent recommend palettes that express personality while maintaining professional credibility."
+        }
+      },
+      "colorScheme": "creative",
+      "animations": "moderate",
+      "complexity": "low",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "content": [
+          "@mdx-js/loader + @next/mdx OR contentlayer"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*"
+        ],
+        "utilities": [
+          "clsx",
+          "fast-glob",
+          "next-themes"
+        ]
+      }
+    },
+    {
+      "id": "app-marketing",
+      "name": "Mobile App Marketing",
+      "description": "App landing page with features, screenshots, and download",
+      "useCases": [
+        "Mobile apps",
+        "Desktop apps",
+        "Browser extensions"
+      ],
+      "basedOn": [
+        "pocket"
+      ],
+      "features": [
+        "App screenshots/mockups",
+        "Feature highlights",
+        "Download buttons",
+        "Pricing plans",
+        "App store badges",
+        "FAQ section",
+        "Demo videos"
+      ],
+      "architecturalDecisions": {
+        "animations": {
+          "decision": "Polished animations for app showcase",
+          "rationale": "App marketing pages need smooth animations to demonstrate app quality and create professional impression.",
+          "patternReference": "None (animation library choice)",
+          "considerations": [
+            "App screenshot carousels",
+            "Feature reveal animations",
+            "Scroll-based effects",
+            "Mobile responsiveness",
+            "Performance (marketing site should load fast)"
+          ],
+          "alternativeApproaches": [
+            "Framer Motion (React-focused, easy to use)",
+            "CSS animations (lightweight, good enough for most)",
+            "Lottie (vector animations, designer handoff)",
+            "GSAP (if need complex sequences)"
+          ],
+          "tradeoffs": "Framer Motion easiest for React developers. CSS-only most performant. Lottie great for designer collaboration. Keep animations smooth but don't sacrifice load time."
+        },
+        "colorPalette": {
+          "decision": "Modern, vibrant color palette for app marketing",
+          "rationale": "App marketing sites need colors that convey innovation, are mobile-friendly, and create excitement about the app. Modern palettes with gradients and vibrant colors are common in app marketing to stand out in app stores.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Mobile/app (innovation, modernity, user-friendly)",
+            "Target audience: App users (often younger, mobile-first)",
+            "App category alignment (productivity, social, gaming, etc)",
+            "iOS/Android design language considerations",
+            "Screenshot backgrounds (need good contrast)",
+            "App store presence (icon and colors should align)",
+            "CTA emphasis (download buttons must stand out)"
+          ],
+          "alternativeApproaches": [
+            "Gradient-heavy modern (iOS style, colorful, contemporary)",
+            "Bold single color + neutral (strong brand identity, Material Design)",
+            "Playful multi-color (gaming, social apps, younger audience)",
+            "Minimal with vibrant accent (productivity apps, professional)"
+          ],
+          "tradeoffs": "Gradients are trendy but can date quickly. Bold single color creates strong identity but may feel limiting. Multi-color is fun but harder to execute. Minimal is safe but may not stand out. Consider app category and target age group.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (app marketing, app category, target demographic, iOS/Android focus) and let the agent recommend modern, mobile-optimized palettes that create excitement and drive app downloads."
+        }
+      },
+      "colorScheme": "modern",
+      "animations": "high",
+      "complexity": "low",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*"
+        ],
+        "animations": [
+          "framer-motion"
+        ],
+        "utilities": [
+          "clsx"
+        ]
+      }
+    },
+    {
+      "id": "media-podcast",
+      "name": "Podcast/Media Platform",
+      "description": "Podcast site with episodes, player, and transcripts",
+      "useCases": [
+        "Podcasts",
+        "Audio content",
+        "Video series"
+      ],
+      "basedOn": [
+        "transmit"
+      ],
+      "features": [
+        "Audio player integration",
+        "Episode listings",
+        "Show notes/transcripts",
+        "Subscribe buttons",
+        "RSS feed",
+        "Search episodes",
+        "Guest profiles"
+      ],
+      "architecturalDecisions": {
+        "contentManagement": {
+          "decision": "Episode management with metadata and show notes",
+          "rationale": "Podcast sites need episode listings with rich metadata (date, duration, guests, show notes) and transcripts. Simple file-based system works well.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Episode show notes and transcripts",
+            "Guest information",
+            "Audio file hosting (external service)",
+            "RSS feed generation for podcast apps",
+            "Simple authoring workflow"
+          ],
+          "alternativeApproaches": [
+            "MDX files (simple, version controlled, recommended)",
+            "Podcast hosting platform API (Transistor, Simplecast - easiest)",
+            "Headless CMS (Sanity, Contentful - if need rich editor)",
+            "Custom database (most control, most work)"
+          ],
+          "tradeoffs": "MDX simplest for technical hosts. Podcast platform API easiest overall but couples your site to platform. Headless CMS best for non-technical teams. Choose based on technical comfort."
+        },
+        "colorPalette": {
+          "decision": "Warm, inviting color palette for media/podcast",
+          "rationale": "Podcast sites benefit from warm, inviting colors that create a sense of intimacy and conversation. Colors should not distract from content but create a welcoming atmosphere for long-form audio consumption.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Media/podcast (warmth, personality, community)",
+            "Target audience: Listeners (relaxed, content-focused)",
+            "Long-form content (colors should not cause fatigue)",
+            "Audio player UI needs clear controls",
+            "Episode artwork should stand out",
+            "Transcript readability important",
+            "Brand personality (professional vs casual)"
+          ],
+          "alternativeApproaches": [
+            "Warm neutrals (beige, browns, NPR style, approachable)",
+            "Dark mode focused (reduced eye strain, modern podcasts)",
+            "Vibrant accent on neutral (personality while staying readable)",
+            "Monochromatic with warm tint (sophisticated, minimalist)"
+          ],
+          "tradeoffs": "Warm neutrals most inviting but can feel dated. Dark mode popular with listeners but accessibility considerations. Vibrant accents add personality but don't overdo it. Monochromatic is elegant but may feel cold. Consider podcast topic and audience.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (podcast/media site, podcast topic/genre, target listener demographics, professional vs conversational tone) and let the agent recommend warm, inviting palettes that support long-form content consumption."
+        }
+      },
+      "colorScheme": "warm",
+      "animations": "minimal",
+      "complexity": "low",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "content": [
+          "@mdx-js/loader + @next/mdx OR podcast platform API"
+        ],
+        "ui": [
+          "@headlessui/react"
+        ],
+        "utilities": [
+          "clsx",
+          "feed",
+          "dayjs OR date-fns",
+          "next-themes"
+        ]
+      }
+    },
+    {
+      "id": "pitch-deck",
+      "name": "App/Product Pitch Deck",
+      "description": "Modern presentation page for apps and products with hero, features, stats, and testimonials",
+      "useCases": [
+        "App showcase",
+        "Product launch",
+        "Startup pitch",
+        "Landing pages"
+      ],
+      "basedOn": [
+        "nextjs-tailwind-app-presentation-page"
+      ],
+      "features": [
+        "Hero section with app mockups",
+        "Feature highlights with icons",
+        "Statistics/metrics section",
+        "Testimonials and reviews",
+        "FAQ accordion",
+        "Download/CTA buttons",
+        "App store badges",
+        "Responsive image galleries"
+      ],
+      "architecturalDecisions": {
+        "animations": {
+          "decision": "Impactful animations for product presentation",
+          "rationale": "Pitch pages need attention-grabbing animations to create memorable impressions and demonstrate product quality during presentations or demos.",
+          "patternReference": "None (animation library choice)",
+          "considerations": [
+            "Hero section animations",
+            "Statistic counter animations",
+            "Scroll reveal effects",
+            "Image/mockup reveals",
+            "Presentation mode considerations"
+          ],
+          "alternativeApproaches": [
+            "Framer Motion (React animations, good for presentations)",
+            "GSAP (powerful, smooth, complex sequences)",
+            "CSS animations (simple, performant)",
+            "Lottie (vector animations, designer collaboration)"
+          ],
+          "tradeoffs": "Framer Motion easiest for React. GSAP for complex sequences. CSS-only if animations are simple. Balance wow factor with load time."
+        },
+        "colorPalette": {
+          "decision": "Vibrant, attention-grabbing color palette for pitches",
+          "rationale": "Pitch deck sites need bold, confident colors that grab attention, create excitement, and convey innovation. Often used in presentations or investor meetings where strong visual impact is critical.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Startup/product launch (innovation, confidence, disruption)",
+            "Target audience: Investors, press, early adopters",
+            "Presentation context (may be shown on screens, in pitch meetings)",
+            "Product differentiation (must stand out)",
+            "Statistic emphasis (big numbers need visual impact)",
+            "Mobile responsiveness (often shared on phones)",
+            "Memorable brand colors (first impression matters)"
+          ],
+          "alternativeApproaches": [
+            "Bold vibrant palette (confident, disruptive, startup energy)",
+            "Gradient backgrounds (depth, modern, tech-forward)",
+            "High contrast (black + vibrant accent, dramatic impact)",
+            "Category-specific (fintech = blue/green, social = multi-color, etc)"
+          ],
+          "tradeoffs": "Bold vibrant creates most impact but can feel aggressive. Gradients are modern but may reduce readability. High contrast is dramatic but can be harsh. Category colors are familiar but less distinctive. Consider pitch context and product positioning.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (pitch deck, product category, target audience investors/users/press, startup stage) and let the agent recommend bold, confident palettes that create impact and memorability while conveying product value proposition."
+        }
+      },
+      "colorScheme": "vibrant",
+      "animations": "moderate",
+      "complexity": "low",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "ui": [
+          "@headlessui/react OR @material-tailwind/react",
+          "@heroicons/react OR lucide-react"
+        ],
+        "animations": [
+          "framer-motion OR gsap"
+        ],
+        "utilities": [
+          "clsx"
+        ]
+      }
+    },
+    {
+      "id": "content-platform",
+      "name": "Content/Learning Platform",
+      "description": "Course platform, video learning, or content hub with progress tracking and authentication",
+      "useCases": [
+        "Online courses",
+        "Video platform",
+        "Learning management"
+      ],
+      "basedOn": [
+        "compass",
+        "primer"
+      ],
+      "features": [
+        "Course/module structure",
+        "Video embeds",
+        "Progress tracking UI",
+        "Table of contents",
+        "Chapters/lessons navigation",
+        "Downloadable resources",
+        "User authentication UI"
+      ],
+      "architecturalDecisions": {
+        "contentManagement": {
+          "decision": "Structured content for courses and lessons",
+          "rationale": "Learning platforms need hierarchical content (courses > modules > lessons) with metadata for progress tracking and prerequisites.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Course/module/lesson hierarchy",
+            "Rich content (video, text, quizzes)",
+            "Content sequencing and prerequisites",
+            "Markdown for lesson text",
+            "Metadata for progress tracking",
+            "Content versioning"
+          ],
+          "alternativeApproaches": [
+            "Headless CMS (Sanity, Strapi - structured content, course management)",
+            "MDX with frontmatter (simple, version controlled)",
+            "Database (custom, most control, most work)",
+            "LMS platform (Teachable, Thinkific - turnkey but limited customization)"
+          ],
+          "tradeoffs": "Headless CMS best for structured course content. MDX simpler for small catalogs. Database gives most control. LMS platforms easiest but least flexible. Choose based on course complexity."
+        },
+        "authentication": {
+          "decision": "User authentication for course access and progress",
+          "rationale": "Learning platforms need secure auth for course enrollment, progress tracking, and content access control.",
+          "patternReference": "authentication-patterns.md",
+          "considerations": [
+            "User registration and profiles",
+            "Course enrollment tracking",
+            "Progress persistence",
+            "Email verification",
+            "Password reset flows",
+            "Social login options"
+          ],
+          "alternativeApproaches": [
+            "NextAuth.js (flexible, open-source, popular)",
+            "Clerk (managed auth, easiest, good UX)",
+            "Supabase Auth (includes database, open-source)",
+            "Auth0 (enterprise features, SSO)",
+            "Custom JWT (most control, most work)"
+          ],
+          "tradeoffs": "Clerk easiest with best UX but costs money. NextAuth free and flexible. Supabase includes database. Choose based on budget and auth complexity needs."
+        },
+        "stateManagement": {
+          "decision": "Progress tracking and user state management",
+          "rationale": "Learning platforms need to track lesson completion, quiz scores, and course progress across sessions.",
+          "patternReference": "state-management-patterns.md",
+          "considerations": [
+            "Progress tracking (completed lessons)",
+            "Video playback position",
+            "Quiz state and scores",
+            "Course navigation state",
+            "Offline/online sync"
+          ],
+          "alternativeApproaches": [
+            "TanStack Query + Zustand (server state + client state separation)",
+            "Context + local storage (simpler, works for small apps)",
+            "Redux Toolkit (if need time-travel, predictable state)",
+            "Jotai (atomic state, fine-grained)"
+          ],
+          "tradeoffs": "TanStack Query + Zustand is modern best practice. Context simpler for small platforms. Redux overkill unless you need specific features. Choose based on platform complexity."
+        },
+        "videoHosting": {
+          "decision": "Video hosting and streaming for course content",
+          "rationale": "Learning platforms with video content need reliable streaming, adaptive bitrate, and secure content delivery.",
+          "patternReference": "None (video hosting)",
+          "considerations": [
+            "Video streaming quality",
+            "Adaptive bitrate for different connections",
+            "Video playback tracking",
+            "DRM/content protection",
+            "Storage costs",
+            "Bandwidth costs",
+            "Embed player customization"
+          ],
+          "alternativeApproaches": [
+            "Mux (developer-friendly, excellent DX, modern)",
+            "Vimeo (established, privacy controls, mid-range pricing)",
+            "YouTube (free, but ads and branding)",
+            "Cloudflare Stream (affordable, simple)",
+            "AWS MediaConvert + S3 (cheapest, most work)",
+            "Wistia (marketing-focused, expensive)"
+          ],
+          "tradeoffs": "Mux best DX and features for learning platforms. Vimeo reliable but pricier. YouTube free but limited control. Cloudflare Stream affordable. AWS cheapest at scale but complex. Choose based on budget and features needed."
+        },
+        "searchFunctionality": {
+          "decision": "Course and lesson search functionality",
+          "rationale": "Content platforms need search to help users find specific topics, lessons, or courses quickly.",
+          "patternReference": "None (search patterns)",
+          "considerations": [
+            "Search across courses, lessons, transcripts",
+            "Filtering by category, difficulty",
+            "Search result relevance",
+            "Performance with growing content",
+            "Typo tolerance"
+          ],
+          "alternativeApproaches": [
+            "Algolia (powerful, hosted, expensive)",
+            "Meilisearch (self-hosted, typo-tolerant, good DX)",
+            "FlexSearch (client-side, free, limited by size)",
+            "Database full-text search (Postgres, simple, less powerful)",
+            "Typesense (open-source, fast, self-hosted)"
+          ],
+          "tradeoffs": "Algolia most powerful but expensive. Meilisearch great balance. FlexSearch free but limited. Database search simplest for small catalogs. Choose based on content volume and budget."
+        },
+        "dataLayer": {
+          "decision": "Type-safe database for courses, progress, and users",
+          "rationale": "Learning platforms have complex data (courses, enrollments, progress) requiring relational database with type safety.",
+          "patternReference": "data-layer-patterns.md",
+          "considerations": [
+            "Relational data (courses \u2192 lessons \u2192 progress)",
+            "User enrollment and progress tracking",
+            "Type safety for progress data",
+            "Migrations for content updates",
+            "Analytics queries"
+          ],
+          "alternativeApproaches": [
+            "Prisma (best DX, type generation, comprehensive)",
+            "Drizzle ORM (lightweight, edge-compatible)",
+            "Supabase (Postgres + auth + realtime, batteries-included)",
+            "Kysely (type-safe query builder, more control)"
+          ],
+          "tradeoffs": "Prisma best developer experience. Drizzle lighter and faster. Supabase includes auth and database. Kysely for SQL control. Choose based on deployment and team preference."
+        },
+        "colorPalette": {
+          "decision": "Friendly, encouraging color palette for learning",
+          "rationale": "Learning platforms need colors that are inviting, reduce anxiety, and support long study sessions. Colors should encourage engagement while maintaining focus on educational content.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Education/e-learning (trust, encouragement, accessibility)",
+            "Target audience: Learners (varied ages, long sessions)",
+            "Reduce learning anxiety (warm, friendly tones)",
+            "Video content backgrounds (neutral, non-distracting)",
+            "Progress indicators (green for success, clear hierarchy)",
+            "Extended screen time (eye strain considerations)",
+            "Course categorization (colors can denote difficulty/topic)",
+            "Accessibility critical (WCAG AAA for text)"
+          ],
+          "alternativeApproaches": [
+            "Blue-green palette (trust + growth, educational standard)",
+            "Warm friendly palette (orange/coral, encouraging, Duolingo style)",
+            "Neutral with vibrant accents (focus on content, Khan Academy style)",
+            "Purple/violet (creativity, modern learning platforms)"
+          ],
+          "tradeoffs": "Blue-green safest and most educational. Warm colors more encouraging but can be distracting. Neutral focuses on content but may feel clinical. Purple modern but may not suit all subjects. Consider target age and subject matter.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (learning platform, target age group, subject area, casual vs formal tone) and let the agent recommend encouraging, accessible palettes that support learning outcomes and reduce study fatigue."
+        }
+      },
+      "colorScheme": "professional",
+      "animations": "moderate",
+      "complexity": "high",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "database": [
+          "@prisma/client + prisma OR drizzle-orm OR @supabase/supabase-js"
+        ],
+        "auth": [
+          "next-auth OR @clerk/nextjs OR @supabase/auth-helpers-nextjs"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*",
+          "@heroicons/react OR lucide-react"
+        ],
+        "content": [
+          "next-sanity OR @mdx-js/loader + @next/mdx"
+        ],
+        "state": [
+          "@tanstack/react-query",
+          "zustand OR jotai"
+        ],
+        "search": [
+          "algoliasearch OR meilisearch OR flexsearch"
+        ],
+        "video": [
+          "@mux/mux-player-react OR @vimeo/player"
+        ],
+        "utilities": [
+          "clsx",
+          "dayjs OR date-fns",
+          "next-themes"
+        ]
+      }
+    },
+    {
+      "id": "cms-integrated",
+      "name": "CMS-Powered Site",
+      "description": "Dynamic site with headless CMS integration for marketing and content teams",
+      "useCases": [
+        "Blog with CMS",
+        "Marketing site",
+        "Content-heavy sites"
+      ],
+      "basedOn": [
+        "radiant"
+      ],
+      "features": [
+        "Sanity Studio integration",
+        "Dynamic content loading",
+        "Image optimization",
+        "Preview mode",
+        "Rich text rendering",
+        "Category/tag filtering",
+        "Search functionality"
+      ],
+      "architecturalDecisions": {
+        "cmsChoice": {
+          "decision": "Headless CMS selection for content team",
+          "rationale": "CMS-integrated sites need a content platform that empowers non-technical teams while maintaining developer control over presentation.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Non-technical content editors",
+            "Structured content modeling",
+            "Media management",
+            "Preview functionality",
+            "Real-time collaboration",
+            "Cost at scale"
+          ],
+          "alternativeApproaches": [
+            "Sanity (excellent DX, real-time, portable content, GROQ queries)",
+            "Contentful (established, enterprise-ready, higher costs)",
+            "Strapi (self-hosted, open-source, most control)",
+            "Payload CMS (code-first, TypeScript, modern)",
+            "WordPress headless (familiar to content teams, heavier)",
+            "Builder.io (visual editing, page builder)"
+          ],
+          "tradeoffs": "Sanity best developer experience and flexibility. Contentful more enterprise features but expensive. Strapi self-hosted gives control but more ops work. Payload code-first appeals to developers. WordPress familiar but legacy. Choose based on team needs and budget."
+        },
+        "contentManagement": {
+          "decision": "Content modeling and rendering strategy",
+          "rationale": "CMS-integrated sites need well-designed content models and efficient content fetching for dynamic pages.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Content model design (pages, posts, authors)",
+            "Rich text rendering",
+            "Media optimization",
+            "Reusable content blocks",
+            "Content relationships",
+            "Localization/i18n"
+          ],
+          "alternativeApproaches": [
+            "Fetch at build time (SSG, fastest, requires rebuilds)",
+            "Fetch on-demand (ISR, balance between fresh and fast)",
+            "Client-side fetch (CSR, always fresh, slower initial load)",
+            "Hybrid approach (static shell + dynamic content)"
+          ],
+          "tradeoffs": "SSG fastest but needs rebuilds. ISR balances freshness and speed. CSR always fresh but slower. Hybrid gives flexibility. Choose based on content update frequency."
+        },
+        "imageOptimization": {
+          "decision": "Image optimization for CMS-managed media",
+          "rationale": "CMS sites have many images uploaded by content teams. Need automatic optimization without manual intervention.",
+          "patternReference": "None (image optimization)",
+          "considerations": [
+            "Content team uploads unoptimized images",
+            "Automatic format conversion (WebP, AVIF)",
+            "Responsive image variants",
+            "CDN delivery",
+            "Transformation on-demand",
+            "Alt text management"
+          ],
+          "alternativeApproaches": [
+            "CMS built-in optimization (Sanity, Contentful have image APIs)",
+            "Next.js Image + CMS (works with most CMSs)",
+            "Cloudinary (powerful, costs money, CMS integrations)",
+            "Imgix (similar to Cloudinary)"
+          ],
+          "tradeoffs": "CMS built-in is simplest and well-integrated. Next.js Image free and good. Cloudinary most powerful but costly. Use CMS built-in if available, otherwise Next.js Image."
+        },
+        "previewMode": {
+          "decision": "Draft preview for content editors",
+          "rationale": "Content teams need to preview drafts before publishing. Critical for content workflow.",
+          "patternReference": "None (preview patterns)",
+          "considerations": [
+            "Secure preview URLs",
+            "Real-time draft updates",
+            "Exit preview mode",
+            "Authentication for previews",
+            "Works with SSG/ISR"
+          ],
+          "alternativeApproaches": [
+            "Next.js Draft Mode (built-in, recommended for Next.js)",
+            "CMS preview features (Sanity, Contentful have preview APIs)",
+            "Custom preview implementation (most work)",
+            "Vercel preview deployments (different approach, branch-based)"
+          ],
+          "tradeoffs": "Next.js Draft Mode built-in and works well. CMS preview features more integrated but CMS-specific. Vercel deployments easier but less immediate. Use Next.js Draft Mode + CMS preview APIs together."
+        },
+        "searchFunctionality": {
+          "decision": "Content search across CMS entries",
+          "rationale": "Content-heavy sites need search for user navigation and content discovery across all CMS content.",
+          "patternReference": "None (search patterns)",
+          "considerations": [
+            "Search across all content types",
+            "Fuzzy matching and typo tolerance",
+            "Filtering by content type, tags",
+            "Real-time index updates",
+            "Search result relevance",
+            "Performance"
+          ],
+          "alternativeApproaches": [
+            "Algolia (most powerful, CMS integrations, expensive)",
+            "CMS built-in search (Sanity has GROQ, limited)",
+            "Meilisearch (self-hosted, typo-tolerant, good balance)",
+            "Pagefind (static site search, free, build-time indexing)",
+            "Database full-text (simple, less powerful)"
+          ],
+          "tradeoffs": "Algolia most powerful but expensive. Meilisearch great balance if self-hosting ok. Pagefind free for static content. CMS search limited. Choose based on content volume and budget."
+        },
+        "dataLayer": {
+          "decision": "Data layer for CMS content and site data",
+          "rationale": "CMS-integrated sites may need additional database for user data, analytics, or features beyond CMS content.",
+          "patternReference": "data-layer-patterns.md",
+          "considerations": [
+            "CMS handles most content",
+            "May need database for users, comments, analytics",
+            "Form submissions storage",
+            "Personalization data",
+            "Integration with CMS data"
+          ],
+          "alternativeApproaches": [
+            "CMS only (if all data can live in CMS)",
+            "Minimal database (Supabase, Vercel Postgres for user data)",
+            "Full ORM (Prisma if complex app data needed)",
+            "Serverless database (PlanetScale, Neon for lighter needs)"
+          ],
+          "tradeoffs": "CMS only is simplest if it covers your needs. Add database when you need user data or app features. Choose minimal database unless you have complex app requirements."
+        },
+        "colorPalette": {
+          "decision": "Flexible color system for CMS-driven content",
+          "rationale": "CMS-powered sites need flexible color systems that work across varied content types while maintaining brand consistency. Content teams should have color options without breaking design.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Varied (CMS sites span many industries)",
+            "Target audience: Depends on content focus",
+            "Multiple content types (blog, landing pages, resources)",
+            "Brand consistency across CMS-created pages",
+            "Content team may choose colors (need guardrails)",
+            "User-generated content considerations",
+            "Scalability (color system must work for future content)",
+            "Template variants may need different moods"
+          ],
+          "alternativeApproaches": [
+            "Design system with token variables (most flexible, Figma Tokens style)",
+            "Limited palette with variants (gives content team options, maintains brand)",
+            "Single brand palette (strictest, most consistent)",
+            "Category-based colors (different colors per content type)"
+          ],
+          "tradeoffs": "Design tokens most flexible but requires setup. Limited variants balance freedom and consistency. Single palette simplest but most restrictive. Category colors help organize but can fragment brand. Consider content team sophistication.",
+          "recommendedWorkflow": "\u26a1 RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (CMS-powered site, industry/content focus, content team skill level, brand consistency requirements) and let the agent recommend flexible color systems that empower content teams while maintaining visual coherence."
+        }
+      },
+      "colorScheme": "professional",
+      "animations": "moderate",
+      "complexity": "high",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "cms": [
+          "next-sanity OR contentful OR @strapi/strapi OR @payloadcms/payload"
+        ],
+        "ui": [
+          "@headlessui/react OR @radix-ui/react-*"
+        ],
+        "images": [
+          "@sanity/image-url OR next/image + contentful"
+        ],
+        "search": [
+          "algoliasearch OR meilisearch OR pagefind"
+        ],
+        "state": [
+          "@tanstack/react-query OR swr"
+        ],
+        "database": [
+          "@prisma/client + prisma (if needed for user data)"
+        ],
+        "utilities": [
+          "clsx",
+          "dayjs OR date-fns",
+          "next-themes"
+        ]
+      }
+    },
+    {
+      "id": "free-hand",
+      "name": "Free-hand Full Stack",
+      "description": "Meta-template referencing all architectural patterns - choose your own path for maximum flexibility and learning",
+      "useCases": [
+        "Custom projects",
+        "Learning exercise",
+        "Unique requirements",
+        "Experimental builds"
+      ],
+      "basedOn": [
+        "Multiple templates - see architectural decisions below"
+      ],
+      "features": [
+        "All architectural decisions available",
+        "Complete flexibility in tech choices",
+        "Reference to all pattern documentation",
+        "Educational meta-template for understanding tradeoffs",
+        "Build exactly what you need"
+      ],
+      "architecturalDecisions": {
+        "metaTemplateNote": {
+          "decision": "FREE-HAND: This is a meta-template, not a prescriptive template",
+          "rationale": "Rather than prescribing specific approaches, this template references ALL available architectural decision patterns. It's designed for learning, experimentation, or when your requirements don't fit other templates. Choose your own architecture based on the comprehensive pattern documentation.",
+          "patternReference": "ALL patterns available",
+          "considerations": [
+            "This template lists all possible architectural decisions",
+            "Each decision references pattern documentation files",
+            "Use this to understand the full decision space",
+            "Great for learning how to think architecturally",
+            "Perfect when requirements are unique or evolving",
+            "Requires more architectural thinking than other templates"
+          ],
+          "alternativeApproaches": [
+            "Use a specific template (faster, more opinionated)",
+            "Start with closest template and modify (hybrid approach)",
+            "Use this free-hand template (maximum flexibility, most decisions)",
+            "Build from scratch without templates (expert mode)"
+          ],
+          "tradeoffs": "Free-hand gives maximum flexibility but requires more decisions. Specific templates are faster but less flexible. Hybrid approach balances both. Choose free-hand when learning or when requirements are truly unique."
+        },
+        "dataLayer": {
+          "decision": "Choose your database and ORM approach",
+          "rationale": "Every full-stack app needs data persistence. Your choice depends on deployment target, data model complexity, and team preferences.",
+          "patternReference": "data-layer-patterns.md",
+          "considerations": [
+            "Traditional server vs serverless/edge deployment",
+            "Relational vs document database",
+            "Type safety requirements",
+            "Migration strategy",
+            "Team SQL knowledge",
+            "Real-time requirements"
+          ],
+          "alternativeApproaches": [
+            "Prisma (best DX, migrations, works everywhere)",
+            "Drizzle ORM (lightweight, edge-compatible, SQL-like)",
+            "Kysely (type-safe query builder)",
+            "Supabase (Postgres + auth + realtime)",
+            "MongoDB + Mongoose (document database)",
+            "Raw SQL with types (maximum control)"
+          ],
+          "tradeoffs": "See data-layer-patterns.md for comprehensive analysis of each approach, use cases, and tradeoffs."
+        },
+        "authentication": {
+          "decision": "Choose your authentication strategy",
+          "rationale": "If your app has users, you need secure authentication. Choose between self-hosted solutions and managed services based on requirements and budget.",
+          "patternReference": "authentication-patterns.md",
+          "considerations": [
+            "Session-based vs JWT tokens",
+            "Social login providers needed",
+            "Role-based access control (RBAC)",
+            "Enterprise SSO requirements",
+            "Self-hosted vs managed service",
+            "Budget constraints"
+          ],
+          "alternativeApproaches": [
+            "NextAuth.js/Auth.js (flexible, free, popular)",
+            "Clerk (managed, best UX, costs money)",
+            "Supabase Auth (includes database)",
+            "Auth0/Okta (enterprise features)",
+            "Custom JWT (most control, most work)",
+            "Simple sessions (basic apps only)"
+          ],
+          "tradeoffs": "See authentication-patterns.md for detailed comparison of approaches, security considerations, and implementation guidance."
+        },
+        "formHandling": {
+          "decision": "Choose form library and validation approach",
+          "rationale": "Forms are critical UX. Choose between performance-focused libraries, batteries-included solutions, or progressive enhancement.",
+          "patternReference": "form-handling-patterns.md",
+          "considerations": [
+            "Form complexity (simple vs multi-step)",
+            "Performance requirements",
+            "Type safety with TypeScript",
+            "Server-side validation strategy",
+            "Progressive enhancement needs",
+            "File upload support"
+          ],
+          "alternativeApproaches": [
+            "React Hook Form + Zod (performant, type-safe, popular)",
+            "Formik + Yup (mature, feature-rich, heavier)",
+            "Server Actions with native forms (progressive enhancement)",
+            "TanStack Form (new, framework-agnostic)",
+            "Custom forms with useState (simple cases)"
+          ],
+          "tradeoffs": "See form-handling-patterns.md for performance comparisons, validation strategies, and best practices."
+        },
+        "stateManagement": {
+          "decision": "Choose state management architecture",
+          "rationale": "Complex apps need thoughtful state management. Modern best practice separates server state (data fetching) from client state (UI state).",
+          "patternReference": "state-management-patterns.md",
+          "considerations": [
+            "Server state (data fetching, caching) vs client state (UI)",
+            "Real-time data requirements",
+            "Optimistic updates",
+            "DevTools and debugging needs",
+            "Team familiarity",
+            "App complexity"
+          ],
+          "alternativeApproaches": [
+            "TanStack Query (server) + Zustand (client) - modern best practice",
+            "TanStack Query + Context (simpler)",
+            "Redux Toolkit (predictable, time-travel debugging)",
+            "Jotai/Recoil (atomic state)",
+            "SWR (server state alternative)",
+            "Context + hooks (simple apps)"
+          ],
+          "tradeoffs": "See state-management-patterns.md for architecture patterns, when to use each approach, and migration strategies."
+        },
+        "fileUploads": {
+          "decision": "Choose file upload and media management strategy",
+          "rationale": "Apps with user-generated content need reliable file uploads. Choose between managed services and self-hosted solutions.",
+          "patternReference": "file-upload-patterns.md",
+          "considerations": [
+            "File types and sizes",
+            "Image optimization needs",
+            "Storage costs at scale",
+            "CDN delivery",
+            "Client-side vs server-side upload",
+            "Security (signed URLs, validation)"
+          ],
+          "alternativeApproaches": [
+            "Uploadthing (Next.js focused, simple, free tier)",
+            "Cloudinary (full-featured, auto-optimization, costs scale)",
+            "Cloudflare Images (affordable, good optimization)",
+            "S3 + Sharp (self-hosted, most control)",
+            "Vercel Blob (integrated, can be expensive)",
+            "Supabase Storage (open-source, integrated)"
+          ],
+          "tradeoffs": "See file-upload-patterns.md for cost analysis, security considerations, and implementation examples."
+        },
+        "emailSystem": {
+          "decision": "Choose email delivery and templating approach",
+          "rationale": "Most apps need transactional email (auth, notifications) or marketing emails. Choose based on volume, features, and deliverability needs.",
+          "patternReference": "None (email patterns - to be created)",
+          "considerations": [
+            "Transactional vs marketing emails",
+            "Email volume and costs",
+            "Template management (HTML emails)",
+            "Deliverability requirements (SPF, DKIM)",
+            "Analytics and tracking",
+            "React email templates"
+          ],
+          "alternativeApproaches": [
+            "Resend (developer-friendly, React Email templates)",
+            "SendGrid (established, feature-rich)",
+            "Postmark (transactional focus, great deliverability)",
+            "AWS SES (cheapest at scale, more setup)",
+            "Mailgun (developer-focused)",
+            "Nodemailer + SMTP (self-hosted)"
+          ],
+          "tradeoffs": "Resend best DX with React Email. SendGrid most features but pricier. AWS SES cheapest for high volume. Postmark for deliverability. Choose based on volume and budget."
+        },
+        "payments": {
+          "decision": "Choose payment processing integration (if needed)",
+          "rationale": "E-commerce and SaaS apps need payment processing. Choose based on business model, regions, and complexity.",
+          "patternReference": "None (payment patterns - to be created)",
+          "considerations": [
+            "One-time vs subscription payments",
+            "PCI compliance (never store card data)",
+            "International payment methods",
+            "Tax handling complexity",
+            "Fees and payout schedules",
+            "Webhook reliability"
+          ],
+          "alternativeApproaches": [
+            "Stripe (best DX, comprehensive, 2.9% + 30\u00a2)",
+            "Paddle/Lemon Squeezy (merchant of record, handles tax)",
+            "PayPal (brand trust, higher fees)",
+            "Square (retail focus)",
+            "Crypto payments (niche use cases)"
+          ],
+          "tradeoffs": "Stripe best developer experience. Paddle/Lemon Squeezy simplify tax as merchant of record. PayPal for trust. Choose based on business model and regions."
+        },
+        "contentManagement": {
+          "decision": "Choose content management approach",
+          "rationale": "Apps with blog, documentation, or marketing content need content management. Choose based on who creates content and how often it changes.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Who creates content (developers vs content team)",
+            "Update frequency",
+            "Content structure complexity",
+            "Media management needs",
+            "Version control requirements",
+            "Preview functionality"
+          ],
+          "alternativeApproaches": [
+            "MDX files (simple, version controlled, developer-friendly)",
+            "Headless CMS (Sanity, Contentful - for content teams)",
+            "Git-based CMS (Tina, Decap - adds visual editor)",
+            "Database + custom admin (most control)",
+            "Notion API (if team uses Notion)",
+            "WordPress headless (familiar to content teams)"
+          ],
+          "tradeoffs": "See content-management-patterns.md for detailed comparison of file-based vs CMS approaches, content modeling, and team workflows."
+        },
+        "tableDisplay": {
+          "decision": "Choose data table library (if needed)",
+          "rationale": "Admin panels and dashboards need sortable, filterable tables for data management.",
+          "patternReference": "None (table library patterns - to be created)",
+          "considerations": [
+            "Sorting and filtering needs",
+            "Pagination (client vs server)",
+            "Column resizing and reordering",
+            "Row selection and bulk actions",
+            "Virtualization for large datasets",
+            "Export functionality"
+          ],
+          "alternativeApproaches": [
+            "TanStack Table (industry standard, headless, very flexible)",
+            "AG Grid (enterprise features, commercial license)",
+            "Material React Table (TanStack wrapper with Material Design)",
+            "React Data Grid (spreadsheet-like)",
+            "Custom HTML table (very simple cases only)"
+          ],
+          "tradeoffs": "TanStack Table recommended for most cases - headless, flexible, well-maintained. AG Grid for enterprise features but costs money. Avoid custom tables unless very simple."
+        },
+        "searchFunctionality": {
+          "decision": "Choose search implementation (if needed)",
+          "rationale": "Content-heavy sites and apps need search for discoverability. Choose based on content volume, update frequency, and budget.",
+          "patternReference": "None (search patterns - to be created)",
+          "considerations": [
+            "Content volume and growth",
+            "Client-side vs server-side search",
+            "Fuzzy matching and typo tolerance",
+            "Real-time index updates",
+            "Filtering and faceting",
+            "Cost at scale"
+          ],
+          "alternativeApproaches": [
+            "Algolia (most powerful, hosted, expensive)",
+            "Meilisearch (self-hosted, typo-tolerant, great DX)",
+            "FlexSearch (client-side, free, limited by size)",
+            "Pagefind (static sites, Rust-based, free)",
+            "Typesense (open-source, fast)",
+            "Database full-text search (simple, limited features)"
+          ],
+          "tradeoffs": "Algolia most powerful but expensive. Meilisearch great balance if self-hosting ok. FlexSearch/Pagefind free for static content. Choose based on content volume and budget."
+        },
+        "dataVisualization": {
+          "decision": "Choose charting library (if needed)",
+          "rationale": "Dashboards and analytics apps need charts to visualize data. Choose based on chart types needed and customization requirements.",
+          "patternReference": "None (charting patterns - to be created)",
+          "considerations": [
+            "Chart types needed (line, bar, pie, etc)",
+            "Interactivity requirements",
+            "Responsive design",
+            "Animation preferences",
+            "Bundle size impact",
+            "Accessibility support"
+          ],
+          "alternativeApproaches": [
+            "Recharts (React-specific, declarative, good defaults)",
+            "Chart.js + react-chartjs-2 (popular, many types)",
+            "Nivo (beautiful defaults, D3-based)",
+            "Tremor (Tailwind-styled, opinionated)",
+            "Victory (highly customizable)",
+            "D3.js (maximum control, steep learning curve)"
+          ],
+          "tradeoffs": "Recharts easiest for React developers. Tremor matches Tailwind design. D3 most powerful but complex. Choose based on customization needs and team skills."
+        },
+        "realtime": {
+          "decision": "Choose real-time data strategy (if needed)",
+          "rationale": "Collaborative apps, chat, dashboards may need real-time updates. Choose based on requirements and infrastructure.",
+          "patternReference": "None (realtime patterns - to be created)",
+          "considerations": [
+            "Frequency of updates needed",
+            "Number of concurrent connections",
+            "Data synchronization strategy",
+            "Offline support needs",
+            "Infrastructure complexity",
+            "Cost at scale"
+          ],
+          "alternativeApproaches": [
+            "Supabase Realtime (Postgres changes, batteries-included)",
+            "Pusher (managed, simple, costs scale)",
+            "Ably (enterprise realtime, expensive)",
+            "Socket.io (self-hosted, most control)",
+            "WebSockets (custom, most work)",
+            "Polling (simplest, inefficient)",
+            "Server-Sent Events (one-way, simple)"
+          ],
+          "tradeoffs": "Supabase Realtime easiest if using Supabase. Pusher simple but costly. Socket.io for self-hosting. Polling only for low-frequency updates. Choose based on update frequency and budget."
+        },
+        "testing": {
+          "decision": "Choose testing strategy",
+          "rationale": "Production apps need tests. Choose testing levels and tools based on team size, app complexity, and risk tolerance.",
+          "patternReference": "None (testing patterns - to be created)",
+          "considerations": [
+            "Unit vs integration vs E2E testing",
+            "Test coverage requirements",
+            "CI/CD integration",
+            "Testing async/server components",
+            "Mocking strategies",
+            "Team testing culture"
+          ],
+          "alternativeApproaches": [
+            "Vitest (modern, fast, Vite-based) + Testing Library",
+            "Jest (established, batteries-included) + Testing Library",
+            "Playwright (E2E, multi-browser)",
+            "Cypress (E2E, great DX, slower)",
+            "Storybook (component testing, documentation)",
+            "No tests (small projects, prototypes only)"
+          ],
+          "tradeoffs": "Vitest recommended for new projects - fast and modern. Jest mature but slower. Playwright best E2E testing. Testing Library for component tests. Balance coverage with velocity."
+        },
+        "deployment": {
+          "decision": "Choose deployment platform",
+          "rationale": "Your deployment choice affects architecture (serverless vs traditional), costs, and features available.",
+          "patternReference": "None (deployment patterns - to be created)",
+          "considerations": [
+            "Serverless vs traditional server",
+            "Edge computing needs",
+            "Geographic distribution",
+            "Cost at scale",
+            "CI/CD requirements",
+            "Team DevOps experience"
+          ],
+          "alternativeApproaches": [
+            "Vercel (Next.js optimized, serverless, easy, can be expensive)",
+            "Netlify (similar to Vercel, good for static sites)",
+            "Railway/Render (traditional servers, databases included)",
+            "AWS (most flexible, most complex, cheapest at scale)",
+            "Digital Ocean/Linode (VPS, more control)",
+            "Cloudflare Pages (edge-first, affordable)",
+            "Self-hosted (maximum control, most work)"
+          ],
+          "tradeoffs": "Vercel easiest for Next.js but costs scale. Railway/Render good for full-stack apps with databases. AWS cheapest at scale but complex. Choose based on architecture and scale."
+        },
+        "monitoring": {
+          "decision": "Choose monitoring and observability tools (if needed)",
+          "rationale": "Production apps need error tracking, performance monitoring, and analytics to understand issues and usage.",
+          "patternReference": "None (monitoring patterns - to be created)",
+          "considerations": [
+            "Error tracking and alerting",
+            "Performance monitoring (Core Web Vitals)",
+            "User analytics",
+            "Log aggregation",
+            "Cost at scale",
+            "Privacy considerations (GDPR)"
+          ],
+          "alternativeApproaches": [
+            "Sentry (error tracking, performance)",
+            "Vercel Analytics (Web Vitals, privacy-friendly)",
+            "Google Analytics (free, privacy concerns)",
+            "Plausible/Fathom (privacy-focused analytics)",
+            "LogRocket (session replay, expensive)",
+            "Self-hosted (Matomo, Umami)"
+          ],
+          "tradeoffs": "Sentry standard for error tracking. Vercel Analytics good for Web Vitals. Plausible for privacy-focused analytics. Choose based on privacy requirements and budget."
+        },
+        "colorPalette": {
+          "decision": "Design comprehensive color system for your project",
+          "rationale": "FREE-HAND: Since you're building a custom project, your color palette should be purpose-built for your specific industry, audience, and brand. This requires more thought than other templates but gives you maximum creative control.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Your specific industry and conventions",
+            "Target audience demographics and psychology",
+            "Brand personality and positioning",
+            "Functional needs (data visualization, status indicators, CTAs)",
+            "Accessibility requirements (WCAG levels)",
+            "Dark mode strategy (if needed)",
+            "Scalability (design system thinking)",
+            "Differentiation vs familiarity balance",
+            "Cultural color meanings (if international)",
+            "Competition analysis (stand out vs fit in)"
+          ],
+          "alternativeApproaches": [
+            "Research-based palette (study competitors, user preferences)",
+            "Brand-first palette (start with brand colors, extend systematically)",
+            "Function-first palette (based on UI needs, add brand later)",
+            "Inspiration-driven palette (adapt from design examples)",
+            "Tool-assisted palette (use color generators with refinement)",
+            "Designer collaboration (hire/work with designer)",
+            "Template modification (start with similar template, customize)"
+          ],
+          "tradeoffs": "Research-based is most informed but time-consuming. Brand-first ensures consistency. Function-first is pragmatic but may lack personality. Inspiration-driven is fast but requires good taste. Tools are helpful but need human refinement. Designer collaboration is most professional but costs money. Template modification is fastest but may compromise uniqueness. Choose based on project importance, budget, and design skills.",
+          "recommendedWorkflow": "\u26a1 STRONGLY RECOMMENDED: Use get_color_design_guidance tool with a subagent. This free-hand template requires the most color thinking. Provide detailed context (your industry, target users, brand values, functional requirements, competitive landscape, accessibility needs) and let the agent analyze comprehensive color theory, psychology, accessibility, and industry patterns to create a custom color strategy. The guidance document is ~20KB of detailed color design knowledge - much more valuable than generic advice."
+        },
+        "animations": {
+          "decision": "Choose animation library and strategy (if needed)",
+          "rationale": "Animations enhance UX but can hurt performance if overdone. Choose based on brand positioning and functional needs.",
+          "patternReference": "None (animation patterns - to be created)",
+          "considerations": [
+            "Brand impression (minimalist vs impressive)",
+            "Functional animations (loading, transitions)",
+            "Decorative animations (delight factor)",
+            "Performance budget",
+            "Accessibility (prefers-reduced-motion)",
+            "Development time available"
+          ],
+          "alternativeApproaches": [
+            "Framer Motion (React-focused, declarative, popular)",
+            "GSAP (most powerful, any framework, licensing)",
+            "Lottie (vector animations, designer handoff)",
+            "CSS animations only (lightweight, limited)",
+            "Tailwind utilities (simplest, very limited)",
+            "No animations (fastest, may feel dated)"
+          ],
+          "tradeoffs": "Framer Motion easiest for React. GSAP most powerful for complex animations. Lottie great for designer collaboration. CSS-only most performant. Balance delight vs performance."
+        },
+        "accessibility": {
+          "decision": "Define accessibility requirements",
+          "rationale": "Accessibility is legal requirement for some, ethical imperative for all. Define your target compliance level early.",
+          "patternReference": "None (a11y patterns - to be created)",
+          "considerations": [
+            "Legal requirements (ADA, WCAG level)",
+            "Target user needs (visual, motor, cognitive)",
+            "Keyboard navigation",
+            "Screen reader support",
+            "Color contrast ratios",
+            "Testing strategy",
+            "Budget for accessibility work"
+          ],
+          "alternativeApproaches": [
+            "WCAG 2.1 Level AAA (highest, most inclusive, most work)",
+            "WCAG 2.1 Level AA (standard, legally sufficient)",
+            "WCAG 2.1 Level A (minimum, not recommended)",
+            "Best effort (pragmatic, may have gaps)",
+            "Accessibility-first (build in from start)",
+            "Retrofit (add later, more expensive)"
+          ],
+          "tradeoffs": "AAA most inclusive but time-consuming. AA is standard compliance level. A insufficient for most cases. Accessibility-first is cheapest long-term. Retrofitting is expensive. Choose based on legal requirements and user needs."
+        },
+        "internationalization": {
+          "decision": "Choose i18n strategy (if needed)",
+          "rationale": "Multi-language or multi-region apps need internationalization. Plan early as it affects architecture.",
+          "patternReference": "None (i18n patterns - to be created)",
+          "considerations": [
+            "Languages needed",
+            "Translation workflow",
+            "Right-to-left (RTL) support",
+            "Date/number formatting",
+            "Currency handling",
+            "SEO for multiple languages",
+            "Content management for translations"
+          ],
+          "alternativeApproaches": [
+            "next-intl (Next.js specific, modern)",
+            "react-i18next (popular, framework-agnostic)",
+            "next-i18next (Next.js wrapper for i18next)",
+            "Built-in Next.js i18n (basic, routing focused)",
+            "No library (simple projects, limited languages)",
+            "CMS-based translations (if using headless CMS)"
+          ],
+          "tradeoffs": "next-intl modern and Next.js optimized. react-i18next most mature and flexible. Built-in Next.js i18n simple but limited. CMS-based good if you already use CMS. Choose based on language count and complexity."
+        }
+      },
+      "colorScheme": "flexible",
+      "animations": "flexible",
+      "complexity": "high",
+      "recommendedLibraries": {
+        "note": "FREE-HAND: This meta-template doesn't prescribe libraries. Instead, review each architectural decision above and choose libraries based on your specific requirements. Refer to the pattern documentation files for detailed analysis of options in each category. This approach requires more decisions but gives you maximum flexibility to build exactly what you need.",
+        "approach": "Decision-driven selection",
+        "process": [
+          "1. Review your project requirements",
+          "2. For each requirement, identify relevant architectural decisions above",
+          "3. Read the referenced pattern documentation for detailed analysis",
+          "4. Choose approaches based on your constraints (budget, team, timeline)",
+          "5. Start with core libraries (Next.js, React, Tailwind, TypeScript)",
+          "6. Add libraries as needed based on your architectural choices",
+          "7. Avoid over-engineering - choose simpler options when sufficient"
+        ],
+        "coreRecommendation": [
+          "next@15+",
+          "react",
+          "tailwindcss",
+          "typescript"
+        ],
+        "theRestIsUpToYou": "See architectural decisions above and referenced pattern files"
       }
     }
   ],
-  "note": "This file uses an architectural pattern approach that teaches decision-making frameworks rather than prescribing specific libraries. Each template now includes 'architecturalDecisions' that explain the why, when, and how to choose between different approaches. The 'recommendedLibraries' section provides examples but emphasizes they are suggestions, not requirements. Refer to the pattern documentation files in content/patterns/features/ for deeper understanding of each architectural decision domain.",
+  "note": "This file uses an architectural pattern approach that teaches decision-making frameworks rather than prescribing specific libraries. Each of the 13 templates includes 'architecturalDecisions' that explain the why, when, and how to choose between different approaches for each technical decision (authentication, forms, state management, databases, etc). The 'recommendedLibraries' sections provide examples but emphasize they are suggestions, not requirements. The 'free-hand' template is a special meta-template that references ALL architectural patterns without prescribing solutions - use it for learning or when your requirements don't match other templates. Refer to the pattern documentation files in content/patterns/features/ for deeper understanding of each architectural decision domain.",
   "questionnaire": {
     "questions": [
       {
@@ -631,18 +2376,66 @@
         "question": "What's the primary purpose of your site?",
         "type": "single-choice",
         "options": [
-          { "value": "documentation", "label": "Technical Documentation", "description": "API docs, product documentation, guides" },
-          { "value": "marketing", "label": "Product/Service Marketing", "description": "Showcase products, services, or SaaS" },
-          { "value": "portfolio", "label": "Portfolio/Personal Brand", "description": "Showcase work, blog, personal projects" },
-          { "value": "agency", "label": "Agency/Studio", "description": "Case studies, team, services" },
-          { "value": "learning", "label": "Learning/Content Platform", "description": "Courses, tutorials, educational content" },
-          { "value": "event", "label": "Event/Conference", "description": "Schedule, speakers, tickets" },
-          { "value": "app", "label": "App Marketing", "description": "Mobile or desktop app showcase" },
-          { "value": "media", "label": "Podcast/Media", "description": "Audio/video content platform" },
-          { "value": "content", "label": "Content/Blog", "description": "Blog, news, articles" },
-          { "value": "pitch", "label": "Product Pitch/Launch", "description": "App or product presentation page" },
-          { "value": "dashboard", "label": "Admin Dashboard", "description": "Internal tools, analytics, CRM" },
-          { "value": "ecommerce", "label": "E-commerce Store", "description": "Online shopping, product sales" }
+          {
+            "value": "documentation",
+            "label": "Technical Documentation",
+            "description": "API docs, product documentation, guides"
+          },
+          {
+            "value": "marketing",
+            "label": "Product/Service Marketing",
+            "description": "Showcase products, services, or SaaS"
+          },
+          {
+            "value": "portfolio",
+            "label": "Portfolio/Personal Brand",
+            "description": "Showcase work, blog, personal projects"
+          },
+          {
+            "value": "agency",
+            "label": "Agency/Studio",
+            "description": "Case studies, team, services"
+          },
+          {
+            "value": "learning",
+            "label": "Learning/Content Platform",
+            "description": "Courses, tutorials, educational content"
+          },
+          {
+            "value": "event",
+            "label": "Event/Conference",
+            "description": "Schedule, speakers, tickets"
+          },
+          {
+            "value": "app",
+            "label": "App Marketing",
+            "description": "Mobile or desktop app showcase"
+          },
+          {
+            "value": "media",
+            "label": "Podcast/Media",
+            "description": "Audio/video content platform"
+          },
+          {
+            "value": "content",
+            "label": "Content/Blog",
+            "description": "Blog, news, articles"
+          },
+          {
+            "value": "pitch",
+            "label": "Product Pitch/Launch",
+            "description": "App or product presentation page"
+          },
+          {
+            "value": "dashboard",
+            "label": "Admin Dashboard",
+            "description": "Internal tools, analytics, CRM"
+          },
+          {
+            "value": "ecommerce",
+            "label": "E-commerce Store",
+            "description": "Online shopping, product sales"
+          }
         ],
         "weight": 10
       },
@@ -651,12 +2444,36 @@
         "question": "What color scheme appeals to you?",
         "type": "single-choice",
         "options": [
-          { "value": "professional", "label": "Professional", "description": "Blues, grays, corporate" },
-          { "value": "vibrant", "label": "Vibrant", "description": "Bold colors, high contrast" },
-          { "value": "creative", "label": "Creative", "description": "Unique, artistic color combinations" },
-          { "value": "minimal", "label": "Minimal", "description": "Black, white, subtle accents" },
-          { "value": "warm", "label": "Warm", "description": "Oranges, reds, inviting tones" },
-          { "value": "modern", "label": "Modern", "description": "Trendy, contemporary colors" }
+          {
+            "value": "professional",
+            "label": "Professional",
+            "description": "Blues, grays, corporate"
+          },
+          {
+            "value": "vibrant",
+            "label": "Vibrant",
+            "description": "Bold colors, high contrast"
+          },
+          {
+            "value": "creative",
+            "label": "Creative",
+            "description": "Unique, artistic color combinations"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal",
+            "description": "Black, white, subtle accents"
+          },
+          {
+            "value": "warm",
+            "label": "Warm",
+            "description": "Oranges, reds, inviting tones"
+          },
+          {
+            "value": "modern",
+            "label": "Modern",
+            "description": "Trendy, contemporary colors"
+          }
         ],
         "weight": 5
       },
@@ -665,9 +2482,21 @@
         "question": "How much animation/interactivity do you want?",
         "type": "single-choice",
         "options": [
-          { "value": "minimal", "label": "Minimal", "description": "Simple transitions, fast loading" },
-          { "value": "moderate", "label": "Moderate", "description": "Balanced animations, smooth feel" },
-          { "value": "high", "label": "High", "description": "Rich animations, impressive effects" }
+          {
+            "value": "minimal",
+            "label": "Minimal",
+            "description": "Simple transitions, fast loading"
+          },
+          {
+            "value": "moderate",
+            "label": "Moderate",
+            "description": "Balanced animations, smooth feel"
+          },
+          {
+            "value": "high",
+            "label": "High",
+            "description": "Rich animations, impressive effects"
+          }
         ],
         "weight": 7
       },
@@ -676,14 +2505,38 @@
         "question": "What features do you need?",
         "type": "multi-choice",
         "options": [
-          { "value": "blog", "label": "Blog/Articles" },
-          { "value": "search", "label": "Search Functionality" },
-          { "value": "darkmode", "label": "Dark Mode" },
-          { "value": "forms", "label": "Contact Forms" },
-          { "value": "cms", "label": "CMS Integration" },
-          { "value": "auth", "label": "User Authentication" },
-          { "value": "media", "label": "Video/Audio Player" },
-          { "value": "ecommerce", "label": "E-commerce/Pricing" }
+          {
+            "value": "blog",
+            "label": "Blog/Articles"
+          },
+          {
+            "value": "search",
+            "label": "Search Functionality"
+          },
+          {
+            "value": "darkmode",
+            "label": "Dark Mode"
+          },
+          {
+            "value": "forms",
+            "label": "Contact Forms"
+          },
+          {
+            "value": "cms",
+            "label": "CMS Integration"
+          },
+          {
+            "value": "auth",
+            "label": "User Authentication"
+          },
+          {
+            "value": "media",
+            "label": "Video/Audio Player"
+          },
+          {
+            "value": "ecommerce",
+            "label": "E-commerce/Pricing"
+          }
         ],
         "weight": 6
       },
@@ -692,34 +2545,319 @@
         "question": "What's your comfort level with development complexity?",
         "type": "single-choice",
         "options": [
-          { "value": "beginner", "label": "Beginner", "description": "Simple, straightforward setup" },
-          { "value": "intermediate", "label": "Intermediate", "description": "Moderate complexity, some integrations" },
-          { "value": "advanced", "label": "Advanced", "description": "Complex features, multiple integrations" }
+          {
+            "value": "beginner",
+            "label": "Beginner",
+            "description": "Simple, straightforward setup"
+          },
+          {
+            "value": "intermediate",
+            "label": "Intermediate",
+            "description": "Moderate complexity, some integrations"
+          },
+          {
+            "value": "advanced",
+            "label": "Advanced",
+            "description": "Complex features, multiple integrations"
+          }
         ],
         "weight": 4
       }
     ],
     "matching": {
       "documentation": {
-        "purpose": ["documentation"],
-        "colorPreference": ["professional", "minimal"],
-        "animations": ["minimal", "moderate"],
-        "features": ["search", "darkmode"],
-        "complexity": ["intermediate", "advanced"]
+        "purpose": [
+          "documentation"
+        ],
+        "colorPreference": [
+          "professional",
+          "minimal"
+        ],
+        "animations": [
+          "minimal",
+          "moderate"
+        ],
+        "features": [
+          "search",
+          "darkmode"
+        ],
+        "complexity": [
+          "intermediate",
+          "advanced"
+        ]
       },
       "ecommerce-store": {
-        "purpose": ["ecommerce"],
-        "colorPreference": ["modern", "vibrant", "professional"],
-        "animations": ["moderate"],
-        "features": ["ecommerce", "auth", "cms", "blog", "forms"],
-        "complexity": ["advanced"]
+        "purpose": [
+          "ecommerce"
+        ],
+        "colorPreference": [
+          "modern",
+          "vibrant",
+          "professional"
+        ],
+        "animations": [
+          "moderate"
+        ],
+        "features": [
+          "ecommerce",
+          "auth",
+          "cms",
+          "blog",
+          "forms"
+        ],
+        "complexity": [
+          "advanced"
+        ]
       },
       "admin-dashboard": {
-        "purpose": ["dashboard"],
-        "colorPreference": ["professional", "minimal", "modern"],
-        "animations": ["minimal", "moderate"],
-        "features": ["auth", "darkmode", "search"],
-        "complexity": ["advanced"]
+        "purpose": [
+          "dashboard"
+        ],
+        "colorPreference": [
+          "professional",
+          "minimal",
+          "modern"
+        ],
+        "animations": [
+          "minimal",
+          "moderate"
+        ],
+        "features": [
+          "auth",
+          "darkmode",
+          "search"
+        ],
+        "complexity": [
+          "advanced"
+        ]
+      },
+      "saas-marketing": {
+        "purpose": [
+          "marketing"
+        ],
+        "colorPreference": [
+          "vibrant",
+          "modern"
+        ],
+        "animations": [
+          "moderate",
+          "high"
+        ],
+        "features": [
+          "forms",
+          "ecommerce",
+          "darkmode"
+        ],
+        "complexity": [
+          "intermediate",
+          "advanced"
+        ]
+      },
+      "agency-showcase": {
+        "purpose": [
+          "agency"
+        ],
+        "colorPreference": [
+          "creative",
+          "modern"
+        ],
+        "animations": [
+          "high"
+        ],
+        "features": [
+          "forms",
+          "media",
+          "blog"
+        ],
+        "complexity": [
+          "intermediate",
+          "advanced"
+        ]
+      },
+      "event-conference": {
+        "purpose": [
+          "event"
+        ],
+        "colorPreference": [
+          "vibrant",
+          "modern"
+        ],
+        "animations": [
+          "high"
+        ],
+        "features": [
+          "forms"
+        ],
+        "complexity": [
+          "intermediate"
+        ]
+      },
+      "portfolio-blog": {
+        "purpose": [
+          "portfolio"
+        ],
+        "colorPreference": [
+          "creative",
+          "modern",
+          "minimal"
+        ],
+        "animations": [
+          "moderate",
+          "high"
+        ],
+        "features": [
+          "blog",
+          "darkmode",
+          "forms"
+        ],
+        "complexity": [
+          "beginner",
+          "intermediate"
+        ]
+      },
+      "app-marketing": {
+        "purpose": [
+          "app"
+        ],
+        "colorPreference": [
+          "modern",
+          "vibrant"
+        ],
+        "animations": [
+          "high"
+        ],
+        "features": [
+          "forms"
+        ],
+        "complexity": [
+          "beginner",
+          "intermediate"
+        ]
+      },
+      "media-podcast": {
+        "purpose": [
+          "media"
+        ],
+        "colorPreference": [
+          "warm",
+          "minimal"
+        ],
+        "animations": [
+          "minimal",
+          "moderate"
+        ],
+        "features": [
+          "media",
+          "blog"
+        ],
+        "complexity": [
+          "intermediate"
+        ]
+      },
+      "pitch-deck": {
+        "purpose": [
+          "pitch"
+        ],
+        "colorPreference": [
+          "vibrant",
+          "modern"
+        ],
+        "animations": [
+          "moderate",
+          "high"
+        ],
+        "features": [
+          "forms"
+        ],
+        "complexity": [
+          "beginner",
+          "intermediate"
+        ]
+      },
+      "content-platform": {
+        "purpose": [
+          "learning"
+        ],
+        "colorPreference": [
+          "professional",
+          "modern"
+        ],
+        "animations": [
+          "moderate"
+        ],
+        "features": [
+          "auth",
+          "media",
+          "search"
+        ],
+        "complexity": [
+          "advanced"
+        ]
+      },
+      "cms-integrated": {
+        "purpose": [
+          "content",
+          "marketing"
+        ],
+        "colorPreference": [
+          "professional",
+          "modern"
+        ],
+        "animations": [
+          "moderate"
+        ],
+        "features": [
+          "cms",
+          "blog",
+          "search"
+        ],
+        "complexity": [
+          "advanced"
+        ]
+      },
+      "free-hand": {
+        "purpose": [
+          "documentation",
+          "marketing",
+          "portfolio",
+          "agency",
+          "learning",
+          "event",
+          "app",
+          "media",
+          "content",
+          "pitch",
+          "dashboard",
+          "ecommerce"
+        ],
+        "colorPreference": [
+          "professional",
+          "vibrant",
+          "creative",
+          "minimal",
+          "warm",
+          "modern"
+        ],
+        "animations": [
+          "minimal",
+          "moderate",
+          "high"
+        ],
+        "features": [
+          "blog",
+          "search",
+          "darkmode",
+          "forms",
+          "cms",
+          "auth",
+          "media",
+          "ecommerce"
+        ],
+        "complexity": [
+          "beginner",
+          "intermediate",
+          "advanced"
+        ]
       }
     }
   }

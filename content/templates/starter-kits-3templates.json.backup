@@ -1,0 +1,726 @@
+{
+  "starterKits": [
+    {
+      "id": "documentation",
+      "name": "Documentation Site",
+      "description": "Technical documentation with sidebar navigation, search, and MDX support",
+      "useCases": ["API docs", "Product docs", "Technical guides"],
+      "basedOn": ["protocol", "commit", "syntax"],
+      "features": [
+        "Sidebar navigation with sections",
+        "Search functionality",
+        "MDX for rich content",
+        "Syntax highlighting",
+        "Dark mode",
+        "Table of contents",
+        "Auto-generated navigation"
+      ],
+      "architecturalDecisions": {
+        "coreFramework": {
+          "decision": "Next.js App Router with static generation",
+          "rationale": "Documentation sites benefit from static generation for performance, SEO, and cost-efficiency. Next.js provides excellent SSG with ISR for content updates without full rebuilds.",
+          "patternReference": "None (framework choice)",
+          "considerations": [
+            "Need static generation for speed and SEO",
+            "ISR allows content updates without full site rebuild",
+            "File-based routing maps naturally to documentation structure",
+            "Built-in MDX support simplifies integration"
+          ],
+          "alternativeApproaches": [
+            "Astro (lighter weight, content-focused, better performance)",
+            "Docusaurus (purpose-built for docs, more opinionated)",
+            "VitePress (Vue-based, extremely fast)",
+            "MkDocs (Python-based, Material Design)"
+          ],
+          "tradeoffs": "Next.js is feature-rich but heavier than Astro. Docusaurus is easier for basic docs but less flexible. Choose based on complexity needs."
+        },
+        "contentManagement": {
+          "decision": "File-based MDX with frontmatter metadata",
+          "rationale": "Documentation benefits from version control, markdown's simplicity, and MDX's component capabilities.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Developers comfortable with markdown",
+            "Version control tracks documentation changes",
+            "MDX enables custom interactive components",
+            "Simple local development workflow",
+            "No database complexity"
+          ],
+          "alternativeApproaches": [
+            "Git-based CMS (Tina, Decap) - adds visual editor for non-technical contributors",
+            "Headless CMS (Contentful, Sanity) - if multi-channel delivery needed",
+            "Notion API - if team already uses Notion for docs"
+          ],
+          "tradeoffs": "File-based is simplest but requires technical knowledge. Git-based CMS adds complexity but enables non-dev authors."
+        },
+        "syntaxHighlighting": {
+          "decision": "Code syntax highlighting for technical content",
+          "rationale": "Technical documentation requires readable code examples with language-specific highlighting.",
+          "patternReference": "None (presentation layer)",
+          "considerations": [
+            "Need syntax highlighting for multiple languages",
+            "Server-side vs client-side rendering",
+            "Theme customization for dark mode",
+            "Performance impact on build time"
+          ],
+          "alternativeApproaches": [
+            "Shiki (accurate, VS Code themes, slow builds)",
+            "Prism (fast, lightweight, limited languages)",
+            "Highlight.js (popular, many languages, client-side)",
+            "Sugar High (minimal, fast, limited features)"
+          ],
+          "tradeoffs": "Shiki provides best accuracy but slower builds. Prism is faster but less accurate. Choose based on build time tolerance."
+        },
+        "uiComponents": {
+          "decision": "Headless UI components for interactive elements",
+          "rationale": "Need accessible, unstyled components (dialogs, dropdowns) that integrate with Tailwind's design system.",
+          "patternReference": "None (UI library choice)",
+          "considerations": [
+            "Need accessible components (ARIA compliant)",
+            "Want full styling control with Tailwind",
+            "Minimal JavaScript overhead",
+            "TypeScript support"
+          ],
+          "alternativeApproaches": [
+            "Radix UI (more components, slightly larger)",
+            "Ark UI (framework-agnostic)",
+            "Custom components (full control, more work)",
+            "Shadcn UI (pre-styled, copy-paste components)"
+          ],
+          "tradeoffs": "Headless UI integrates perfectly with Tailwind but limited components. Radix has more components but larger bundle. Shadcn is fastest to start but less customizable."
+        },
+        "searchFunctionality": {
+          "decision": "Search implementation for documentation discovery",
+          "rationale": "Documentation sites need fast, relevant search for user navigation and content discovery.",
+          "patternReference": "None (search patterns)",
+          "considerations": [
+            "Client-side vs server-side search",
+            "Index size and performance",
+            "Search quality (fuzzy matching, ranking)",
+            "Build-time vs runtime indexing"
+          ],
+          "alternativeApproaches": [
+            "FlexSearch (client-side, fast, small)",
+            "Pagefind (static site search, Rust-based)",
+            "Algolia (hosted, powerful, costs money)",
+            "Meilisearch (self-hosted, typo-tolerant)",
+            "Simple grep-style search (basic, free)"
+          ],
+          "tradeoffs": "Client-side search (FlexSearch, Pagefind) is free but limited by index size. Algolia is powerful but expensive. Choose based on content volume and budget."
+        },
+        "darkMode": {
+          "decision": "Theme switching with system preference detection",
+          "rationale": "Technical audiences expect dark mode. System preference detection provides good default UX.",
+          "patternReference": "None (theme management)",
+          "considerations": [
+            "Persist user theme choice",
+            "Detect system preference",
+            "Avoid flash of wrong theme",
+            "Support for syntax highlighting themes"
+          ],
+          "alternativeApproaches": [
+            "next-themes (popular, Next.js specific)",
+            "Custom implementation (localStorage + context)",
+            "CSS-only (prefers-color-scheme)",
+            "Tailwind dark: variant only"
+          ],
+          "tradeoffs": "next-themes is easiest and handles edge cases. Custom gives more control. CSS-only can't persist choice."
+        },
+        "colorPalette": {
+          "decision": "Professional color palette for technical documentation",
+          "rationale": "Documentation sites need colors that enhance readability, convey trust, and don't distract from content. Professional blues/grays with subtle accents create credibility while maintaining focus on the technical content.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Technical/software documentation (trust, clarity)",
+            "Target audience: Developers and technical users",
+            "Readability is paramount (high contrast ratios)",
+            "Syntax highlighting must work with color scheme",
+            "Dark mode requires separate palette",
+            "Minimal color usage keeps focus on content"
+          ],
+          "alternativeApproaches": [
+            "Blue-based palette (trust, technology, most common for docs)",
+            "Neutral grays with accent (minimal, Apple-style)",
+            "Purple/indigo (modern tech, developer tools)",
+            "Green accents (success states, positive associations)"
+          ],
+          "tradeoffs": "Blue is safest but common. Neutral is most minimal but can feel bland. Purple is trendy but may not suit all audiences. Consider brand identity vs conventions.",
+          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (documentation site, technical audience, professional scheme) and let the agent analyze the comprehensive color guidance (~20KB) to recommend specific palettes with rationale."
+        }
+      },
+      "colorScheme": "professional",
+      "animations": "minimal",
+      "complexity": "medium",
+      "recommendedLibraries": {
+        "note": "These are examples, not requirements. Choose based on your architectural decisions above.",
+        "core": ["next@15+", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react or @radix-ui/react-*"],
+        "content": ["@mdx-js/loader", "@next/mdx", "gray-matter", "rehype-*", "remark-*"],
+        "syntax": ["shiki or @mapbox/rehype-prism"],
+        "search": ["flexsearch or pagefind"],
+        "theme": ["next-themes"],
+        "utilities": ["clsx"]
+      }
+    },
+    {
+      "id": "ecommerce-store",
+      "name": "Full-Stack E-commerce",
+      "description": "Complete e-commerce platform with storefront, admin panel, and payment integration",
+      "useCases": ["Online stores", "Digital marketplaces", "Product catalogs", "Multi-vendor platforms"],
+      "basedOn": ["next-prisma-tailwind-ecommerce"],
+      "features": [
+        "Product catalog with categories",
+        "Shopping cart and checkout",
+        "Admin dashboard for products/orders",
+        "File uploads with image optimization",
+        "Email verification and invoices",
+        "Blog system with MDX",
+        "Authentication with session management",
+        "Dynamic sitemap generation",
+        "Payment processing integration",
+        "Order management",
+        "Type-safe database layer"
+      ],
+      "architecturalDecisions": {
+        "dataLayer": {
+          "decision": "Type-safe ORM for product catalog, orders, and user management",
+          "rationale": "E-commerce requires complex data relationships (products → categories, orders → items → products, users → orders). Type safety prevents costly errors in production.",
+          "patternReference": "data-layer-patterns.md",
+          "considerations": [
+            "Complex relational data (products, orders, users, inventory)",
+            "Need migrations for schema evolution",
+            "Type safety critical for money/orders",
+            "Transaction support for checkout",
+            "Server or serverless deployment"
+          ],
+          "alternativeApproaches": [
+            "Prisma (best DX, type generation, migrations, works everywhere)",
+            "Drizzle ORM (lightweight, edge-compatible, SQL-like)",
+            "Kysely (type-safe query builder, more control)",
+            "Raw SQL + types (maximum control, more work)"
+          ],
+          "tradeoffs": "Prisma offers best developer experience and safety but adds abstraction layer. Drizzle is faster and edge-friendly. Kysely gives SQL control with types. Choose based on team preference and deployment target."
+        },
+        "authentication": {
+          "decision": "Session-based auth with httpOnly cookies or JWT tokens",
+          "rationale": "E-commerce needs secure authentication for user accounts, order history, and admin access. Choose between sessions (traditional) or JWTs (stateless).",
+          "patternReference": "authentication-patterns.md",
+          "considerations": [
+            "Need secure session management",
+            "Admin vs customer roles (RBAC)",
+            "Remember me functionality",
+            "Session hijacking prevention",
+            "Deployment model (traditional server vs serverless/edge)"
+          ],
+          "alternativeApproaches": [
+            "Session-based (server storage) - traditional, full control, harder to scale",
+            "JWT in httpOnly cookies - stateless, scalable, hard to revoke",
+            "NextAuth.js/Auth.js - batteries included, many providers",
+            "Clerk/Auth0 - managed service, easy setup, ongoing costs",
+            "Supabase Auth - open-source backend, includes database"
+          ],
+          "tradeoffs": "Sessions give more control but require storage. JWTs are stateless but can't be easily invalidated. Managed services are fastest to implement but add costs and dependencies."
+        },
+        "formHandling": {
+          "decision": "Form library with schema validation for checkout, admin, and contact forms",
+          "rationale": "E-commerce has many complex forms (checkout, shipping, product creation). Need client and server validation with good UX.",
+          "patternReference": "form-handling-patterns.md",
+          "considerations": [
+            "Complex multi-step checkout flow",
+            "Real-time validation for better UX",
+            "Type-safe form data",
+            "Server-side validation required",
+            "Admin product management forms",
+            "Address validation"
+          ],
+          "alternativeApproaches": [
+            "React Hook Form + Zod (performant, type-safe, popular)",
+            "Formik + Yup (mature, feature-rich, heavier)",
+            "Server Actions with native forms (progressive enhancement)",
+            "Custom with useState (simple, more code, less features)"
+          ],
+          "tradeoffs": "React Hook Form is most performant and popular. Formik is more batteries-included. Server Actions are simplest but require JavaScript. Choose based on complexity and performance needs."
+        },
+        "stateManagement": {
+          "decision": "Client state and server state management",
+          "rationale": "Shopping cart, filters, and UI state need client management. Product data, orders need server state caching.",
+          "patternReference": "state-management-patterns.md",
+          "considerations": [
+            "Shopping cart state (client-side)",
+            "Product/order data (server state)",
+            "Filter and search UI state",
+            "Admin panel state",
+            "Real-time inventory updates"
+          ],
+          "alternativeApproaches": [
+            "TanStack Query (server state) + Zustand (client state) - recommended split",
+            "TanStack Query (server) + Context (client) - simpler for small apps",
+            "Redux Toolkit (both) - more boilerplate, very predictable",
+            "SWR (server) + Zustand (client) - lighter alternative"
+          ],
+          "tradeoffs": "Separate server/client state is cleanest architecture. TanStack Query excels at server state. Zustand is minimal for client state. Redux is overkill unless you need time-travel debugging."
+        },
+        "fileUploads": {
+          "decision": "Image upload and optimization for product photos",
+          "rationale": "E-commerce needs product images optimized for web delivery. Direct uploads to cloud storage reduce server load.",
+          "patternReference": "file-upload-patterns.md",
+          "considerations": [
+            "Multiple product images per product",
+            "Image optimization for web",
+            "Thumbnail generation",
+            "CDN delivery for fast loading",
+            "Storage costs",
+            "Admin upload experience"
+          ],
+          "alternativeApproaches": [
+            "Cloudinary (full-featured, auto-optimization, costs scale)",
+            "Cloudflare Images (affordable, good optimization)",
+            "Uploadthing (Next.js focused, simple)",
+            "S3 + Sharp (self-hosted optimization, more work)",
+            "Vercel Blob (integrated, simple, can be expensive)"
+          ],
+          "tradeoffs": "Cloudinary is most feature-rich but expensive at scale. S3 + Sharp gives most control but requires more work. Uploadthing is easiest for Next.js. Choose based on image volume and budget."
+        },
+        "emailSystem": {
+          "decision": "Transactional email for order confirmations, shipping updates, invoices",
+          "rationale": "E-commerce requires reliable email delivery for order confirmations, password resets, and customer communication.",
+          "patternReference": "None (email patterns)",
+          "considerations": [
+            "Transactional vs marketing emails",
+            "Email deliverability (SPF, DKIM)",
+            "HTML email templates",
+            "Invoice PDF generation",
+            "Order status notifications"
+          ],
+          "alternativeApproaches": [
+            "Resend (developer-friendly, React Email templates)",
+            "SendGrid (established, feature-rich, can be expensive)",
+            "Postmark (transactional focus, great deliverability)",
+            "AWS SES (cheap, reliable, more setup)",
+            "Nodemailer + SMTP (self-hosted, most control)"
+          ],
+          "tradeoffs": "Resend has best DX with React Email. SendGrid is established but pricier. AWS SES is cheapest but more complex. Choose based on volume and DX preference."
+        },
+        "payments": {
+          "decision": "Payment processing integration",
+          "rationale": "Core e-commerce functionality. Need PCI-compliant, reliable payment processing with good checkout UX.",
+          "patternReference": "None (payment patterns)",
+          "considerations": [
+            "PCI compliance (never store card data)",
+            "Multiple payment methods",
+            "Subscription billing (if needed)",
+            "International support",
+            "Fees and payout schedule",
+            "Webhook reliability for order fulfillment"
+          ],
+          "alternativeApproaches": [
+            "Stripe (best DX, comprehensive, 2.9% + 30¢)",
+            "PayPal (trusted brand, higher fees)",
+            "Square (retail focus, reader hardware)",
+            "Paddle (merchant of record, handles tax)",
+            "Lemon Squeezy (merchant of record, subscription focus)"
+          ],
+          "tradeoffs": "Stripe has best developer experience and features. Paddle/Lemon Squeezy handle tax complexity as merchant of record. PayPal has brand trust. Choose based on business model and target market."
+        },
+        "contentManagement": {
+          "decision": "Blog/content system for SEO and marketing",
+          "rationale": "E-commerce benefits from content marketing. Simple blog needs minimal overhead.",
+          "patternReference": "content-management-patterns.md",
+          "considerations": [
+            "Blog for SEO and content marketing",
+            "Product descriptions and guides",
+            "Category landing pages",
+            "Marketing team may need CMS"
+          ],
+          "alternativeApproaches": [
+            "MDX files (simple, version controlled, developer-friendly)",
+            "Headless CMS (Sanity, Contentful - for marketing team)",
+            "Built into database (custom admin, most control)",
+            "Notion API (if team uses Notion)"
+          ],
+          "tradeoffs": "MDX is simplest for dev teams. Headless CMS better if marketing team creates content. Database integration keeps everything in one place but more work to build."
+        },
+        "tableDisplay": {
+          "decision": "Data tables for admin product/order management",
+          "rationale": "Admin dashboard needs sortable, filterable tables for managing products, orders, customers.",
+          "patternReference": "None (table library choice)",
+          "considerations": [
+            "Sorting and filtering",
+            "Pagination for large datasets",
+            "Row selection for bulk actions",
+            "Export functionality",
+            "Responsive design"
+          ],
+          "alternativeApproaches": [
+            "TanStack Table (headless, most flexible, popular)",
+            "React Table (deprecated, use TanStack)",
+            "AG Grid (enterprise features, commercial license for some features)",
+            "Custom HTML table (simple, limited features)"
+          ],
+          "tradeoffs": "TanStack Table is industry standard and very flexible. AG Grid is powerful but has licensing costs. Custom tables are simple but lack features. TanStack Table is recommended for most cases."
+        },
+        "colorPalette": {
+          "decision": "Modern, trustworthy color palette for e-commerce",
+          "rationale": "E-commerce requires colors that build trust (checkout security), create urgency (CTAs, sales), and showcase products effectively. Color psychology directly impacts conversion rates - blues for trust, greens for action, warm accents for urgency.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: E-commerce/retail (trust, conversion, product focus)",
+            "Target audience: Online shoppers (varied demographics)",
+            "Conversion-focused design (CTA colors critical)",
+            "Product photos must look accurate (neutral backgrounds)",
+            "Accessibility (4.5:1 contrast for text)",
+            "Brand differentiation in crowded market",
+            "Trust indicators (secure checkout, reviews)",
+            "Seasonal flexibility (sales, holidays)"
+          ],
+          "alternativeApproaches": [
+            "Blue + green palette (trust + action, Amazon/Shopify style)",
+            "Black/white + accent (premium, fashion-forward, Apple style)",
+            "Warm palette with orange/red CTAs (urgency, food/lifestyle)",
+            "Pastel modern (millennial/Gen-Z appeal, trendy brands)",
+            "Bold, saturated colors (budget/value positioning)"
+          ],
+          "tradeoffs": "Blue/green is safest for trust but common. Premium black/white works for luxury but can feel cold. Warm colors drive urgency but may not suit all products. Pastels are trendy but can look cheap if not done well. Consider target market and product category.",
+          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (e-commerce site, product category, target demographic, premium vs budget positioning) and let the agent analyze comprehensive color psychology and e-commerce best practices to recommend conversion-optimized palettes."
+        }
+      },
+      "colorScheme": "modern",
+      "animations": "moderate",
+      "complexity": "high",
+      "recommendedLibraries": {
+        "note": "These are examples based on common choices for the architectural decisions above. Adapt to your specific needs.",
+        "core": ["next@15+", "react", "tailwindcss", "typescript"],
+        "database": ["@prisma/client + prisma OR drizzle-orm"],
+        "auth": ["next-auth OR jose + iron-session OR @clerk/nextjs"],
+        "ui": ["@radix-ui/react-* OR @headlessui/react", "lucide-react OR @heroicons/react"],
+        "data": ["@tanstack/react-table", "@tanstack/react-query OR swr"],
+        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+        "state": ["zustand OR redux-toolkit"],
+        "uploads": ["next-cloudinary OR uploadthing OR @aws-sdk/client-s3"],
+        "email": ["@react-email/* + resend OR @sendgrid/mail"],
+        "payments": ["stripe OR @paddle/paddle-js"],
+        "content": ["next-mdx-remote OR contentlayer"],
+        "utilities": ["clsx", "date-fns", "next-themes"]
+      }
+    },
+    {
+      "id": "admin-dashboard",
+      "name": "Admin Dashboard & Analytics",
+      "description": "Full-featured admin dashboard with multiple layouts, charts, tables, and RBAC support",
+      "useCases": ["Admin panels", "Analytics dashboards", "CRM systems", "Internal tools"],
+      "basedOn": ["next-shadcn-admin-dashboard"],
+      "features": [
+        "Multiple dashboard views",
+        "Collapsible sidebar navigation",
+        "Data tables with sorting/filtering",
+        "Charts and analytics",
+        "Authentication flows",
+        "Theme presets with dark mode",
+        "Drag-and-drop interfaces",
+        "Command palette (CMD+K)",
+        "Responsive layouts",
+        "Role-based access control"
+      ],
+      "architecturalDecisions": {
+        "dataVisualization": {
+          "decision": "Charting library for analytics dashboard",
+          "rationale": "Admin dashboards need charts (line, bar, pie) to visualize metrics and KPIs.",
+          "patternReference": "None (charting library choice)",
+          "considerations": [
+            "Chart types needed (line, bar, pie, area)",
+            "Responsive design",
+            "Animation and interactivity",
+            "Accessibility",
+            "Bundle size",
+            "Customization needs"
+          ],
+          "alternativeApproaches": [
+            "Recharts (React-specific, declarative, good defaults)",
+            "Chart.js + react-chartjs-2 (popular, many chart types)",
+            "Victory (highly customizable, React-native compatible)",
+            "Nivo (beautiful defaults, D3-based)",
+            "Tremor (Tailwind-styled, opinionated)",
+            "D3.js (maximum control, steep learning curve)"
+          ],
+          "tradeoffs": "Recharts is easiest for React developers. Tremor matches Tailwind design. D3 is most powerful but complex. Choose based on customization needs and team experience."
+        },
+        "tableFunctionality": {
+          "decision": "Advanced data tables for admin data management",
+          "rationale": "Admin panels need powerful tables with sorting, filtering, pagination, and bulk actions for managing large datasets.",
+          "patternReference": "None (table library)",
+          "considerations": [
+            "Large datasets (pagination, virtualization)",
+            "Advanced filtering",
+            "Column sorting and resizing",
+            "Row selection for bulk actions",
+            "Export functionality",
+            "Server-side pagination"
+          ],
+          "alternativeApproaches": [
+            "TanStack Table (most popular, headless, very flexible)",
+            "AG Grid (enterprise features, complex pricing)",
+            "Material React Table (Material Design, TanStack Table wrapper)",
+            "React Data Grid (spreadsheet-like)",
+            "Custom implementation (simple cases only)"
+          ],
+          "tradeoffs": "TanStack Table is industry standard and recommended. AG Grid is powerful but expensive. Custom tables lack features. Use TanStack Table unless you have specific needs."
+        },
+        "commandPalette": {
+          "decision": "CMD+K command palette for quick navigation",
+          "rationale": "Power users benefit from keyboard-driven navigation. Command palettes improve productivity in complex admin interfaces.",
+          "patternReference": "None (command palette)",
+          "considerations": [
+            "Keyboard shortcuts (CMD+K, CMD+P)",
+            "Fuzzy search",
+            "Action execution",
+            "Navigation shortcuts",
+            "Extensibility"
+          ],
+          "alternativeApproaches": [
+            "cmdk (Vercel's library, popular, accessible)",
+            "kbar (feature-rich, animations)",
+            "Command Palette (GitHub style)",
+            "Custom modal + search"
+          ],
+          "tradeoffs": "cmdk is most popular and well-maintained. kbar has better animations. Custom is simpler but less polished. cmdk recommended for most cases."
+        },
+        "dragAndDrop": {
+          "decision": "Drag-and-drop for reordering and organizing content",
+          "rationale": "Admin interfaces often need drag-and-drop for dashboard customization, task management, or content organization.",
+          "patternReference": "None (DnD library)",
+          "considerations": [
+            "Sortable lists",
+            "Kanban boards",
+            "Dashboard widget arrangement",
+            "Accessibility (keyboard support)",
+            "Mobile touch support",
+            "Performance with many items"
+          ],
+          "alternativeApproaches": [
+            "@dnd-kit (modern, accessible, performant)",
+            "react-beautiful-dnd (popular, Atlassian-maintained, heavier)",
+            "react-dnd (lower-level, more complex)",
+            "Sortable.js + react wrapper (mature, feature-rich)",
+            "Custom HTML5 drag API (simple cases only)"
+          ],
+          "tradeoffs": "@dnd-kit is modern standard with best accessibility. react-beautiful-dnd is stable but heavier. react-dnd gives most control but complex. Choose @dnd-kit for new projects."
+        },
+        "stateManagement": {
+          "decision": "State management for dashboard filters, UI state, and server data",
+          "rationale": "Admin dashboards have complex UI state (filters, preferences, sidebar state) and need efficient server state management for data fetching.",
+          "patternReference": "state-management-patterns.md",
+          "considerations": [
+            "Dashboard filter state",
+            "User preferences (sidebar collapsed, theme)",
+            "Server data caching",
+            "Real-time updates",
+            "Optimistic updates for actions"
+          ],
+          "alternativeApproaches": [
+            "TanStack Query (server) + Zustand (client) - recommended separation",
+            "TanStack Query + Context (simpler for small dashboards)",
+            "Redux Toolkit (both) - if need predictable state, time-travel debug",
+            "Jotai (atomic state) - fine-grained reactivity"
+          ],
+          "tradeoffs": "TanStack Query + Zustand is best practice for separating concerns. Redux is overkill unless you need its specific features. Context is simplest but can cause re-render issues."
+        },
+        "authentication": {
+          "decision": "Role-based access control for admin panel",
+          "rationale": "Admin dashboards need secure authentication with role-based permissions (admin, editor, viewer).",
+          "patternReference": "authentication-patterns.md",
+          "considerations": [
+            "Role-based access control (RBAC)",
+            "Permission checks on routes and actions",
+            "Session management",
+            "Admin vs regular user access",
+            "Audit logging"
+          ],
+          "alternativeApproaches": [
+            "NextAuth.js with database adapter (flexible, open-source)",
+            "Clerk (managed, RBAC built-in, easiest)",
+            "Auth0/Okta (enterprise, SSO support)",
+            "Custom JWT + database (most control, most work)",
+            "Supabase Auth (open-source backend)"
+          ],
+          "tradeoffs": "Clerk is fastest for RBAC but adds costs. NextAuth is flexible and free. Enterprise solutions for SSO needs. Custom for maximum control. Choose based on budget and requirements."
+        },
+        "formHandling": {
+          "decision": "Admin forms for data entry and configuration",
+          "rationale": "Admin panels have many forms for CRUD operations. Need validation, good UX, and type safety.",
+          "patternReference": "form-handling-patterns.md",
+          "considerations": [
+            "Dynamic form fields",
+            "Complex validation rules",
+            "Multi-step wizards",
+            "File uploads in forms",
+            "Auto-save functionality"
+          ],
+          "alternativeApproaches": [
+            "React Hook Form + Zod (best performance, type-safe)",
+            "Formik + Yup (mature, feature-rich)",
+            "React Final Form (subscription-based, performant)",
+            "Server Actions (progressive enhancement)"
+          ],
+          "tradeoffs": "React Hook Form is most performant and popular. Formik has more features but heavier. Server Actions simplest but less interactive. React Hook Form recommended."
+        },
+        "dataLayer": {
+          "decision": "Type-safe database layer for admin data",
+          "rationale": "Admin dashboards query and mutate lots of data. Type safety prevents bugs in data operations.",
+          "patternReference": "data-layer-patterns.md",
+          "considerations": [
+            "Complex queries with joins",
+            "Real-time data updates",
+            "Transaction support",
+            "Type safety",
+            "Migration management"
+          ],
+          "alternativeApproaches": [
+            "Prisma (best DX, type generation, comprehensive)",
+            "Drizzle ORM (lightweight, SQL-like, edge-compatible)",
+            "Kysely (type-safe query builder)",
+            "TypeORM (traditional ORM, mature)"
+          ],
+          "tradeoffs": "Prisma offers best developer experience. Drizzle is lighter and faster. Kysely for SQL control. Choose based on team preference and complexity."
+        },
+        "colorPalette": {
+          "decision": "Professional, data-focused color palette for admin dashboard",
+          "rationale": "Admin dashboards prioritize clarity and efficiency over aesthetics. Colors should support data visualization (charts, graphs), indicate status clearly (success/warning/error), and reduce eye strain during extended use. Professional blues/grays convey authority and trust.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Internal tools/admin (professionalism, clarity)",
+            "Target audience: Power users, data analysts, administrators",
+            "Data visualization compatibility (chart colors must be distinct)",
+            "Status indication (success=green, warning=yellow, error=red)",
+            "Extended usage (reduced eye strain, dark mode essential)",
+            "Information density (colors help organize complex interfaces)",
+            "Semantic meaning (consistent color coding across features)"
+          ],
+          "alternativeApproaches": [
+            "Blue-gray professional (corporate standard, Salesforce/Stripe style)",
+            "Neutral minimal (focuses on data, reduces distraction)",
+            "Purple/indigo modern (developer tools, contemporary SaaS)",
+            "Custom brand colors (for white-label products)"
+          ],
+          "tradeoffs": "Blue-gray is safest and most familiar but can feel generic. Neutral is most minimal but requires strong typography. Purple is modern and distinctive but may not suit traditional industries. Consider whether this is internal-only or customer-facing admin portal.",
+          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (admin dashboard, internal vs external users, data-heavy interface, dark mode requirement) and let the agent analyze professional color palettes that support data visualization and long-term usability."
+        }
+      },
+      "colorScheme": "professional",
+      "animations": "moderate",
+      "complexity": "high",
+      "recommendedLibraries": {
+        "note": "Examples based on architectural decisions. Choose based on your specific needs.",
+        "core": ["next@15+", "react", "tailwindcss", "typescript"],
+        "ui": ["@radix-ui/react-*", "lucide-react OR @heroicons/react"],
+        "data": ["@tanstack/react-table", "@tanstack/react-query"],
+        "charts": ["recharts OR tremor OR nivo"],
+        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+        "state": ["zustand OR jotai"],
+        "dnd": ["@dnd-kit/core", "@dnd-kit/sortable"],
+        "command": ["cmdk"],
+        "auth": ["next-auth OR @clerk/nextjs"],
+        "database": ["@prisma/client + prisma OR drizzle-orm"],
+        "utilities": ["clsx", "date-fns", "next-themes"]
+      }
+    }
+  ],
+  "note": "This file uses an architectural pattern approach that teaches decision-making frameworks rather than prescribing specific libraries. Each template now includes 'architecturalDecisions' that explain the why, when, and how to choose between different approaches. The 'recommendedLibraries' section provides examples but emphasizes they are suggestions, not requirements. Refer to the pattern documentation files in content/patterns/features/ for deeper understanding of each architectural decision domain.",
+  "questionnaire": {
+    "questions": [
+      {
+        "id": "purpose",
+        "question": "What's the primary purpose of your site?",
+        "type": "single-choice",
+        "options": [
+          { "value": "documentation", "label": "Technical Documentation", "description": "API docs, product documentation, guides" },
+          { "value": "marketing", "label": "Product/Service Marketing", "description": "Showcase products, services, or SaaS" },
+          { "value": "portfolio", "label": "Portfolio/Personal Brand", "description": "Showcase work, blog, personal projects" },
+          { "value": "agency", "label": "Agency/Studio", "description": "Case studies, team, services" },
+          { "value": "learning", "label": "Learning/Content Platform", "description": "Courses, tutorials, educational content" },
+          { "value": "event", "label": "Event/Conference", "description": "Schedule, speakers, tickets" },
+          { "value": "app", "label": "App Marketing", "description": "Mobile or desktop app showcase" },
+          { "value": "media", "label": "Podcast/Media", "description": "Audio/video content platform" },
+          { "value": "content", "label": "Content/Blog", "description": "Blog, news, articles" },
+          { "value": "pitch", "label": "Product Pitch/Launch", "description": "App or product presentation page" },
+          { "value": "dashboard", "label": "Admin Dashboard", "description": "Internal tools, analytics, CRM" },
+          { "value": "ecommerce", "label": "E-commerce Store", "description": "Online shopping, product sales" }
+        ],
+        "weight": 10
+      },
+      {
+        "id": "colorPreference",
+        "question": "What color scheme appeals to you?",
+        "type": "single-choice",
+        "options": [
+          { "value": "professional", "label": "Professional", "description": "Blues, grays, corporate" },
+          { "value": "vibrant", "label": "Vibrant", "description": "Bold colors, high contrast" },
+          { "value": "creative", "label": "Creative", "description": "Unique, artistic color combinations" },
+          { "value": "minimal", "label": "Minimal", "description": "Black, white, subtle accents" },
+          { "value": "warm", "label": "Warm", "description": "Oranges, reds, inviting tones" },
+          { "value": "modern", "label": "Modern", "description": "Trendy, contemporary colors" }
+        ],
+        "weight": 5
+      },
+      {
+        "id": "animations",
+        "question": "How much animation/interactivity do you want?",
+        "type": "single-choice",
+        "options": [
+          { "value": "minimal", "label": "Minimal", "description": "Simple transitions, fast loading" },
+          { "value": "moderate", "label": "Moderate", "description": "Balanced animations, smooth feel" },
+          { "value": "high", "label": "High", "description": "Rich animations, impressive effects" }
+        ],
+        "weight": 7
+      },
+      {
+        "id": "features",
+        "question": "What features do you need?",
+        "type": "multi-choice",
+        "options": [
+          { "value": "blog", "label": "Blog/Articles" },
+          { "value": "search", "label": "Search Functionality" },
+          { "value": "darkmode", "label": "Dark Mode" },
+          { "value": "forms", "label": "Contact Forms" },
+          { "value": "cms", "label": "CMS Integration" },
+          { "value": "auth", "label": "User Authentication" },
+          { "value": "media", "label": "Video/Audio Player" },
+          { "value": "ecommerce", "label": "E-commerce/Pricing" }
+        ],
+        "weight": 6
+      },
+      {
+        "id": "complexity",
+        "question": "What's your comfort level with development complexity?",
+        "type": "single-choice",
+        "options": [
+          { "value": "beginner", "label": "Beginner", "description": "Simple, straightforward setup" },
+          { "value": "intermediate", "label": "Intermediate", "description": "Moderate complexity, some integrations" },
+          { "value": "advanced", "label": "Advanced", "description": "Complex features, multiple integrations" }
+        ],
+        "weight": 4
+      }
+    ],
+    "matching": {
+      "documentation": {
+        "purpose": ["documentation"],
+        "colorPreference": ["professional", "minimal"],
+        "animations": ["minimal", "moderate"],
+        "features": ["search", "darkmode"],
+        "complexity": ["intermediate", "advanced"]
+      },
+      "ecommerce-store": {
+        "purpose": ["ecommerce"],
+        "colorPreference": ["modern", "vibrant", "professional"],
+        "animations": ["moderate"],
+        "features": ["ecommerce", "auth", "cms", "blog", "forms"],
+        "complexity": ["advanced"]
+      },
+      "admin-dashboard": {
+        "purpose": ["dashboard"],
+        "colorPreference": ["professional", "minimal", "modern"],
+        "animations": ["minimal", "moderate"],
+        "features": ["auth", "darkmode", "search"],
+        "complexity": ["advanced"]
+      }
+    }
+  }
+}
