@@ -223,6 +223,107 @@
       "colorScheme": "flexible",
       "animations": "moderate",
       "complexity": "high"
+    },
+    {
+      "id": "pitch-deck",
+      "name": "App/Product Pitch Deck",
+      "description": "Modern presentation page for apps and products with hero, features, stats, and testimonials",
+      "useCases": ["App showcase", "Product launch", "Startup pitch", "Landing pages"],
+      "basedOn": ["nextjs-tailwind-app-presentation-page"],
+      "features": [
+        "Hero section with app mockups",
+        "Feature highlights with icons",
+        "Statistics/metrics section",
+        "Testimonials and reviews",
+        "FAQ accordion",
+        "Download/CTA buttons",
+        "App store badges",
+        "Responsive image galleries"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@material-tailwind/react", "@heroicons/react"],
+        "utilities": ["autoprefixer", "postcss"]
+      },
+      "colorScheme": "vibrant",
+      "animations": "moderate",
+      "complexity": "low"
+    },
+    {
+      "id": "admin-dashboard",
+      "name": "Admin Dashboard & Analytics",
+      "description": "Full-featured admin dashboard with multiple layouts, charts, tables, and RBAC support",
+      "useCases": ["Admin panels", "Analytics dashboards", "CRM systems", "Internal tools"],
+      "basedOn": ["next-shadcn-admin-dashboard"],
+      "features": [
+        "Multiple dashboard views (Default, CRM, Finance)",
+        "Collapsible sidebar navigation",
+        "Data tables with sorting/filtering",
+        "Charts and analytics (Recharts)",
+        "Authentication flows",
+        "Theme presets with dark mode",
+        "Drag-and-drop interfaces",
+        "Command palette (CMD+K)",
+        "Responsive layouts",
+        "Role-based access control (planned)"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@radix-ui/react-*", "lucide-react", "class-variance-authority", "tailwind-merge"],
+        "data": ["@tanstack/react-table", "@tanstack/react-query", "recharts"],
+        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+        "state": ["zustand"],
+        "dnd": ["@dnd-kit/core", "@dnd-kit/sortable"],
+        "utilities": ["clsx", "cmdk", "date-fns", "next-themes", "axios"],
+        "ui-extras": ["sonner", "vaul", "embla-carousel-react", "react-day-picker", "input-otp"]
+      },
+      "colorScheme": "professional",
+      "animations": "moderate",
+      "complexity": "high"
+    },
+    {
+      "id": "ecommerce-store",
+      "name": "Full-Stack E-commerce",
+      "description": "Complete e-commerce platform with storefront, admin panel, and payment integration",
+      "useCases": ["Online stores", "Digital marketplaces", "Product catalogs", "Multi-vendor platforms"],
+      "basedOn": ["next-prisma-tailwind-ecommerce"],
+      "features": [
+        "Product catalog with categories",
+        "Shopping cart and checkout",
+        "Admin dashboard for products/orders",
+        "File uploads with Cloudinary",
+        "Email verification and invoices",
+        "Blog system with MDX",
+        "Authentication with JWT cookies",
+        "Dynamic sitemap generation",
+        "Payment processing integration",
+        "Order management",
+        "Database with Prisma ORM"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "database": ["@prisma/client", "prisma"],
+        "ui": [
+          "@radix-ui/react-accordion",
+          "@radix-ui/react-dialog",
+          "@radix-ui/react-dropdown-menu",
+          "@radix-ui/react-select",
+          "@radix-ui/react-toast",
+          "@radix-ui/react-icons",
+          "lucide-react",
+          "class-variance-authority"
+        ],
+        "data": ["@tanstack/react-table", "swr"],
+        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+        "content": ["next-mdx-remote"],
+        "email": ["@react-email/components", "@react-email/render", "nodemailer"],
+        "auth": ["jose"],
+        "media": ["next-cloudinary", "embla-carousel-react"],
+        "utilities": ["clsx", "cmdk", "date-fns", "next-themes", "react-hot-toast", "tailwind-merge"]
+      },
+      "colorScheme": "modern",
+      "animations": "moderate",
+      "complexity": "high"
     }
   ],
   "questionnaire": {
@@ -240,7 +341,10 @@
           { "value": "event", "label": "Event/Conference", "description": "Schedule, speakers, tickets" },
           { "value": "app", "label": "App Marketing", "description": "Mobile or desktop app showcase" },
           { "value": "media", "label": "Podcast/Media", "description": "Audio/video content platform" },
-          { "value": "content", "label": "Content/Blog", "description": "Blog, news, articles" }
+          { "value": "content", "label": "Content/Blog", "description": "Blog, news, articles" },
+          { "value": "pitch", "label": "Product Pitch/Launch", "description": "App or product presentation page" },
+          { "value": "dashboard", "label": "Admin Dashboard", "description": "Internal tools, analytics, CRM" },
+          { "value": "ecommerce", "label": "E-commerce Store", "description": "Online shopping, product sales" }
         ],
         "weight": 10
       },
@@ -359,6 +463,27 @@
         "colorPreference": ["flexible"],
         "animations": ["moderate"],
         "features": ["cms", "blog", "search"],
+        "complexity": ["advanced"]
+      },
+      "pitch-deck": {
+        "purpose": ["pitch", "app", "marketing"],
+        "colorPreference": ["vibrant", "modern"],
+        "animations": ["moderate", "high"],
+        "features": ["forms"],
+        "complexity": ["beginner", "intermediate"]
+      },
+      "admin-dashboard": {
+        "purpose": ["dashboard"],
+        "colorPreference": ["professional", "minimal", "modern"],
+        "animations": ["minimal", "moderate"],
+        "features": ["auth", "darkmode", "search"],
+        "complexity": ["advanced"]
+      },
+      "ecommerce-store": {
+        "purpose": ["ecommerce"],
+        "colorPreference": ["modern", "vibrant", "professional"],
+        "animations": ["moderate"],
+        "features": ["ecommerce", "auth", "cms", "blog", "forms"],
         "complexity": ["advanced"]
       }
     }
