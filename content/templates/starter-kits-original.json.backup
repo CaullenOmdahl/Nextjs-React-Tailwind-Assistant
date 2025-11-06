@@ -1,0 +1,491 @@
+{
+  "starterKits": [
+    {
+      "id": "documentation",
+      "name": "Documentation Site",
+      "description": "Technical documentation with sidebar navigation, search, and MDX support",
+      "useCases": ["API docs", "Product docs", "Technical guides"],
+      "basedOn": ["protocol", "commit", "syntax"],
+      "features": [
+        "Sidebar navigation with sections",
+        "Search functionality",
+        "MDX for rich content",
+        "Syntax highlighting",
+        "Dark mode",
+        "Table of contents",
+        "Auto-generated navigation"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react", "@tailwindcss/typography"],
+        "content": ["@mdx-js/loader", "@mdx-js/react", "@next/mdx", "rehype-slug", "rehype-autolink-headings"],
+        "syntax": ["shiki", "@mapbox/rehype-prism"],
+        "utilities": ["clsx", "fast-glob", "next-themes"]
+      },
+      "colorScheme": "professional",
+      "animations": "minimal",
+      "complexity": "medium"
+    },
+    {
+      "id": "saas-marketing",
+      "name": "SaaS Marketing Site",
+      "description": "Modern SaaS landing page with pricing, features, and CTAs",
+      "useCases": ["SaaS product", "B2B software", "Platform marketing"],
+      "basedOn": ["salient", "radiant"],
+      "features": [
+        "Hero section with gradient backgrounds",
+        "Feature showcases with icons",
+        "Pricing tables with toggle",
+        "Testimonials/social proof",
+        "CTA sections",
+        "Email capture forms",
+        "Blog/resources section"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react", "@heroicons/react", "@tailwindcss/forms"],
+        "animations": ["framer-motion"],
+        "utilities": ["clsx", "next-themes"]
+      },
+      "colorScheme": "vibrant",
+      "animations": "moderate",
+      "complexity": "medium"
+    },
+    {
+      "id": "portfolio-blog",
+      "name": "Portfolio & Blog",
+      "description": "Personal portfolio with blog, projects, and contact",
+      "useCases": ["Developer portfolio", "Designer showcase", "Personal brand"],
+      "basedOn": ["spotlight", "studio"],
+      "features": [
+        "Project showcases with images",
+        "Blog with MDX",
+        "About/bio section",
+        "Skills/technologies list",
+        "Contact form",
+        "RSS feed",
+        "Image galleries"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "content": ["@mdx-js/loader", "@mdx-js/react", "@next/mdx"],
+        "ui": ["framer-motion"],
+        "utilities": ["clsx", "fast-glob", "feed", "next-themes"]
+      },
+      "colorScheme": "creative",
+      "animations": "high",
+      "complexity": "low"
+    },
+    {
+      "id": "agency-showcase",
+      "name": "Agency/Studio Site",
+      "description": "Creative agency site with case studies and team",
+      "useCases": ["Design agency", "Development studio", "Consulting firm"],
+      "basedOn": ["studio"],
+      "features": [
+        "Case study layouts",
+        "Team member profiles",
+        "Services breakdown",
+        "Client logos/testimonials",
+        "Process/methodology section",
+        "Contact/inquiry forms",
+        "Image-heavy layouts"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react", "framer-motion"],
+        "content": ["@mdx-js/loader", "@mdx-js/react"],
+        "utilities": ["clsx", "fast-glob"]
+      },
+      "colorScheme": "bold",
+      "animations": "high",
+      "complexity": "high"
+    },
+    {
+      "id": "content-platform",
+      "name": "Content/Learning Platform",
+      "description": "Course platform, video learning, or content hub",
+      "useCases": ["Online courses", "Video platform", "Learning management"],
+      "basedOn": ["compass", "primer"],
+      "features": [
+        "Course/module structure",
+        "Video embeds",
+        "Progress tracking UI",
+        "Table of contents",
+        "Chapters/lessons navigation",
+        "Downloadable resources",
+        "User authentication UI"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react", "@heroicons/react"],
+        "content": ["@mdx-js/loader", "@mdx-js/react"],
+        "utilities": ["clsx", "dayjs"]
+      },
+      "colorScheme": "friendly",
+      "animations": "moderate",
+      "complexity": "high"
+    },
+    {
+      "id": "event-conference",
+      "name": "Event/Conference Site",
+      "description": "Event landing page with schedule, speakers, and tickets",
+      "useCases": ["Conferences", "Workshops", "Meetups"],
+      "basedOn": ["keynote"],
+      "features": [
+        "Event schedule/agenda",
+        "Speaker profiles",
+        "Ticket/registration",
+        "Venue information",
+        "Sponsor showcases",
+        "Countdown timers",
+        "Newsletter signup"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react", "@heroicons/react", "framer-motion"],
+        "utilities": ["clsx", "dayjs"]
+      },
+      "colorScheme": "energetic",
+      "animations": "high",
+      "complexity": "medium"
+    },
+    {
+      "id": "app-marketing",
+      "name": "Mobile App Marketing",
+      "description": "App landing page with features, screenshots, and download",
+      "useCases": ["Mobile apps", "Desktop apps", "Browser extensions"],
+      "basedOn": ["pocket"],
+      "features": [
+        "App screenshots/mockups",
+        "Feature highlights",
+        "Download buttons",
+        "Pricing plans",
+        "App store badges",
+        "FAQ section",
+        "Demo videos"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react", "framer-motion"],
+        "utilities": ["clsx"]
+      },
+      "colorScheme": "modern",
+      "animations": "high",
+      "complexity": "low"
+    },
+    {
+      "id": "media-podcast",
+      "name": "Podcast/Media Platform",
+      "description": "Podcast site with episodes, player, and transcripts",
+      "useCases": ["Podcasts", "Audio content", "Video series"],
+      "basedOn": ["transmit"],
+      "features": [
+        "Audio player integration",
+        "Episode listings",
+        "Show notes/transcripts",
+        "Subscribe buttons",
+        "RSS feed",
+        "Search episodes",
+        "Guest profiles"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@headlessui/react"],
+        "content": ["@mdx-js/loader", "@mdx-js/react"],
+        "utilities": ["clsx", "feed", "dayjs"]
+      },
+      "colorScheme": "warm",
+      "animations": "minimal",
+      "complexity": "medium"
+    },
+    {
+      "id": "cms-integrated",
+      "name": "CMS-Powered Site",
+      "description": "Dynamic site with Sanity CMS integration",
+      "useCases": ["Blog with CMS", "Marketing site", "Content-heavy sites"],
+      "basedOn": ["radiant"],
+      "features": [
+        "Sanity Studio integration",
+        "Dynamic content loading",
+        "Image optimization",
+        "Preview mode",
+        "Rich text rendering",
+        "Category/tag filtering",
+        "Search functionality"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "cms": ["sanity", "next-sanity", "@sanity/image-url", "@sanity/vision"],
+        "ui": ["@headlessui/react", "framer-motion"],
+        "utilities": ["clsx", "dayjs"]
+      },
+      "colorScheme": "flexible",
+      "animations": "moderate",
+      "complexity": "high"
+    },
+    {
+      "id": "pitch-deck",
+      "name": "App/Product Pitch Deck",
+      "description": "Modern presentation page for apps and products with hero, features, stats, and testimonials",
+      "useCases": ["App showcase", "Product launch", "Startup pitch", "Landing pages"],
+      "basedOn": ["nextjs-tailwind-app-presentation-page"],
+      "features": [
+        "Hero section with app mockups",
+        "Feature highlights with icons",
+        "Statistics/metrics section",
+        "Testimonials and reviews",
+        "FAQ accordion",
+        "Download/CTA buttons",
+        "App store badges",
+        "Responsive image galleries"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@material-tailwind/react", "@heroicons/react"],
+        "utilities": ["autoprefixer", "postcss"]
+      },
+      "colorScheme": "vibrant",
+      "animations": "moderate",
+      "complexity": "low"
+    },
+    {
+      "id": "admin-dashboard",
+      "name": "Admin Dashboard & Analytics",
+      "description": "Full-featured admin dashboard with multiple layouts, charts, tables, and RBAC support",
+      "useCases": ["Admin panels", "Analytics dashboards", "CRM systems", "Internal tools"],
+      "basedOn": ["next-shadcn-admin-dashboard"],
+      "features": [
+        "Multiple dashboard views (Default, CRM, Finance)",
+        "Collapsible sidebar navigation",
+        "Data tables with sorting/filtering",
+        "Charts and analytics (Recharts)",
+        "Authentication flows",
+        "Theme presets with dark mode",
+        "Drag-and-drop interfaces",
+        "Command palette (CMD+K)",
+        "Responsive layouts",
+        "Role-based access control (planned)"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "ui": ["@radix-ui/react-*", "lucide-react", "class-variance-authority", "tailwind-merge"],
+        "data": ["@tanstack/react-table", "@tanstack/react-query", "recharts"],
+        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+        "state": ["zustand"],
+        "dnd": ["@dnd-kit/core", "@dnd-kit/sortable"],
+        "utilities": ["clsx", "cmdk", "date-fns", "next-themes", "axios"],
+        "ui-extras": ["sonner", "vaul", "embla-carousel-react", "react-day-picker", "input-otp"]
+      },
+      "colorScheme": "professional",
+      "animations": "moderate",
+      "complexity": "high"
+    },
+    {
+      "id": "ecommerce-store",
+      "name": "Full-Stack E-commerce",
+      "description": "Complete e-commerce platform with storefront, admin panel, and payment integration",
+      "useCases": ["Online stores", "Digital marketplaces", "Product catalogs", "Multi-vendor platforms"],
+      "basedOn": ["next-prisma-tailwind-ecommerce"],
+      "features": [
+        "Product catalog with categories",
+        "Shopping cart and checkout",
+        "Admin dashboard for products/orders",
+        "File uploads with Cloudinary",
+        "Email verification and invoices",
+        "Blog system with MDX",
+        "Authentication with JWT cookies",
+        "Dynamic sitemap generation",
+        "Payment processing integration",
+        "Order management",
+        "Database with Prisma ORM"
+      ],
+      "libraries": {
+        "core": ["next", "react", "tailwindcss", "typescript"],
+        "database": ["@prisma/client", "prisma"],
+        "ui": [
+          "@radix-ui/react-accordion",
+          "@radix-ui/react-dialog",
+          "@radix-ui/react-dropdown-menu",
+          "@radix-ui/react-select",
+          "@radix-ui/react-toast",
+          "@radix-ui/react-icons",
+          "lucide-react",
+          "class-variance-authority"
+        ],
+        "data": ["@tanstack/react-table", "swr"],
+        "forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+        "content": ["next-mdx-remote"],
+        "email": ["@react-email/components", "@react-email/render", "nodemailer"],
+        "auth": ["jose"],
+        "media": ["next-cloudinary", "embla-carousel-react"],
+        "utilities": ["clsx", "cmdk", "date-fns", "next-themes", "react-hot-toast", "tailwind-merge"]
+      },
+      "colorScheme": "modern",
+      "animations": "moderate",
+      "complexity": "high"
+    }
+  ],
+  "questionnaire": {
+    "questions": [
+      {
+        "id": "purpose",
+        "question": "What's the primary purpose of your site?",
+        "type": "single-choice",
+        "options": [
+          { "value": "documentation", "label": "Technical Documentation", "description": "API docs, product documentation, guides" },
+          { "value": "marketing", "label": "Product/Service Marketing", "description": "Showcase products, services, or SaaS" },
+          { "value": "portfolio", "label": "Portfolio/Personal Brand", "description": "Showcase work, blog, personal projects" },
+          { "value": "agency", "label": "Agency/Studio", "description": "Case studies, team, services" },
+          { "value": "learning", "label": "Learning/Content Platform", "description": "Courses, tutorials, educational content" },
+          { "value": "event", "label": "Event/Conference", "description": "Schedule, speakers, tickets" },
+          { "value": "app", "label": "App Marketing", "description": "Mobile or desktop app showcase" },
+          { "value": "media", "label": "Podcast/Media", "description": "Audio/video content platform" },
+          { "value": "content", "label": "Content/Blog", "description": "Blog, news, articles" },
+          { "value": "pitch", "label": "Product Pitch/Launch", "description": "App or product presentation page" },
+          { "value": "dashboard", "label": "Admin Dashboard", "description": "Internal tools, analytics, CRM" },
+          { "value": "ecommerce", "label": "E-commerce Store", "description": "Online shopping, product sales" }
+        ],
+        "weight": 10
+      },
+      {
+        "id": "colorPreference",
+        "question": "What color scheme appeals to you?",
+        "type": "single-choice",
+        "options": [
+          { "value": "professional", "label": "Professional", "description": "Blues, grays, corporate" },
+          { "value": "vibrant", "label": "Vibrant", "description": "Bold colors, high contrast" },
+          { "value": "creative", "label": "Creative", "description": "Unique, artistic color combinations" },
+          { "value": "minimal", "label": "Minimal", "description": "Black, white, subtle accents" },
+          { "value": "warm", "label": "Warm", "description": "Oranges, reds, inviting tones" },
+          { "value": "modern", "label": "Modern", "description": "Trendy, contemporary colors" }
+        ],
+        "weight": 5
+      },
+      {
+        "id": "animations",
+        "question": "How much animation/interactivity do you want?",
+        "type": "single-choice",
+        "options": [
+          { "value": "minimal", "label": "Minimal", "description": "Simple transitions, fast loading" },
+          { "value": "moderate", "label": "Moderate", "description": "Balanced animations, smooth feel" },
+          { "value": "high", "label": "High", "description": "Rich animations, impressive effects" }
+        ],
+        "weight": 7
+      },
+      {
+        "id": "features",
+        "question": "What features do you need?",
+        "type": "multi-choice",
+        "options": [
+          { "value": "blog", "label": "Blog/Articles" },
+          { "value": "search", "label": "Search Functionality" },
+          { "value": "darkmode", "label": "Dark Mode" },
+          { "value": "forms", "label": "Contact Forms" },
+          { "value": "cms", "label": "CMS Integration" },
+          { "value": "auth", "label": "User Authentication" },
+          { "value": "media", "label": "Video/Audio Player" },
+          { "value": "ecommerce", "label": "E-commerce/Pricing" }
+        ],
+        "weight": 6
+      },
+      {
+        "id": "complexity",
+        "question": "What's your comfort level with development complexity?",
+        "type": "single-choice",
+        "options": [
+          { "value": "beginner", "label": "Beginner", "description": "Simple, straightforward setup" },
+          { "value": "intermediate", "label": "Intermediate", "description": "Moderate complexity, some integrations" },
+          { "value": "advanced", "label": "Advanced", "description": "Complex features, multiple integrations" }
+        ],
+        "weight": 4
+      }
+    ],
+    "matching": {
+      "documentation": {
+        "purpose": ["documentation"],
+        "colorPreference": ["professional", "minimal"],
+        "animations": ["minimal", "moderate"],
+        "features": ["search", "darkmode"],
+        "complexity": ["intermediate", "advanced"]
+      },
+      "saas-marketing": {
+        "purpose": ["marketing", "content"],
+        "colorPreference": ["vibrant", "modern"],
+        "animations": ["moderate", "high"],
+        "features": ["forms", "ecommerce", "darkmode"],
+        "complexity": ["intermediate"]
+      },
+      "portfolio-blog": {
+        "purpose": ["portfolio"],
+        "colorPreference": ["creative", "modern", "minimal"],
+        "animations": ["moderate", "high"],
+        "features": ["blog", "darkmode", "forms"],
+        "complexity": ["beginner", "intermediate"]
+      },
+      "agency-showcase": {
+        "purpose": ["agency"],
+        "colorPreference": ["creative", "bold", "modern"],
+        "animations": ["high"],
+        "features": ["forms", "media"],
+        "complexity": ["intermediate", "advanced"]
+      },
+      "content-platform": {
+        "purpose": ["learning"],
+        "colorPreference": ["friendly", "professional"],
+        "animations": ["moderate"],
+        "features": ["auth", "media", "search"],
+        "complexity": ["advanced"]
+      },
+      "event-conference": {
+        "purpose": ["event"],
+        "colorPreference": ["energetic", "vibrant"],
+        "animations": ["high"],
+        "features": ["forms"],
+        "complexity": ["intermediate"]
+      },
+      "app-marketing": {
+        "purpose": ["app"],
+        "colorPreference": ["modern", "vibrant"],
+        "animations": ["high"],
+        "features": ["forms"],
+        "complexity": ["beginner", "intermediate"]
+      },
+      "media-podcast": {
+        "purpose": ["media"],
+        "colorPreference": ["warm", "minimal"],
+        "animations": ["minimal", "moderate"],
+        "features": ["media", "blog"],
+        "complexity": ["intermediate"]
+      },
+      "cms-integrated": {
+        "purpose": ["content", "marketing"],
+        "colorPreference": ["flexible"],
+        "animations": ["moderate"],
+        "features": ["cms", "blog", "search"],
+        "complexity": ["advanced"]
+      },
+      "pitch-deck": {
+        "purpose": ["pitch", "app", "marketing"],
+        "colorPreference": ["vibrant", "modern"],
+        "animations": ["moderate", "high"],
+        "features": ["forms"],
+        "complexity": ["beginner", "intermediate"]
+      },
+      "admin-dashboard": {
+        "purpose": ["dashboard"],
+        "colorPreference": ["professional", "minimal", "modern"],
+        "animations": ["minimal", "moderate"],
+        "features": ["auth", "darkmode", "search"],
+        "complexity": ["advanced"]
+      },
+      "ecommerce-store": {
+        "purpose": ["ecommerce"],
+        "colorPreference": ["modern", "vibrant", "professional"],
+        "animations": ["moderate"],
+        "features": ["ecommerce", "auth", "cms", "blog", "forms"],
+        "complexity": ["advanced"]
+      }
+    }
+  }
+}

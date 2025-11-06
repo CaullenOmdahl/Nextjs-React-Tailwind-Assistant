@@ -42,7 +42,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.3.0",
+    version: "0.3.1",
   });
 
   // Register resources for documentation
@@ -718,6 +718,82 @@ export default function createServer() {
         throw new McpError(
           ErrorCode.InternalError,
           ErrorHandler.formatSafeErrorMessage(error, 'list_patterns')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: get_color_design_guidance
+   * Retrieves comprehensive color design patterns and psychology guide
+   * RECOMMENDED: Use with a subagent for color selection workflow
+   */
+  server.registerTool(
+    "get_color_design_guidance",
+    {
+      title: "Get Color Design Guidance",
+      description: "Retrieve comprehensive color design patterns documentation (~20KB). Covers color psychology, premium vs cheap distinctions, harmony systems, industry-specific guidance, and 2024-2025 modern trends. **RECOMMENDED WORKFLOW**: Due to the comprehensive nature of this content, consider using a subagent to execute the color selection workflow with full context. The subagent can analyze the guidance and make informed color decisions for your specific project.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {}
+    },
+    async (request) => {
+      createAuditLog('info', 'tool_request', {
+        tool: 'get_color_design_guidance',
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        const colorPatternsPath = path.join(CONFIG.patternsPath, 'features', 'color-design-patterns.md');
+        const content = await fs.readFile(colorPatternsPath, 'utf-8');
+
+        // Add subagent recommendation header
+        const header = `# Color Design Guidance\n\n` +
+          `> **💡 RECOMMENDED WORKFLOW**: This is comprehensive guidance (~20KB) for making professional color choices.\n` +
+          `> For best results, consider using a subagent/agent workflow:\n` +
+          `> 1. Launch an agent with access to this color design guidance\n` +
+          `> 2. Provide the agent with your project context (industry, mood, target audience)\n` +
+          `> 3. Let the agent analyze the guidance and recommend specific color palettes\n` +
+          `> 4. The agent can explain rationale, show alternatives, and help refine choices\n` +
+          `>\n` +
+          `> This approach leverages the full context effectively without overwhelming the main conversation.\n\n` +
+          `---\n\n`;
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'get_color_design_guidance',
+          contentSize: content.length
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: header + content
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'get_color_design_guidance',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error.code === 'ENOENT') {
+          throw new McpError(
+            ErrorCode.InvalidRequest,
+            `Color design patterns documentation not found. Please ensure color-design-patterns.md exists in the features directory.`
+          );
+        }
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'get_color_design_guidance')
         );
       }
     }
