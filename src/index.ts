@@ -13,6 +13,7 @@ import {
   RecommendTemplateArgs,
   QuestionnaireArgs,
   LibraryDocsArgs,
+  AnalyzeSiteArgs,
   ServerConfig
 } from './types.js';
 import { validateToolInput } from './utils/security.js';
@@ -42,7 +43,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.4.1",
+    version: "0.4.2",
   });
 
   // Register resources for documentation
@@ -794,6 +795,218 @@ export default function createServer() {
         throw new McpError(
           ErrorCode.InternalError,
           ErrorHandler.formatSafeErrorMessage(error, 'get_color_design_guidance')
+        );
+      }
+    }
+  );
+
+  /**
+   * Tool: analyze_existing_site
+   * Analyzes an existing website or Google listing to extract useful information for rebuilding
+   * RECOMMENDED: Use with a subagent for comprehensive extraction
+   */
+  server.registerTool(
+    "analyze_existing_site",
+    {
+      title: "Analyze Existing Site",
+      description: "Analyze an existing website or Google Business listing to extract useful information and assets for rebuilding. Extracts business info, contact details, images, content structure, site type, and design elements. **RECOMMENDED WORKFLOW**: Due to the complexity of site analysis and data extraction, use a subagent to perform the analysis. The subagent can use WebFetch to scrape the site, analyze structure, extract assets, and return organized data for the new build.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true
+      },
+      inputSchema: {
+        url: z.string().url().describe("URL of the existing website or Google Business listing to analyze")
+      }
+    },
+    async (request) => {
+      const args = request.params.arguments as AnalyzeSiteArgs;
+
+      createAuditLog('info', 'tool_request', {
+        tool: 'analyze_existing_site',
+        url: args.url,
+        timestamp: new Date().toISOString()
+      });
+
+      try {
+        // Validate URL format
+        new URL(args.url);
+
+        // Build comprehensive guidance for site analysis
+        const guidance = `# Existing Site Analysis Guidance\n\n` +
+          `> **💡 RECOMMENDED WORKFLOW**: This task requires web scraping, content extraction, and analysis.\n` +
+          `> For best results, use a subagent/agent workflow:\n` +
+          `> 1. Launch an agent with access to WebFetch tool\n` +
+          `> 2. Agent visits the URL: ${args.url}\n` +
+          `> 3. Agent extracts and organizes useful information (detailed checklist below)\n` +
+          `> 4. Agent returns structured data for new site build\n` +
+          `>\n` +
+          `> This approach handles complex scraping logic without overwhelming the main conversation.\n\n` +
+          `---\n\n` +
+          `## Target URL\n${args.url}\n\n` +
+          `---\n\n` +
+          `## Data to Extract\n\n` +
+          `### 1. Business Information\n` +
+          `- Business name and tagline\n` +
+          `- Business description/about text\n` +
+          `- Industry/category\n` +
+          `- Mission/vision statements\n` +
+          `- Unique value propositions\n\n` +
+          `### 2. Contact Information\n` +
+          `- Phone numbers (primary, secondary)\n` +
+          `- Email addresses\n` +
+          `- Physical address(es)\n` +
+          `- Business hours (days, times, timezone)\n` +
+          `- Social media links (Facebook, Instagram, Twitter, LinkedIn, etc.)\n\n` +
+          `### 3. Visual Assets\n` +
+          `- Logo(s) - URLs to high-res versions if available\n` +
+          `- Favicon\n` +
+          `- Hero images / banner images\n` +
+          `- Product/service photos\n` +
+          `- Team photos\n` +
+          `- Background images\n` +
+          `- Icons and graphics\n` +
+          `- Note image dimensions and quality\n\n` +
+          `### 4. Color Palette\n` +
+          `- Primary brand colors (hex codes)\n` +
+          `- Secondary colors\n` +
+          `- Accent colors\n` +
+          `- Background colors\n` +
+          `- Text colors\n` +
+          `- Extract from logos, buttons, headers\n\n` +
+          `### 5. Site Structure\n` +
+          `- Main navigation menu items\n` +
+          `- Page hierarchy\n` +
+          `- Footer content and links\n` +
+          `- Site sections (e.g., About, Services, Contact, Blog)\n` +
+          `- Call-to-action buttons and their text\n\n` +
+          `### 6. Content Sections\n` +
+          `- Services/Products offered (names, descriptions, prices if available)\n` +
+          `- Testimonials/reviews\n` +
+          `- FAQ content\n` +
+          `- Team members (names, titles, bios)\n` +
+          `- Portfolio/case studies\n` +
+          `- Blog posts (titles, categories)\n\n` +
+          `### 7. Technical Details\n` +
+          `- Site type identification (e-commerce, portfolio, blog, landing page, etc.)\n` +
+          `- Forms present (contact, newsletter, booking, etc.)\n` +
+          `- Interactive elements (maps, calendars, booking widgets)\n` +
+          `- Third-party integrations visible\n` +
+          `- Animation/interaction patterns\n\n` +
+          `### 8. Design Patterns\n` +
+          `- Layout style (single page, multi-page, grid, etc.)\n` +
+          `- Typography (font families if identifiable)\n` +
+          `- Button styles and CTA patterns\n` +
+          `- Card/component patterns\n` +
+          `- Spacing and density\n` +
+          `- Responsive behavior notes\n\n` +
+          `### 9. SEO/Meta Information\n` +
+          `- Page title\n` +
+          `- Meta description\n` +
+          `- Keywords (if visible)\n` +
+          `- Structured data (Schema.org markup)\n\n` +
+          `### 10. Special Features\n` +
+          `- Online booking/scheduling\n` +
+          `- E-commerce functionality\n` +
+          `- Member login/portal\n` +
+          `- Blog/news section\n` +
+          `- Event calendar\n` +
+          `- Gallery/portfolio\n` +
+          `- Video content\n` +
+          `- Maps/location finder\n\n` +
+          `---\n\n` +
+          `## Output Format\n\n` +
+          `Organize extracted data into structured sections:\n\n` +
+          `\`\`\`\n` +
+          `# Site Analysis: [Business Name]\n` +
+          `Source: ${args.url}\n` +
+          `Analyzed: [date]\n\n` +
+          `## Business Profile\n` +
+          `- Name: ...\n` +
+          `- Category: ...\n` +
+          `- Description: ...\n\n` +
+          `## Contact Information\n` +
+          `[Details...]\n\n` +
+          `## Visual Assets\n` +
+          `[List with URLs...]\n\n` +
+          `## Brand Colors\n` +
+          `- Primary: #... (used for...)\n` +
+          `- Secondary: #...\n\n` +
+          `## Site Structure\n` +
+          `[Navigation and sections...]\n\n` +
+          `## Key Content\n` +
+          `[Services, testimonials, etc...]\n\n` +
+          `## Recommended Template\n` +
+          `Based on analysis: [template-id]\n` +
+          `Rationale: ...\n\n` +
+          `## Implementation Notes\n` +
+          `- Priority features: ...\n` +
+          `- Missing information: ...\n` +
+          `- Assets needed: ...\n` +
+          `\`\`\`\n\n` +
+          `---\n\n` +
+          `## Tips for Effective Extraction\n\n` +
+          `1. **Use WebFetch iteratively**: Main page first, then key subpages (About, Services, Contact)\n` +
+          `2. **Look for patterns**: Repeated elements often indicate key content\n` +
+          `3. **Check common locations**: Header, footer, sidebar for contact info\n` +
+          `4. **Identify CTAs**: Primary actions the site wants users to take\n` +
+          `5. **Note what's missing**: Information you'll need to request from client\n` +
+          `6. **Consider mobile**: Many sites have mobile-specific content or layouts\n` +
+          `7. **Extract schema.org**: Often contains structured business data\n` +
+          `8. **Social proof**: Testimonials, reviews, client logos add credibility\n\n` +
+          `---\n\n` +
+          `## Google Business Listing Specifics\n\n` +
+          `If analyzing a Google Business listing:\n` +
+          `- Business name, category, description\n` +
+          `- Address and service area\n` +
+          `- Phone number\n` +
+          `- Website link (analyze that site too)\n` +
+          `- Business hours\n` +
+          `- Photos from the listing\n` +
+          `- Reviews (sentiment, common themes)\n` +
+          `- Questions & Answers\n` +
+          `- Attributes (e.g., "wheelchair accessible", "outdoor seating")\n\n` +
+          `---\n\n` +
+          `## Next Steps After Analysis\n\n` +
+          `1. **Choose template**: Based on site type and features identified\n` +
+          `2. **Make architectural decisions**: Use template's decision framework\n` +
+          `3. **Select colors**: Use extracted palette or refine with color design guidance\n` +
+          `4. **Plan content migration**: Prioritize sections, identify gaps\n` +
+          `5. **Asset preparation**: Download/optimize images, create missing assets\n` +
+          `6. **Implementation**: Build with extracted data as foundation\n\n`;
+
+        createAuditLog('info', 'operation_completed', {
+          tool: 'analyze_existing_site',
+          url: args.url
+        });
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: guidance
+          }]
+        };
+      } catch (error: any) {
+        createAuditLog('error', 'tool_request_failed', {
+          tool: 'analyze_existing_site',
+          error: error.message,
+          code: error.code
+        });
+
+        if (error.name === 'TypeError' && error.message.includes('Invalid URL')) {
+          throw new McpError(
+            ErrorCode.InvalidRequest,
+            `Invalid URL provided: ${args.url}. Please provide a valid HTTP/HTTPS URL.`
+          );
+        }
+
+        if (error instanceof McpError) {
+          throw error;
+        }
+
+        throw new McpError(
+          ErrorCode.InternalError,
+          ErrorHandler.formatSafeErrorMessage(error, 'analyze_existing_site')
         );
       }
     }

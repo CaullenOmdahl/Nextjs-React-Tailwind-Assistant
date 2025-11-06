@@ -48,6 +48,10 @@ export interface LibraryDocsArgs {
   library_name: string;
 }
 
+export interface AnalyzeSiteArgs {
+  url: string;
+}
+
 export interface ValidationResult {
   isValid: boolean;
   sanitizedValue?: string;
