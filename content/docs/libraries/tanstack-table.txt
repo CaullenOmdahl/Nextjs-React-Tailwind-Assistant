@@ -1,0 +1,603 @@
+# TanStack Table
+
+**Headless UI for building powerful tables & datagrids**
+
+TanStack Table (formerly React Table) is a headless, framework-agnostic table library that provides powerful features for building complex data tables with sorting, filtering, pagination, row selection, and more. It works with React, Vue, Solid, Svelte, and vanilla JavaScript.
+
+## Installation
+
+```bash
+npm install @tanstack/react-table
+```
+
+## Core Concepts
+
+- **Headless**: No markup or styles included - complete UI control
+- **Framework Agnostic**: Core logic works across frameworks
+- **Type-safe**: Full TypeScript support with automatic inference
+- **Composable**: Build tables with only the features you need
+- **Extensible**: Plugin system for custom functionality
+
+## Basic Table Setup
+
+### Simple Table
+
+```typescript
+import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table'
+import React from 'react'
+
+interface Person {
+  id: number
+  name: string
+  age: number
+}
+
+function BasicTable() {
+  const data: Person[] = [
+    { id: 1, name: 'Alice', age: 30 },
+    { id: 2, name: 'Bob', age: 25 },
+  ]
+
+  const columns: ColumnDef<Person>[] = [
+    { header: 'ID', accessorKey: 'id' },
+    { header: 'Name', accessorKey: 'name' },
+    { header: 'Age', accessorKey: 'age' },
+  ]
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
+  return (
+    <table>
+      <thead>
+        {table.getHeaderGroups().map(headerGroup => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map(header => (
+              <th key={header.id}>
+                {header.isPlaceholder ? null : (
+                  <span>{header.column.columnDef.header as string}</span>
+                )}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map(row => (
+          <tr key={row.id}>
+            {row.getVisibleCells().map(cell => (
+              <td key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
+```
+
+## Column Definitions
+
+### Accessor Columns
+
+```typescript
+const columns: ColumnDef<Person>[] = [
+  {
+    accessorKey: 'firstName',
+    header: 'First Name',
+    cell: info => info.getValue(),
+  },
+  {
+    accessorFn: row => row.lastName,
+    id: 'lastName',
+    header: () => <span>Last Name</span>,
+    cell: info => info.getValue(),
+  },
+  {
+    accessorKey: 'age',
+    header: () => 'Age',
+  },
+]
+```
+
+### Custom Cell Rendering
+
+```typescript
+{
+  accessorKey: 'status',
+  header: 'Status',
+  cell: ({ getValue }) => {
+    const status = getValue()
+    return (
+      <span className={status === 'active' ? 'text-green-600' : 'text-red-600'}>
+        {status}
+      </span>
+    )
+  },
+}
+```
+
+## Sorting
+
+### Client-Side Sorting
+
+```typescript
+import { useReactTable, getCoreRowModel, getSortedRowModel } from '@tanstack/react-table'
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  initialState: {
+    sorting: [
+      { id: 'age', desc: true },
+    ],
+  },
+})
+
+// In your header rendering
+<th key={header.id} onClick={header.column.getToggleSortingHandler()}>
+  {flexRender(header.column.columnDef.header, header.getContext())}
+  {{
+    asc: ' 🔼',
+    desc: ' 🔽',
+  }[header.column.getIsSorted() as string] ?? null}
+</th>
+```
+
+### Enable Sorting Per Column
+
+```typescript
+const columns: ColumnDef<Person>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+    enableSorting: true,
+  },
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    enableSorting: true,
+  },
+]
+```
+
+## Filtering
+
+### Column Filters
+
+```typescript
+import { getFilteredRowModel } from '@tanstack/react-table'
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  initialState: {
+    columnFilters: [],
+  },
+})
+
+// Filter input for each column
+{header.column.getCanFilter() ? (
+  <div>
+    <input
+      type="text"
+      value={(header.column.getFilterValue() ?? '') as string}
+      onChange={e => header.column.setFilterValue(e.target.value)}
+      placeholder={`Filter ${header.column.id}`}
+    />
+  </div>
+) : null}
+```
+
+### Custom Filter Functions
+
+```typescript
+const columns: ColumnDef<Person>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    filterFn: 'includesString', // Built-in filter function
+  },
+  {
+    accessorKey: 'age',
+    header: 'Age',
+    filterFn: 'inNumberRange',
+  },
+]
+```
+
+### Global Filtering
+
+```typescript
+import { getFilteredRowModel } from '@tanstack/react-table'
+
+const [globalFilter, setGlobalFilter] = React.useState('')
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  state: {
+    globalFilter,
+  },
+  onGlobalFilterChange: setGlobalFilter,
+})
+```
+
+## Pagination
+
+### Client-Side Pagination
+
+```typescript
+import { getPaginationRowModel, PaginationState } from '@tanstack/react-table'
+
+const [pagination, setPagination] = React.useState<PaginationState>({
+  pageIndex: 0,
+  pageSize: 10,
+})
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  onPaginationChange: setPagination,
+  state: {
+    pagination,
+  },
+})
+
+// Pagination controls
+<div className="flex items-center gap-2">
+  <button
+    onClick={() => table.firstPage()}
+    disabled={!table.getCanPreviousPage()}
+  >
+    {'<<'}
+  </button>
+  <button
+    onClick={() => table.previousPage()}
+    disabled={!table.getCanPreviousPage()}
+  >
+    {'<'}
+  </button>
+  <button
+    onClick={() => table.nextPage()}
+    disabled={!table.getCanNextPage()}
+  >
+    {'>'}
+  </button>
+  <button
+    onClick={() => table.lastPage()}
+    disabled={!table.getCanNextPage()}
+  >
+    {'>>'}
+  </button>
+  <span>
+    Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+  </span>
+  <select
+    value={table.getState().pagination.pageSize}
+    onChange={e => table.setPageSize(Number(e.target.value))}
+  >
+    {[10, 20, 30, 40, 50].map(pageSize => (
+      <option key={pageSize} value={pageSize}>
+        Show {pageSize}
+      </option>
+    ))}
+  </select>
+</div>
+```
+
+## Row Selection
+
+### Enable Row Selection
+
+```typescript
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  enableRowSelection: true,
+})
+
+// Select all checkbox in header
+const columns: ColumnDef<Person>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <input
+        type="checkbox"
+        checked={table.getIsAllRowsSelected()}
+        onChange={table.getToggleAllRowsSelectedHandler()}
+      />
+    ),
+    cell: ({ row }) => (
+      <input
+        type="checkbox"
+        checked={row.getIsSelected()}
+        onChange={row.getToggleSelectedHandler()}
+      />
+    ),
+  },
+  // ... other columns
+]
+
+// Get selected rows
+const selectedRows = table.getSelectedRowModel().rows
+```
+
+## Server-Side Operations
+
+### Server-Side Sorting, Filtering, and Pagination
+
+```typescript
+const [sorting, setSorting] = useState([])
+const [columnFilters, setColumnFilters] = useState([])
+const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
+const [data, setData] = useState([])
+const [rowCount, setRowCount] = useState(0)
+
+useEffect(() => {
+  const fetchData = async () => {
+    const params = new URLSearchParams()
+    params.append('page', pagination.pageIndex.toString())
+    params.append('size', pagination.pageSize.toString())
+
+    sorting.forEach(sort => {
+      params.append('sort', `${sort.id}:${sort.desc ? 'desc' : 'asc'}`)
+    })
+
+    columnFilters.forEach(filter => {
+      params.append(`filter[${filter.id}]`, filter.value)
+    })
+
+    const response = await fetch(`/api/users?${params}`)
+    const json = await response.json()
+
+    setData(json.data)
+    setRowCount(json.totalRows)
+  }
+
+  fetchData()
+}, [sorting, columnFilters, pagination])
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  manualSorting: true,
+  manualFiltering: true,
+  manualPagination: true,
+  rowCount,
+  state: {
+    sorting,
+    columnFilters,
+    pagination,
+  },
+  onSortingChange: setSorting,
+  onColumnFiltersChange: setColumnFilters,
+  onPaginationChange: setPagination,
+})
+```
+
+## Column Visibility
+
+```typescript
+const [columnVisibility, setColumnVisibility] = useState({})
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  state: {
+    columnVisibility,
+  },
+  onColumnVisibilityChange: setColumnVisibility,
+})
+
+// Toggle column visibility
+<button onClick={() => table.getColumn('age').toggleVisibility()}>
+  Toggle Age Column
+</button>
+
+// Show/hide all columns
+<button onClick={() => table.toggleAllColumnsVisible()}>
+  Toggle All Columns
+</button>
+```
+
+## Column Resizing
+
+```typescript
+import { getColumnResizingHeader } from '@tanstack/react-table'
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  columnResizeMode: 'onChange',
+})
+
+// In header cell
+<th
+  key={header.id}
+  style={{ width: header.getSize() }}
+>
+  {header.column.columnDef.header}
+  <div
+    onMouseDown={header.getResizeHandler()}
+    onTouchStart={header.getResizeHandler()}
+    className="resizer"
+  />
+</th>
+```
+
+## Row Expansion
+
+```typescript
+import { getExpandedRowModel } from '@tanstack/react-table'
+
+const table = useReactTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  getExpandedRowModel: getExpandedRowModel(),
+})
+
+// Expand button in cell
+{row.getCanExpand() ? (
+  <button onClick={row.getToggleExpandedHandler()}>
+    {row.getIsExpanded() ? '👇' : '👉'}
+  </button>
+) : null}
+
+// Render expanded content
+{row.getIsExpanded() && (
+  <tr>
+    <td colSpan={columns.length}>
+      {renderExpandedContent(row.original)}
+    </td>
+  </tr>
+)}
+```
+
+## Virtualization
+
+For large datasets, use virtual scrolling:
+
+```typescript
+import { useVirtualizer } from '@tanstack/react-virtual'
+
+const tableContainerRef = React.useRef<HTMLDivElement>(null)
+
+const rowVirtualizer = useVirtualizer({
+  count: table.getRowModel().rows.length,
+  getScrollElement: () => tableContainerRef.current,
+  estimateSize: () => 35,
+  overscan: 10,
+})
+
+const virtualRows = rowVirtualizer.getVirtualItems()
+
+<div ref={tableContainerRef} style={{ height: '600px', overflow: 'auto' }}>
+  <table>
+    <thead>{/* headers */}</thead>
+    <tbody style={{ height: `${rowVirtualizer.getTotalSize()}px` }}>
+      {virtualRows.map(virtualRow => {
+        const row = table.getRowModel().rows[virtualRow.index]
+        return (
+          <tr
+            key={row.id}
+            style={{
+              height: `${virtualRow.size}px`,
+              transform: `translateY(${virtualRow.start}px)`,
+            }}
+          >
+            {/* cells */}
+          </tr>
+        )
+      })}
+    </tbody>
+  </table>
+</div>
+```
+
+## TypeScript Support
+
+TanStack Table has excellent TypeScript support with automatic type inference:
+
+```typescript
+type Person = {
+  firstName: string
+  lastName: string
+  age: number
+  visits: number
+  status: 'relationship' | 'complicated' | 'single'
+  progress: number
+}
+
+const columns: ColumnDef<Person>[] = [
+  // TypeScript knows the shape of Person
+  {
+    accessorKey: 'firstName', // Autocomplete available
+    cell: info => info.getValue(), // Typed as string
+  },
+]
+
+const table = useReactTable<Person>({
+  data, // Must be Person[]
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+})
+```
+
+## Best Practices
+
+1. **Memoize data and columns** - Use `React.useMemo` to prevent unnecessary re-renders
+2. **Use accessorKey when possible** - Simpler than accessorFn for basic access
+3. **Enable only needed features** - Don't include row models you won't use
+4. **Server-side for large datasets** - Use manual pagination/sorting for 10k+ rows
+5. **Virtualize large tables** - Use @tanstack/react-virtual for smooth scrolling
+6. **Type your data** - TypeScript provides excellent autocompletion and safety
+7. **Handle loading states** - Show skeletons/spinners during data fetching
+
+## Common Patterns
+
+### Editable Cells
+
+```typescript
+const EditableCell = ({ getValue, row, column, table }) => {
+  const initialValue = getValue()
+  const [value, setValue] = React.useState(initialValue)
+
+  const onBlur = () => {
+    table.options.meta?.updateData(row.index, column.id, value)
+  }
+
+  return (
+    <input
+      value={value}
+      onChange={e => setValue(e.target.value)}
+      onBlur={onBlur}
+    />
+  )
+}
+```
+
+### Grouped Headers
+
+```typescript
+const columns: ColumnDef<Person>[] = [
+  {
+    header: 'Name',
+    columns: [
+      { accessorKey: 'firstName', header: 'First Name' },
+      { accessorKey: 'lastName', header: 'Last Name' },
+    ],
+  },
+  {
+    header: 'Info',
+    columns: [
+      { accessorKey: 'age', header: 'Age' },
+      { accessorKey: 'visits', header: 'Visits' },
+    ],
+  },
+]
+```
+
+## Resources
+
+- Official Docs: https://tanstack.com/table/latest
+- GitHub: https://github.com/TanStack/table
+- Examples: https://tanstack.com/table/latest/docs/framework/react/examples

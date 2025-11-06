@@ -42,7 +42,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.2.1",
+    version: "0.3.0",
   });
 
   // Register resources for documentation
@@ -731,7 +731,7 @@ export default function createServer() {
     "list_starter_kits",
     {
       title: "List Template Starter Kits",
-      description: "List all available template starter kits with their features, use cases, and complexity levels. Includes: Documentation Site, SaaS Marketing, Portfolio & Blog, Agency/Studio, Content Platform, Event/Conference, App Marketing, Podcast/Media, and CMS-Integrated templates.",
+      description: "List all available template starter kits with their features, use cases, and complexity levels. Each template includes architectural decision guidance that teaches you how to choose the right libraries and patterns for your needs, rather than prescribing specific solutions. Includes: Documentation Site, SaaS Marketing, Portfolio & Blog, Agency/Studio, Content Platform, Event/Conference, App Marketing, Podcast/Media, CMS-Integrated, Pitch Deck, Admin Dashboard, and E-commerce templates.",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -751,7 +751,7 @@ export default function createServer() {
         const kits = data.starterKits;
 
         let output = `# Template Starter Kits (${kits.length} total)\n\n`;
-        output += `Pre-configured template setups for different use cases. Each includes library recommendations, features, and complexity ratings.\n\n`;
+        output += `Template starter kits with architectural decision guidance. Each template teaches you how to make informed choices about libraries, patterns, and approaches rather than prescribing specific solutions.\n\n`;
 
         for (const kit of kits) {
           output += `## ${kit.name}\n`;
@@ -804,7 +804,7 @@ export default function createServer() {
     "get_starter_kit",
     {
       title: "Get Starter Kit Details",
-      description: "Get detailed information about a specific template starter kit including all features, libraries, dependencies, and implementation guidance. Use list_starter_kits to see available template IDs.",
+      description: "Get detailed information about a specific template starter kit including features, architectural decisions with tradeoffs, alternative approaches, and implementation guidance. Each template teaches decision-making frameworks rather than prescribing specific libraries. Use list_starter_kits to see available template IDs.",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -853,18 +853,65 @@ export default function createServer() {
 
         output += `## Features\n${kit.features.map((f: string) => `- ${f}`).join('\n')}\n\n`;
 
-        output += `## Required Libraries\n\n`;
-        for (const [category, libs] of Object.entries(kit.libraries)) {
-          output += `### ${category.charAt(0).toUpperCase() + category.slice(1)}\n`;
-          output += `\`\`\`bash\nnpm install ${(libs as string[]).join(' ')}\n\`\`\`\n\n`;
+        // Architectural Decisions (new format)
+        if (kit.architecturalDecisions) {
+          output += `## Architectural Decisions\n\n`;
+          output += `This template requires key architectural choices. Below are the main decisions with guidance on choosing the right approach for your needs.\n\n`;
+
+          for (const [decisionKey, decisionData] of Object.entries(kit.architecturalDecisions)) {
+            const decision = decisionData as any;
+            const title = decisionKey.replace(/([A-Z])/g, ' $1').replace(/^./, (str: string) => str.toUpperCase());
+
+            output += `### ${title}\n\n`;
+            output += `**Decision**: ${decision.decision}\n\n`;
+            output += `**Rationale**: ${decision.rationale}\n\n`;
+
+            if (decision.patternReference && decision.patternReference !== "None (framework choice)" && !decision.patternReference.startsWith("None")) {
+              output += `📚 **Learn more**: See \`${decision.patternReference}\` in the patterns documentation\n\n`;
+            }
+
+            if (decision.alternativeApproaches && decision.alternativeApproaches.length > 0) {
+              output += `**Alternative approaches**:\n`;
+              decision.alternativeApproaches.forEach((alt: string) => {
+                output += `- ${alt}\n`;
+              });
+              output += `\n`;
+            }
+
+            if (decision.tradeoffs) {
+              output += `**Tradeoffs**: ${decision.tradeoffs}\n\n`;
+            }
+
+            output += `---\n\n`;
+          }
         }
 
-        output += `## Getting Started\n\n`;
-        output += `1. Install Next.js and create your project\n`;
-        output += `2. Install the required libraries listed above\n`;
-        output += `3. Configure Tailwind CSS in your project\n`;
-        output += `4. Use \`get_catalyst_component\` to retrieve UI components\n`;
-        output += `5. Use \`get_library_docs\` to learn about specific libraries\n`;
+        // Recommended Libraries (as examples, not requirements)
+        if (kit.recommendedLibraries) {
+          output += `## Recommended Libraries\n\n`;
+          output += `> **Note**: ${kit.recommendedLibraries.note || "These are examples based on common choices. Choose based on your architectural decisions above."}\n\n`;
+
+          for (const [category, libs] of Object.entries(kit.recommendedLibraries)) {
+            if (category === 'note') continue; // Skip the note field
+            output += `### ${category.charAt(0).toUpperCase() + category.slice(1)}\n`;
+            output += `\`\`\`bash\n# Example: ${(libs as string[]).join(' ')}\n\`\`\`\n\n`;
+          }
+        } else if (kit.libraries) {
+          // Fallback for templates not yet refactored
+          output += `## Libraries\n\n`;
+          for (const [category, libs] of Object.entries(kit.libraries)) {
+            output += `### ${category.charAt(0).toUpperCase() + category.slice(1)}\n`;
+            output += `\`\`\`bash\nnpm install ${(libs as string[]).join(' ')}\n\`\`\`\n\n`;
+          }
+        }
+
+        output += `## Implementation Guidance\n\n`;
+        output += `1. Review the architectural decisions above and choose approaches that fit your requirements\n`;
+        output += `2. Use the pattern documentation (referenced above) for deeper understanding\n`;
+        output += `3. Install your chosen libraries based on the decisions you made\n`;
+        output += `4. Use \`get_catalyst_component\` to retrieve pre-built UI components\n`;
+        output += `5. Use \`get_library_docs\` to learn about specific libraries you choose\n`;
+        output += `6. Refer to Next.js, React, and Tailwind documentation via the search tools\n`;
 
         createAuditLog('info', 'operation_completed', {
           tool: 'get_starter_kit',

@@ -1,0 +1,353 @@
+# React Hook Form
+
+**Performant, flexible, and extensible forms with easy-to-use validation**
+
+React Hook Form is a performance-oriented form validation library for React applications, providing a set of hooks for efficient form management and re-render optimization.
+
+## Installation
+
+```bash
+npm install react-hook-form
+```
+
+## Core Concepts
+
+### useForm Hook
+
+The `useForm` hook is the primary way to manage form state and validation. It returns methods for registering inputs, handling submission, and accessing form state.
+
+```jsx
+import { useForm } from 'react-hook-form';
+
+function App() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('firstName')} />
+      <input {...register('lastName', { required: true })} />
+      {errors.lastName && <p>Last name is required.</p>}
+      <input {...register('age', { pattern: /\d+/ })} />
+      {errors.age && <p>Please enter number for age.</p>}
+      <input type="submit" />
+    </form>
+  );
+}
+```
+
+## Basic Usage
+
+### Registering Inputs
+
+Use the `register` function to connect inputs to the form state:
+
+```jsx
+<input {...register('fieldName')} />
+
+// With validation
+<input {...register('email', {
+  required: 'Email is required',
+  pattern: {
+    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    message: 'Invalid email address'
+  }
+})} />
+```
+
+### Validation Rules
+
+Common validation options:
+- `required`: boolean or error message
+- `pattern`: regex pattern with optional message
+- `minLength` / `maxLength`: length constraints
+- `min` / `max`: value constraints
+- `validate`: custom validation function
+
+```jsx
+<input {...register('username', {
+  required: 'Username is required',
+  minLength: {
+    value: 3,
+    message: 'Username must be at least 3 characters'
+  },
+  validate: async (value) => {
+    const available = await checkAvailability(value);
+    return available || 'Username is taken';
+  }
+})} />
+```
+
+## Controller Component
+
+For integrating controlled components (Material-UI, React-Select, etc.):
+
+```jsx
+import { useForm, Controller } from 'react-hook-form';
+import Select from 'react-select';
+
+function App() {
+  const { handleSubmit, control } = useForm();
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ];
+
+  const onSubmit = (data) => console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="selectField"
+        control={control}
+        render={({ field }) => (
+          <Select {...field} options={options} />
+        )}
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## FormProvider
+
+For deeply nested forms, use FormProvider to access form context:
+
+```jsx
+import { useForm, FormProvider, useFormContext } from 'react-hook-form';
+
+function NestedInput() {
+  const { register } = useFormContext();
+  return <input {...register('test')} />;
+}
+
+function App() {
+  const methods = useForm();
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <NestedInput />
+        <button type="submit">Submit</button>
+      </form>
+    </FormProvider>
+  );
+}
+```
+
+## Integration with Schema Validators
+
+### Zod Integration
+
+```jsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+const schema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  age: z.number().min(18, 'Must be 18 or older')
+});
+
+function App() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema)
+  });
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('firstName')} />
+      {errors.firstName && <p>{errors.firstName.message}</p>}
+
+      <input {...register('lastName')} />
+      {errors.lastName && <p>{errors.lastName.message}</p>}
+
+      <input type="number" {...register('age', { valueAsNumber: true })} />
+      {errors.age && <p>{errors.age.message}</p>}
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## useForm Options
+
+Key configuration options:
+
+```typescript
+const { register, handleSubmit } = useForm({
+  mode: 'onChange',              // When to validate (onChange, onBlur, onSubmit, onTouched, all)
+  reValidateMode: 'onChange',    // When to re-validate
+  defaultValues: {},             // Default form values
+  resolver: zodResolver(schema), // External validation schema
+  shouldFocusError: true,        // Auto-focus on first error
+  shouldUnregister: false,       // Keep values after unmount
+  delayError: 0,                 // Delay error display (ms)
+});
+```
+
+## Watching Values
+
+Monitor specific form fields:
+
+```jsx
+const { register, watch } = useForm();
+
+// Watch single field
+const firstName = watch('firstName');
+
+// Watch multiple fields
+const { firstName, lastName } = watch(['firstName', 'lastName']);
+
+// Watch all fields
+const allValues = watch();
+```
+
+## Form State
+
+Access form state information:
+
+```jsx
+const { formState } = useForm();
+
+const {
+  isDirty,      // Form has been modified
+  dirtyFields,  // Object of modified fields
+  touchedFields,// Object of touched fields
+  isSubmitted,  // Form has been submitted
+  isSubmitting, // Form is currently submitting
+  isValid,      // Form is valid
+  isValidating, // Form is validating
+  errors,       // Validation errors
+} = formState;
+```
+
+## Error Handling
+
+```jsx
+const {
+  register,
+  handleSubmit,
+  setError,
+  clearErrors,
+  formState: { errors }
+} = useForm();
+
+// Manual error setting
+setError('username', {
+  type: 'manual',
+  message: 'Username is already taken'
+});
+
+// Clear specific error
+clearErrors('username');
+
+// Clear all errors
+clearErrors();
+```
+
+## Best Practices
+
+1. **Use uncontrolled components** when possible for better performance
+2. **Leverage resolvers** (Zod, Yup) for complex validation
+3. **Memoize validation functions** to avoid re-creating them
+4. **Use Controller** only when necessary (for third-party UI libraries)
+5. **Avoid unnecessary re-renders** by using watch() sparingly
+6. **Set defaultValues** to avoid undefined controlled component warnings
+
+## Performance Tips
+
+- React Hook Form minimizes re-renders by isolating component updates
+- Only subscribed components re-render on value changes
+- Use `useWatch` for granular subscriptions instead of `watch()`
+- Disable native validation with `noValidate` on form element
+
+## Common Patterns
+
+### Dynamic Fields
+
+```jsx
+import { useFieldArray } from 'react-hook-form';
+
+function DynamicForm() {
+  const { control, register } = useForm();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'items'
+  });
+
+  return (
+    <>
+      {fields.map((field, index) => (
+        <div key={field.id}>
+          <input {...register(`items.${index}.name`)} />
+          <button onClick={() => remove(index)}>Remove</button>
+        </div>
+      ))}
+      <button onClick={() => append({ name: '' })}>Add</button>
+    </>
+  );
+}
+```
+
+### Async Validation
+
+```jsx
+<input {...register('username', {
+  validate: async (value) => {
+    const response = await fetch(`/api/check-username/${value}`);
+    const isAvailable = await response.json();
+    return isAvailable || 'Username is taken';
+  }
+})} />
+```
+
+### Conditional Validation
+
+```jsx
+const { register, watch } = useForm();
+const country = watch('country');
+
+<input {...register('zipCode', {
+  required: country === 'US',
+  pattern: country === 'US' ? /^\d{5}$/ : undefined
+})} />
+```
+
+## TypeScript Support
+
+React Hook Form has excellent TypeScript support:
+
+```typescript
+type FormData = {
+  firstName: string;
+  lastName: string;
+  age: number;
+};
+
+const { register, handleSubmit } = useForm<FormData>();
+
+const onSubmit = (data: FormData) => {
+  // data is fully typed
+  console.log(data.firstName);
+};
+```
+
+## Resources
+
+- Official Docs: https://react-hook-form.com/
+- GitHub: https://github.com/react-hook-form/react-hook-form
+- Resolver Libraries: @hookform/resolvers (Zod, Yup, Joi support)
