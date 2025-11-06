@@ -43,7 +43,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.4.3",
+    version: "0.4.4",
   });
 
   // Register resources for documentation
@@ -304,12 +304,12 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as SearchDocsArgs;
+      const args = (request.params?.arguments || {}) as SearchDocsArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'search_nextjs_docs',
-        query: args.query,
-        limit: args.limit,
+        query: args?.query || 'undefined',
+        limit: args?.limit,
         timestamp: new Date().toISOString()
       });
 
@@ -371,12 +371,12 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as SearchDocsArgs;
+      const args = (request.params?.arguments || {}) as SearchDocsArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'search_tailwind_docs',
-        query: args.query,
-        limit: args.limit,
+        query: args?.query || 'undefined',
+        limit: args?.limit,
         timestamp: new Date().toISOString()
       });
 
@@ -437,11 +437,11 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as CatalystComponentArgs;
+      const args = (request.params?.arguments || {}) as CatalystComponentArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'get_catalyst_component',
-        component_name: args.component_name,
+        component_name: args?.component_name || 'undefined',
         timestamp: new Date().toISOString()
       });
 
@@ -592,12 +592,12 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as PatternArgs;
+      const args = (request.params?.arguments || {}) as PatternArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'get_pattern',
-        category: args.category,
-        pattern_name: args.pattern_name,
+        category: args?.category || 'undefined',
+        pattern_name: args?.pattern_name || 'undefined',
         timestamp: new Date().toISOString()
       });
 
@@ -1112,11 +1112,11 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as StarterKitArgs;
+      const args = (request.params?.arguments || {}) as StarterKitArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'get_starter_kit',
-        id: args.id,
+        id: args?.id || 'undefined',
         timestamp: new Date().toISOString()
       });
 
@@ -1263,7 +1263,7 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as RecommendTemplateArgs;
+      const args = (request.params?.arguments || {}) as RecommendTemplateArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'recommend_template',
@@ -1349,11 +1349,11 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as QuestionnaireArgs;
+      const args = (request.params?.arguments || {}) as QuestionnaireArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'answer_questionnaire',
-        answersProvided: Object.keys(args.answers),
+        answersProvided: args?.answers ? Object.keys(args.answers) : [],
         timestamp: new Date().toISOString()
       });
 
@@ -1439,11 +1439,11 @@ export default function createServer() {
       }
     },
     async (request) => {
-      const args = request.params.arguments as LibraryDocsArgs;
+      const args = (request.params?.arguments || {}) as LibraryDocsArgs;
 
       createAuditLog('info', 'tool_request', {
         tool: 'get_library_docs',
-        library: args.library_name,
+        library: args?.library_name || 'undefined',
         timestamp: new Date().toISOString()
       });
 
