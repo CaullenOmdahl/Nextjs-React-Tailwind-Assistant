@@ -124,6 +124,27 @@
             "Tailwind dark: variant only"
           ],
           "tradeoffs": "next-themes is easiest and handles edge cases. Custom gives more control. CSS-only can't persist choice."
+        },
+        "colorPalette": {
+          "decision": "Professional color palette for technical documentation",
+          "rationale": "Documentation sites need colors that enhance readability, convey trust, and don't distract from content. Professional blues/grays with subtle accents create credibility while maintaining focus on the technical content.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Technical/software documentation (trust, clarity)",
+            "Target audience: Developers and technical users",
+            "Readability is paramount (high contrast ratios)",
+            "Syntax highlighting must work with color scheme",
+            "Dark mode requires separate palette",
+            "Minimal color usage keeps focus on content"
+          ],
+          "alternativeApproaches": [
+            "Blue-based palette (trust, technology, most common for docs)",
+            "Neutral grays with accent (minimal, Apple-style)",
+            "Purple/indigo (modern tech, developer tools)",
+            "Green accents (success states, positive associations)"
+          ],
+          "tradeoffs": "Blue is safest but common. Neutral is most minimal but can feel bland. Purple is trendy but may not suit all audiences. Consider brand identity vs conventions.",
+          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (documentation site, technical audience, professional scheme) and let the agent analyze the comprehensive color guidance (~20KB) to recommend specific palettes with rationale."
         }
       },
       "colorScheme": "professional",
@@ -336,6 +357,30 @@
             "Custom HTML table (simple, limited features)"
           ],
           "tradeoffs": "TanStack Table is industry standard and very flexible. AG Grid is powerful but has licensing costs. Custom tables are simple but lack features. TanStack Table is recommended for most cases."
+        },
+        "colorPalette": {
+          "decision": "Modern, trustworthy color palette for e-commerce",
+          "rationale": "E-commerce requires colors that build trust (checkout security), create urgency (CTAs, sales), and showcase products effectively. Color psychology directly impacts conversion rates - blues for trust, greens for action, warm accents for urgency.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: E-commerce/retail (trust, conversion, product focus)",
+            "Target audience: Online shoppers (varied demographics)",
+            "Conversion-focused design (CTA colors critical)",
+            "Product photos must look accurate (neutral backgrounds)",
+            "Accessibility (4.5:1 contrast for text)",
+            "Brand differentiation in crowded market",
+            "Trust indicators (secure checkout, reviews)",
+            "Seasonal flexibility (sales, holidays)"
+          ],
+          "alternativeApproaches": [
+            "Blue + green palette (trust + action, Amazon/Shopify style)",
+            "Black/white + accent (premium, fashion-forward, Apple style)",
+            "Warm palette with orange/red CTAs (urgency, food/lifestyle)",
+            "Pastel modern (millennial/Gen-Z appeal, trendy brands)",
+            "Bold, saturated colors (budget/value positioning)"
+          ],
+          "tradeoffs": "Blue/green is safest for trust but common. Premium black/white works for luxury but can feel cold. Warm colors drive urgency but may not suit all products. Pastels are trendy but can look cheap if not done well. Consider target market and product category.",
+          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (e-commerce site, product category, target demographic, premium vs budget positioning) and let the agent analyze comprehensive color psychology and e-commerce best practices to recommend conversion-optimized palettes."
         }
       },
       "colorScheme": "modern",
@@ -535,6 +580,28 @@
             "TypeORM (traditional ORM, mature)"
           ],
           "tradeoffs": "Prisma offers best developer experience. Drizzle is lighter and faster. Kysely for SQL control. Choose based on team preference and complexity."
+        },
+        "colorPalette": {
+          "decision": "Professional, data-focused color palette for admin dashboard",
+          "rationale": "Admin dashboards prioritize clarity and efficiency over aesthetics. Colors should support data visualization (charts, graphs), indicate status clearly (success/warning/error), and reduce eye strain during extended use. Professional blues/grays convey authority and trust.",
+          "patternReference": "color-design-patterns.md",
+          "considerations": [
+            "Industry: Internal tools/admin (professionalism, clarity)",
+            "Target audience: Power users, data analysts, administrators",
+            "Data visualization compatibility (chart colors must be distinct)",
+            "Status indication (success=green, warning=yellow, error=red)",
+            "Extended usage (reduced eye strain, dark mode essential)",
+            "Information density (colors help organize complex interfaces)",
+            "Semantic meaning (consistent color coding across features)"
+          ],
+          "alternativeApproaches": [
+            "Blue-gray professional (corporate standard, Salesforce/Stripe style)",
+            "Neutral minimal (focuses on data, reduces distraction)",
+            "Purple/indigo modern (developer tools, contemporary SaaS)",
+            "Custom brand colors (for white-label products)"
+          ],
+          "tradeoffs": "Blue-gray is safest and most familiar but can feel generic. Neutral is most minimal but requires strong typography. Purple is modern and distinctive but may not suit traditional industries. Consider whether this is internal-only or customer-facing admin portal.",
+          "recommendedWorkflow": "⚡ RECOMMENDED: Use get_color_design_guidance tool with a subagent. Provide context (admin dashboard, internal vs external users, data-heavy interface, dark mode requirement) and let the agent analyze professional color palettes that support data visualization and long-term usability."
         }
       },
       "colorScheme": "professional",
