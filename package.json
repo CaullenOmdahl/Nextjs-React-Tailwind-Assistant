@@ -1,6 +1,6 @@
 {
   "name": "nextjs-react-tailwind-assistant-mcp-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Provides Next.js, React, and Tailwind CSS documentation, Catalyst UI components, and template patterns.",
   "homepage": "https://github.com/CaullenOmdahl/Nextjs-React-Tailwind-Assistant",
   "repository": {

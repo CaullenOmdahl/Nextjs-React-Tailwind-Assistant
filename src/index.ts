@@ -36,7 +36,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.1.0",
+    version: "0.1.1",
   });
 
   // Register resources for documentation
