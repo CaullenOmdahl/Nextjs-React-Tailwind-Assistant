@@ -43,7 +43,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.4.4",
+    version: "0.4.5",
   });
 
   // Register resources for documentation
@@ -298,10 +298,10 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         query: z.string().min(2).max(100).describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
         limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as SearchDocsArgs;
@@ -365,10 +365,10 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         query: z.string().min(2).max(100).describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
         limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as SearchDocsArgs;
@@ -432,9 +432,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         component_name: z.string().min(1).max(50).describe("Name of the Catalyst component (e.g., 'button', 'dialog', 'table')")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as CatalystComponentArgs;
@@ -586,10 +586,10 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         category: z.enum(['layouts', 'pages', 'features']).describe("Pattern category: 'layouts', 'pages', or 'features'"),
         pattern_name: z.string().min(1).max(50).describe("Name of the pattern (e.g., 'app-header', 'pricing-page', 'dark-mode')")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as PatternArgs;
@@ -815,9 +815,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         url: z.string().url().describe("URL of the existing website or Google Business listing to analyze")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as AnalyzeSiteArgs;
@@ -1107,9 +1107,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         id: z.string().min(1).max(50).describe("The starter kit ID (e.g., 'documentation', 'saas-marketing', 'portfolio-blog')")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as StarterKitArgs;
@@ -1254,13 +1254,13 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         purpose: z.string().optional().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content"),
         colorPreference: z.string().optional().describe("Color preference: professional, vibrant, creative, minimal, warm, modern"),
         animations: z.string().optional().describe("Animation level: minimal, moderate, high"),
         features: z.array(z.string()).optional().describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce"),
         complexity: z.string().optional().describe("Complexity preference: beginner, intermediate, advanced")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as RecommendTemplateArgs;
@@ -1344,9 +1344,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         answers: z.record(z.union([z.string(), z.array(z.string())])).describe("Questionnaire answers as key-value pairs. Keys: purpose, colorPreference, animations, features (array), complexity")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as QuestionnaireArgs;
@@ -1434,9 +1434,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: {
+      inputSchema: z.object({
         library_name: z.string().min(1).max(50).describe("Library name (e.g., 'framer-motion', 'mdx', 'headless-ui', 'next-themes', 'clsx', 'tailwind-plugins')")
-      }
+      })
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as LibraryDocsArgs;

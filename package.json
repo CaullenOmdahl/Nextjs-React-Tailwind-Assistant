@@ -1,6 +1,6 @@
 {
   "name": "nextjs-react-tailwind-assistant-mcp-server",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Comprehensive AI companion for Next.js + React + Tailwind CSS with complete documentation, 27 Catalyst components, 13 template starter kits (including free-hand meta-template), library docs, and intelligent template recommendations with color science integration.",
   "homepage": "https://github.com/CaullenOmdahl/Nextjs-React-Tailwind-Assistant",
   "repository": {
