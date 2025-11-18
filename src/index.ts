@@ -54,7 +54,7 @@ export default function createServer(config?: Config) {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.5.3",
+    version: "0.5.4",
   });
 
   // Register resources for documentation
@@ -144,12 +144,12 @@ export default function createServer(config?: Config) {
       title: "Build Landing Page",
       description: "Complete workflow to build a professional landing page with Next.js, Tailwind CSS, and Catalyst UI components. Guides you through template selection, component retrieval, and pattern implementation.",
       argsSchema: {
-        pageType: z.string().optional()
-          .describe("Type of landing page section: hero, pricing, features, or about (default: hero)"),
-        useAnimations: z.string().optional()
-          .describe("Include Framer Motion animations: true or false (default: true)"),
-        darkMode: z.string().optional()
-          .describe("Include dark mode support: true or false (default: true)")
+        pageType: z.string()
+          .describe("Type of landing page section: hero, pricing, features, or about (default: hero)").optional(),
+        useAnimations: z.string()
+          .describe("Include Framer Motion animations: true or false (default: true)").optional(),
+        darkMode: z.string()
+          .describe("Include dark mode support: true or false (default: true)").optional()
       }
     },
     async (args) => {
@@ -211,10 +211,10 @@ Would you like me to proceed with retrieving these resources?`
       title: "Setup Dashboard Layout",
       description: "Complete workflow to build a dashboard layout with sidebar navigation, header, and responsive design using Catalyst components and abstracted patterns.",
       argsSchema: {
-        includeAuth: z.string().optional()
-          .describe("Include authentication layout: true or false (default: true)"),
-        sidebarStyle: z.string().optional()
-          .describe("Style of sidebar: collapsible, fixed, or overlay (default: collapsible)")
+        includeAuth: z.string()
+          .describe("Include authentication layout: true or false (default: true)").optional(),
+        sidebarStyle: z.string()
+          .describe("Style of sidebar: collapsible, fixed, or overlay (default: collapsible)").optional()
       }
     },
     async (args) => {
@@ -277,10 +277,10 @@ This will give you everything needed to build a professional dashboard. Should I
       title: "Implement Dark Mode",
       description: "Complete workflow to add dark mode support to your Next.js project using next-themes, Tailwind CSS dark classes, and system preference detection.",
       argsSchema: {
-        useSystemPreference: z.string().optional()
-          .describe("Detect system color scheme: true or false (default: true)"),
-        persistChoice: z.string().optional()
-          .describe("Persist user's theme choice: true or false (default: true)")
+        useSystemPreference: z.string()
+          .describe("Detect system color scheme: true or false (default: true)").optional(),
+        persistChoice: z.string()
+          .describe("Persist user's theme choice: true or false (default: true)").optional()
       }
     },
     async (args) => {
@@ -346,10 +346,10 @@ After retrieving these resources, you'll have everything needed to implement a p
       title: "Create Form with Validation",
       description: "Complete workflow to build a validated form using Catalyst UI components, React Hook Form or native validation, and accessible field patterns.",
       argsSchema: {
-        formType: z.string().optional()
-          .describe("Type of form: contact, login, signup, or custom (default: contact)"),
-        validationLibrary: z.string().optional()
-          .describe("Validation approach: native, react-hook-form, or zod (default: native)")
+        formType: z.string()
+          .describe("Type of form: contact, login, signup, or custom (default: contact)").optional(),
+        validationLibrary: z.string()
+          .describe("Validation approach: native, react-hook-form, or zod (default: native)").optional()
       }
     },
     async (args) => {
@@ -420,10 +420,10 @@ The Catalyst components include built-in accessibility (labels, descriptions, er
       title: "Select and Configure Template",
       description: "Interactive workflow to select the best template starter kit for your project, understand architectural decisions, and get implementation guidance.",
       argsSchema: {
-        projectType: z.string().optional()
-          .describe("Brief description of your project (e.g., 'portfolio site', 'SaaS dashboard', 'documentation')"),
-        knowsRequirements: z.string().optional()
-          .describe("Already know your requirements: true or false (default: false)")
+        projectType: z.string()
+          .describe("Brief description of your project (e.g., 'portfolio site', 'SaaS dashboard', 'documentation')").optional(),
+        knowsRequirements: z.string()
+          .describe("Already know your requirements: true or false (default: false)").optional()
       }
     },
     async (args) => {
