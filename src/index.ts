@@ -54,7 +54,7 @@ export default function createServer(config?: Config) {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.5.5",
+    version: "0.5.6",
   });
 
   // Register resources for documentation
@@ -630,8 +630,8 @@ What type of project are you building? I'll help you find the best match.`
         openWorldHint: true
       },
       inputSchema: {
-        query: z.string().min(2).max(100).describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
-        limit: z.number().min(1).max(20).describe("Maximum number of results to return (default: 5, max: 20)")
+        query: z.string().describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
+        limit: z.number().describe("Maximum number of results to return (default: 5, max: 20)")
       }
     },
     async (args: SearchDocsArgs) => {
@@ -697,8 +697,8 @@ What type of project are you building? I'll help you find the best match.`
         openWorldHint: true
       },
       inputSchema: {
-        query: z.string().min(2).max(100).describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
-        limit: z.number().min(1).max(20).describe("Maximum number of results to return (default: 5, max: 20)")
+        query: z.string().describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
+        limit: z.number().describe("Maximum number of results to return (default: 5, max: 20)")
       }
     },
     async (args: SearchDocsArgs) => {
@@ -763,7 +763,7 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        component_name: z.string().min(1).max(50).describe("Name of the Catalyst component (e.g., 'button', 'dialog', 'table')")
+        component_name: z.string().describe("Name of the Catalyst component (e.g., 'button', 'dialog', 'table')")
       }
     },
     async (args: CatalystComponentArgs) => {
@@ -915,8 +915,8 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        category: z.enum(['layouts', 'pages', 'features']).describe("Pattern category: 'layouts', 'pages', or 'features'"),
-        pattern_name: z.string().min(1).max(50).describe("Name of the pattern (e.g., 'app-header', 'pricing-page', 'dark-mode')")
+        category: z.string().describe("Pattern category: 'layouts', 'pages', or 'features'"),
+        pattern_name: z.string().describe("Name of the pattern (e.g., 'app-header', 'pricing-page', 'dark-mode')")
       }
     },
     async (args: PatternArgs) => {
@@ -1142,7 +1142,7 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        url: z.string().url().describe("URL of the existing website or Google Business listing to analyze")
+        url: z.string().describe("URL of the existing website or Google Business listing to analyze")
       }
     },
     async (args: AnalyzeSiteArgs) => {
@@ -1432,7 +1432,7 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        id: z.string().min(1).max(50).describe("The starter kit ID (e.g., 'documentation', 'saas-marketing', 'portfolio-blog')")
+        id: z.string().describe("The starter kit ID (e.g., 'documentation', 'saas-marketing', 'portfolio-blog')")
       }
     },
     async (args: StarterKitArgs) => {
@@ -1580,7 +1580,7 @@ What type of project are you building? I'll help you find the best match.`
         purpose: z.string().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content"),
         colorPreference: z.string().describe("Color preference: professional, vibrant, creative, minimal, warm, modern"),
         animations: z.string().describe("Animation level: minimal, moderate, high"),
-        features: z.array(z.string()).describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce"),
+        features: z.string().describe("Required features (comma-separated): blog, search, darkmode, forms, cms, auth, media, ecommerce"),
         complexity: z.string().describe("Complexity preference: beginner, intermediate, advanced")
       }
     },
@@ -1601,7 +1601,7 @@ What type of project are you building? I'll help you find the best match.`
         if (args.purpose) output += `- Purpose: ${args.purpose}\n`;
         if (args.colorPreference) output += `- Colors: ${args.colorPreference}\n`;
         if (args.animations) output += `- Animations: ${args.animations}\n`;
-        if (args.features && args.features.length > 0) output += `- Features: ${args.features.join(', ')}\n`;
+        if (args.features) output += `- Features: ${args.features}\n`;
         if (args.complexity) output += `- Complexity: ${args.complexity}\n`;
         output += `\n`;
 
@@ -1665,13 +1665,13 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        answers: z.record(z.union([z.string(), z.array(z.string())])).describe("Questionnaire answers as key-value pairs. Keys: purpose, colorPreference, animations, features (array), complexity")
+        answers: z.string().describe("Questionnaire answers as JSON string. Keys: purpose, colorPreference, animations, features, complexity")
       }
     },
     async (args: QuestionnaireArgs) => {
       createAuditLog('info', 'tool_request', {
         tool: 'answer_questionnaire',
-        answersProvided: args?.answers ? Object.keys(args.answers) : [],
+        answersProvided: args?.answers ? 'JSON provided' : 'none',
         timestamp: new Date().toISOString()
       });
 
@@ -1679,13 +1679,21 @@ What type of project are you building? I'll help you find the best match.`
         const content = await fs.readFile(CONFIG.templatesPath, 'utf-8');
         const data = JSON.parse(content);
 
+        // Parse JSON answers
+        let parsedAnswers: Record<string, string>;
+        try {
+          parsedAnswers = JSON.parse(args.answers);
+        } catch {
+          parsedAnswers = {};
+        }
+
         // Convert answers to recommendation criteria
         const criteria: RecommendTemplateArgs = {
-          purpose: args.answers.purpose as string,
-          colorPreference: args.answers.colorPreference as string,
-          animations: args.answers.animations as string,
-          features: args.answers.features as string[],
-          complexity: args.answers.complexity as string
+          purpose: parsedAnswers.purpose,
+          colorPreference: parsedAnswers.colorPreference,
+          animations: parsedAnswers.animations,
+          features: parsedAnswers.features,
+          complexity: parsedAnswers.complexity
         };
 
         const recommendations = calculateRecommendations(data, criteria);
@@ -1753,7 +1761,7 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        library_name: z.string().min(1).max(50).describe("Library name (e.g., 'framer-motion', 'mdx', 'headless-ui', 'next-themes', 'clsx', 'tailwind-plugins')")
+        library_name: z.string().describe("Library name (e.g., 'framer-motion', 'mdx', 'headless-ui', 'next-themes', 'clsx', 'tailwind-plugins')")
       }
     },
     async (args: LibraryDocsArgs) => {
@@ -1927,9 +1935,10 @@ function calculateRecommendations(data: any, criteria: RecommendTemplateArgs): a
     }
 
     // Feature matching
-    if (criteria.features && criteria.features.length > 0 && matchData.features) {
-      const matchedFeatures = criteria.features.filter(f => matchData.features.includes(f));
-      const featureScore = (matchedFeatures.length / criteria.features.length) * 15;
+    if (criteria.features && matchData.features) {
+      const requestedFeatures = criteria.features.split(',').map(f => f.trim().toLowerCase());
+      const matchedFeatures = requestedFeatures.filter(f => matchData.features.includes(f));
+      const featureScore = requestedFeatures.length > 0 ? (matchedFeatures.length / requestedFeatures.length) * 15 : 0;
       score += featureScore;
       if (matchedFeatures.length > 0) {
         reasons.push(`Includes ${matchedFeatures.length} of your requested features`);

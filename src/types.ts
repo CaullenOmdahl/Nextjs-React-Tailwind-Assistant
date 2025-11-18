@@ -36,12 +36,12 @@ export interface RecommendTemplateArgs {
   purpose?: string;
   colorPreference?: string;
   animations?: string;
-  features?: string[];
+  features?: string;
   complexity?: string;
 }
 
 export interface QuestionnaireArgs {
-  answers: Record<string, string | string[]>;
+  answers: string;
 }
 
 export interface LibraryDocsArgs {
