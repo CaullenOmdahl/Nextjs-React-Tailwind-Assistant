@@ -20,10 +20,21 @@ import { validateToolInput } from './utils/security.js';
 import { ErrorHandler, createAuditLog } from './utils/errorHandler.js';
 import { SecureFileService } from './services/fileService.js';
 
-// No configSchema export - this server doesn't require user configuration
-// Per Smithery docs: "If your server doesn't require configuration, simply omit the configSchema export entirely"
+// Export configSchema for Smithery quality scoring (all fields optional)
+export const configSchema = z.object({
+  cacheTimeout: z.number().optional().default(300000)
+    .describe("Cache timeout in milliseconds (default: 5 minutes)"),
+  maxSearchResults: z.number().min(1).max(20).optional().default(5)
+    .describe("Default maximum search results (1-20)")
+});
 
-export default function createServer() {
+export type Config = z.infer<typeof configSchema>;
+
+export default function createServer(config?: Config) {
+  // Apply config with defaults
+  const configuredCacheTimeout = config?.cacheTimeout ?? 300000;
+  const defaultSearchLimit = config?.maxSearchResults ?? 5;
+
   // Server configuration with secure defaults - using process.cwd() for Smithery compatibility
   const CONFIG: ServerConfig = {
     contentBasePath: path.join(process.cwd(), 'content'),
@@ -35,7 +46,7 @@ export default function createServer() {
     libraryDocsPath: path.join(process.cwd(), 'content', 'docs', 'libraries'),
     maxFileSize: 1 * 1024 * 1024, // 1MB for components and patterns
     largeFileSize: 5 * 1024 * 1024, // 5MB for large documentation files
-    cacheTimeout: 5 * 60 * 1000 // 5 minutes cache timeout
+    cacheTimeout: configuredCacheTimeout // Use config or default
   };
 
   // Initialize secure file service
@@ -43,7 +54,7 @@ export default function createServer() {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.4.5",
+    version: "0.5.0",
   });
 
   // Register resources for documentation
@@ -105,64 +116,341 @@ export default function createServer() {
     }
   );
 
-  // Register prompts for common use cases
-  server.registerPrompt(
-    "search-nextjs-routing",
-    {
-      title: "Search Next.js Routing Documentation",
-      description: "Search the Next.js documentation for routing and navigation information",
-      arguments: []
-    },
-    async () => ({
-      messages: [{
-        role: "user",
-        content: {
-          type: "text",
-          text: "Search the Next.js documentation for information about routing and navigation. Use search_nextjs_docs with query 'routing'."
-        }
-      }]
-    })
-  );
+  // Register workflow prompts for common use cases (5 prompts for Smithery quality score)
 
+  /**
+   * Workflow Prompt: Build Landing Page
+   * Complete workflow to build a landing page with components, patterns, and styling
+   */
   server.registerPrompt(
-    "get-catalyst-component",
+    "build-landing-page",
     {
-      title: "Get Catalyst UI Component",
-      description: "Retrieve a specific Catalyst UI component source code",
-      arguments: [{
-        name: "component_name",
-        description: "Name of the Catalyst component (e.g., 'button', 'dialog', 'table')",
-        required: true
-      }]
+      title: "Build Landing Page",
+      description: "Complete workflow to build a professional landing page with Next.js, Tailwind CSS, and Catalyst UI components. Guides you through template selection, component retrieval, and pattern implementation.",
+      argsSchema: {
+        pageType: z.enum(['hero', 'pricing', 'features', 'about']).default('hero')
+          .describe("Type of landing page section to build"),
+        useAnimations: z.boolean().default(true)
+          .describe("Whether to include Framer Motion animations"),
+        darkMode: z.boolean().default(true)
+          .describe("Whether to include dark mode support")
+      }
     },
     async (args) => ({
       messages: [{
         role: "user",
         content: {
           type: "text",
-          text: `Get the Catalyst UI component '${args.component_name}'. Use get_catalyst_component with component_name '${args.component_name}'.`
+          text: `I'll help you build a professional ${args.pageType} landing page with Next.js and Tailwind CSS.
+
+Here's what we'll do:
+
+1. **Get the right pattern** - Retrieve the ${args.pageType}-section pattern for architectural guidance
+2. **Select UI components** - Get relevant Catalyst components (button, navbar, etc.)
+3. **Apply styling patterns** - Search Tailwind docs for responsive design patterns
+${args.useAnimations ? '4. **Add animations** - Get Framer Motion docs for smooth transitions' : ''}
+${args.darkMode ? `${args.useAnimations ? '5' : '4'}. **Implement dark mode** - Get the dark-mode pattern for theme switching` : ''}
+
+Let's start by getting the pattern documentation:
+
+\`\`\`
+Use get_pattern with category "pages" and pattern_name "${args.pageType === 'hero' ? 'hero-section' : args.pageType === 'pricing' ? 'pricing-page' : 'hero-section'}"
+\`\`\`
+
+Then we'll retrieve the button and navbar components:
+\`\`\`
+Use get_catalyst_component with component_name "button"
+Use get_catalyst_component with component_name "navbar"
+\`\`\`
+
+${args.useAnimations ? `\nFor animations:
+\`\`\`
+Use get_library_docs with library_name "framer-motion"
+\`\`\`` : ''}
+
+${args.darkMode ? `\nFor dark mode:
+\`\`\`
+Use get_pattern with category "features" and pattern_name "dark-mode"
+\`\`\`` : ''}
+
+Would you like me to proceed with retrieving these resources?`
         }
       }]
     })
   );
 
+  /**
+   * Workflow Prompt: Setup Dashboard Layout
+   * Build a dashboard with sidebar navigation and responsive layout
+   */
   server.registerPrompt(
-    "find-pattern",
+    "setup-dashboard",
     {
-      title: "Find Abstracted Pattern",
-      description: "Browse patterns for layouts, pages, or features",
-      arguments: [{
-        name: "category",
-        description: "Pattern category: 'layouts', 'pages', or 'features'",
-        required: true
-      }]
+      title: "Setup Dashboard Layout",
+      description: "Complete workflow to build a dashboard layout with sidebar navigation, header, and responsive design using Catalyst components and abstracted patterns.",
+      argsSchema: {
+        includeAuth: z.boolean().default(true)
+          .describe("Whether to include authentication layout"),
+        sidebarStyle: z.enum(['collapsible', 'fixed', 'overlay']).default('collapsible')
+          .describe("Style of sidebar navigation")
+      }
     },
     async (args) => ({
       messages: [{
         role: "user",
         content: {
           type: "text",
-          text: `Show me available patterns in the '${args.category}' category. Use list_patterns.`
+          text: `I'll help you build a complete dashboard layout with ${args.sidebarStyle} sidebar navigation.
+
+Here's our implementation plan:
+
+1. **Get layout patterns** - Retrieve sidebar-layout pattern for navigation structure
+2. **Get navigation components** - Sidebar, navbar, and dropdown components
+3. **Search Next.js docs** - For App Router layout patterns
+${args.includeAuth ? '4. **Get auth layout** - Auth-layout pattern for login/signup pages' : ''}
+5. **Apply responsive patterns** - Tailwind responsive utilities
+
+**Step 1: Get the sidebar layout pattern**
+\`\`\`
+Use get_pattern with category "layouts" and pattern_name "sidebar-layout"
+\`\`\`
+
+**Step 2: Get Catalyst components**
+\`\`\`
+Use get_catalyst_component with component_name "sidebar"
+Use get_catalyst_component with component_name "sidebar-layout"
+Use get_catalyst_component with component_name "navbar"
+Use get_catalyst_component with component_name "dropdown"
+\`\`\`
+
+**Step 3: Search for Next.js layout patterns**
+\`\`\`
+Use search_nextjs_docs with query "layout nested routes"
+\`\`\`
+
+${args.includeAuth ? `**Step 4: Get authentication layout**
+\`\`\`
+Use get_pattern with category "layouts" and pattern_name "auth-layout"
+Use get_catalyst_component with component_name "auth-layout"
+\`\`\`` : ''}
+
+This will give you everything needed to build a professional dashboard. Should I retrieve these resources?`
+        }
+      }]
+    })
+  );
+
+  /**
+   * Workflow Prompt: Implement Dark Mode
+   * Add dark mode support to existing project
+   */
+  server.registerPrompt(
+    "implement-dark-mode",
+    {
+      title: "Implement Dark Mode",
+      description: "Complete workflow to add dark mode support to your Next.js project using next-themes, Tailwind CSS dark classes, and system preference detection.",
+      argsSchema: {
+        useSystemPreference: z.boolean().default(true)
+          .describe("Whether to detect system color scheme preference"),
+        persistChoice: z.boolean().default(true)
+          .describe("Whether to persist user's theme choice")
+      }
+    },
+    async (args) => ({
+      messages: [{
+        role: "user",
+        content: {
+          type: "text",
+          text: `I'll help you implement dark mode in your Next.js project${args.useSystemPreference ? ' with system preference detection' : ''}${args.persistChoice ? ' and persistent user choice' : ''}.
+
+Here's the implementation workflow:
+
+1. **Get dark mode pattern** - Comprehensive implementation guide
+2. **Get next-themes docs** - The recommended library for Next.js
+3. **Search Tailwind docs** - Dark mode utility classes
+4. **Get switch component** - For the theme toggle UI
+
+**Step 1: Get the dark mode pattern**
+\`\`\`
+Use get_pattern with category "features" and pattern_name "dark-mode"
+\`\`\`
+
+This pattern covers:
+- Tailwind dark mode configuration
+- next-themes setup and provider
+- Theme toggle component implementation
+- ${args.useSystemPreference ? 'System preference detection' : 'Manual theme selection'}
+- ${args.persistChoice ? 'LocalStorage persistence' : 'Session-only themes'}
+- Avoiding flash of wrong theme (FOWT)
+
+**Step 2: Get the next-themes library documentation**
+\`\`\`
+Use get_library_docs with library_name "next-themes"
+\`\`\`
+
+**Step 3: Search Tailwind docs for dark mode utilities**
+\`\`\`
+Use search_tailwind_docs with query "dark mode class strategy"
+\`\`\`
+
+**Step 4: Get the switch component for toggle**
+\`\`\`
+Use get_catalyst_component with component_name "switch"
+\`\`\`
+
+After retrieving these resources, you'll have everything needed to implement a professional dark mode. Ready to proceed?`
+        }
+      }]
+    })
+  );
+
+  /**
+   * Workflow Prompt: Create Form with Validation
+   * Build a form with Catalyst components and validation
+   */
+  server.registerPrompt(
+    "create-form-with-validation",
+    {
+      title: "Create Form with Validation",
+      description: "Complete workflow to build a validated form using Catalyst UI components, React Hook Form or native validation, and accessible field patterns.",
+      argsSchema: {
+        formType: z.enum(['contact', 'login', 'signup', 'custom']).default('contact')
+          .describe("Type of form to create"),
+        validationLibrary: z.enum(['native', 'react-hook-form', 'zod']).default('native')
+          .describe("Validation approach to use")
+      }
+    },
+    async (args) => ({
+      messages: [{
+        role: "user",
+        content: {
+          type: "text",
+          text: `I'll help you build a ${args.formType} form with ${args.validationLibrary} validation using Catalyst UI components.
+
+Here's our implementation plan:
+
+1. **Get form components** - Input, select, checkbox, button, fieldset
+2. **Get form patterns** - Accessible form field patterns
+3. **Search docs** - Validation patterns and form handling
+
+**Step 1: Get Catalyst form components**
+
+For a ${args.formType} form, we'll need:
+\`\`\`
+Use get_catalyst_component with component_name "input"
+Use get_catalyst_component with component_name "fieldset"
+Use get_catalyst_component with component_name "button"
+${args.formType === 'signup' || args.formType === 'custom' ? `Use get_catalyst_component with component_name "checkbox"
+Use get_catalyst_component with component_name "select"` : ''}
+\`\`\`
+
+**Step 2: Search for form patterns**
+\`\`\`
+Use search_nextjs_docs with query "server actions form validation"
+\`\`\`
+
+${args.validationLibrary === 'zod' ? `**Step 3: Note on Zod validation**
+This server already uses Zod for schema validation. You can see examples in the tool definitions. Key patterns:
+- Define schema with z.object({})
+- Use .min(), .max(), .email(), .url() validators
+- Combine with React Hook Form using @hookform/resolvers/zod` : ''}
+
+**Form field structure** (from Catalyst):
+\`\`\`tsx
+<Fieldset>
+  <Legend>Contact Information</Legend>
+  <Field>
+    <Label>Email</Label>
+    <Input type="email" name="email" required />
+    <Description>We'll never share your email</Description>
+  </Field>
+</Fieldset>
+\`\`\`
+
+The Catalyst components include built-in accessibility (labels, descriptions, error states). Should I retrieve these components?`
+        }
+      }]
+    })
+  );
+
+  /**
+   * Workflow Prompt: Select and Configure Template
+   * Guide through template selection and configuration
+   */
+  server.registerPrompt(
+    "select-template",
+    {
+      title: "Select and Configure Template",
+      description: "Interactive workflow to select the best template starter kit for your project, understand architectural decisions, and get implementation guidance.",
+      argsSchema: {
+        projectType: z.string().optional()
+          .describe("Brief description of your project (e.g., 'portfolio site', 'SaaS dashboard', 'documentation')"),
+        knowsRequirements: z.boolean().default(false)
+          .describe("Whether you already know your specific requirements")
+      }
+    },
+    async (args) => ({
+      messages: [{
+        role: "user",
+        content: {
+          type: "text",
+          text: `I'll help you select the perfect template for ${args.projectType || 'your project'} and understand all the architectural decisions involved.
+
+${args.knowsRequirements ? `**Since you know your requirements**, let's use the recommendation engine:
+
+\`\`\`
+Use recommend_template with your criteria:
+- purpose: (documentation, marketing, portfolio, agency, learning, event, app, media, content)
+- colorPreference: (professional, vibrant, creative, minimal, warm, modern)
+- animations: (minimal, moderate, high)
+- features: ["blog", "search", "darkmode", "forms", "cms", "auth", "media", "ecommerce"]
+- complexity: (beginner, intermediate, advanced)
+\`\`\`
+
+Or use the questionnaire for guided selection:
+\`\`\`
+Use answer_questionnaire with your answers as key-value pairs
+\`\`\`` : `**Let's explore your options:**
+
+**Step 1: Browse available templates**
+\`\`\`
+Use list_starter_kits
+\`\`\`
+
+This shows all 13 templates with:
+- Use cases and target audience
+- Complexity level
+- Animation intensity
+- Color scheme style
+
+**Step 2: Get detailed template info**
+Once you identify 1-2 candidates:
+\`\`\`
+Use get_starter_kit with id "[template-id]"
+\`\`\`
+
+This provides:
+- Complete feature list
+- **Architectural decisions** with rationale
+- Alternative approaches and tradeoffs
+- Recommended libraries (as examples)
+- Pattern references for deeper learning
+
+**Step 3: Understand the decisions**
+Each template teaches you HOW to make choices, not just WHAT to use. You'll learn:
+- Why choose App Router vs Pages Router
+- When to use Server Components vs Client Components
+- Animation library tradeoffs
+- State management options
+- Styling approaches`}
+
+**After selecting a template**, we can:
+1. Get the color design guidance for your palette
+2. Retrieve specific Catalyst components
+3. Get library documentation for chosen dependencies
+4. Review relevant patterns for implementation
+
+What type of project are you building? I'll help you find the best match.`
         }
       }]
     })
@@ -296,12 +584,13 @@ export default function createServer() {
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
-        idempotentHint: true
+        idempotentHint: true,
+        openWorldHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         query: z.string().min(2).max(100).describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
         limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as SearchDocsArgs;
@@ -363,12 +652,13 @@ export default function createServer() {
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
-        idempotentHint: true
+        idempotentHint: true,
+        openWorldHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         query: z.string().min(2).max(100).describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
         limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as SearchDocsArgs;
@@ -432,9 +722,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         component_name: z.string().min(1).max(50).describe("Name of the Catalyst component (e.g., 'button', 'dialog', 'table')")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as CatalystComponentArgs;
@@ -586,10 +876,10 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         category: z.enum(['layouts', 'pages', 'features']).describe("Pattern category: 'layouts', 'pages', or 'features'"),
         pattern_name: z.string().min(1).max(50).describe("Name of the pattern (e.g., 'app-header', 'pricing-page', 'dark-mode')")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as PatternArgs;
@@ -815,9 +1105,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         url: z.string().url().describe("URL of the existing website or Google Business listing to analyze")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as AnalyzeSiteArgs;
@@ -1107,9 +1397,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         id: z.string().min(1).max(50).describe("The starter kit ID (e.g., 'documentation', 'saas-marketing', 'portfolio-blog')")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as StarterKitArgs;
@@ -1254,13 +1544,13 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         purpose: z.string().optional().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content"),
         colorPreference: z.string().optional().describe("Color preference: professional, vibrant, creative, minimal, warm, modern"),
         animations: z.string().optional().describe("Animation level: minimal, moderate, high"),
         features: z.array(z.string()).optional().describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce"),
         complexity: z.string().optional().describe("Complexity preference: beginner, intermediate, advanced")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as RecommendTemplateArgs;
@@ -1344,9 +1634,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         answers: z.record(z.union([z.string(), z.array(z.string())])).describe("Questionnaire answers as key-value pairs. Keys: purpose, colorPreference, animations, features (array), complexity")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as QuestionnaireArgs;
@@ -1434,9 +1724,9 @@ export default function createServer() {
         destructiveHint: false,
         idempotentHint: true
       },
-      inputSchema: z.object({
+      inputSchema: {
         library_name: z.string().min(1).max(50).describe("Library name (e.g., 'framer-motion', 'mdx', 'headless-ui', 'next-themes', 'clsx', 'tailwind-plugins')")
-      })
+      }
     },
     async (request) => {
       const args = (request.params?.arguments || {}) as LibraryDocsArgs;

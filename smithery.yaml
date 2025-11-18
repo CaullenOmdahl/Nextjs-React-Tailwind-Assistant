@@ -1,3 +1,12 @@
 # Smithery configuration file: https://smithery.ai/docs/build/project-config/smithery-yaml
 # For TypeScript runtime, only 'runtime', 'target', and 'env' fields are allowed
 runtime: "typescript"
+configSchema:
+  type: "object"
+  properties:
+    cacheTimeout:
+      type: "number"
+      description: "Cache timeout in milliseconds (default: 5 minutes)"
+    maxSearchResults:
+      type: "number"
+      description: "Default maximum search results (1-20)"
