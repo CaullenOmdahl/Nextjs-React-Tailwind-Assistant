@@ -54,7 +54,7 @@ export default function createServer(config?: Config) {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.5.6",
+    version: "0.5.7",
   });
 
   // Register resources for documentation
@@ -1580,7 +1580,7 @@ What type of project are you building? I'll help you find the best match.`
         purpose: z.string().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content"),
         colorPreference: z.string().describe("Color preference: professional, vibrant, creative, minimal, warm, modern"),
         animations: z.string().describe("Animation level: minimal, moderate, high"),
-        features: z.string().describe("Required features (comma-separated): blog, search, darkmode, forms, cms, auth, media, ecommerce"),
+        features: z.array(z.string()).describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce"),
         complexity: z.string().describe("Complexity preference: beginner, intermediate, advanced")
       }
     },
@@ -1601,7 +1601,7 @@ What type of project are you building? I'll help you find the best match.`
         if (args.purpose) output += `- Purpose: ${args.purpose}\n`;
         if (args.colorPreference) output += `- Colors: ${args.colorPreference}\n`;
         if (args.animations) output += `- Animations: ${args.animations}\n`;
-        if (args.features) output += `- Features: ${args.features}\n`;
+        if (args.features && args.features.length > 0) output += `- Features: ${args.features.join(', ')}\n`;
         if (args.complexity) output += `- Complexity: ${args.complexity}\n`;
         output += `\n`;
 
@@ -1665,13 +1665,13 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        answers: z.string().describe("Questionnaire answers as JSON string. Keys: purpose, colorPreference, animations, features, complexity")
+        answers: z.record(z.union([z.string(), z.array(z.string())])).describe("Questionnaire answers as key-value pairs")
       }
     },
     async (args: QuestionnaireArgs) => {
       createAuditLog('info', 'tool_request', {
         tool: 'answer_questionnaire',
-        answersProvided: args?.answers ? 'JSON provided' : 'none',
+        answersProvided: args?.answers ? Object.keys(args.answers) : [],
         timestamp: new Date().toISOString()
       });
 
@@ -1679,21 +1679,13 @@ What type of project are you building? I'll help you find the best match.`
         const content = await fs.readFile(CONFIG.templatesPath, 'utf-8');
         const data = JSON.parse(content);
 
-        // Parse JSON answers
-        let parsedAnswers: Record<string, string>;
-        try {
-          parsedAnswers = JSON.parse(args.answers);
-        } catch {
-          parsedAnswers = {};
-        }
-
         // Convert answers to recommendation criteria
         const criteria: RecommendTemplateArgs = {
-          purpose: parsedAnswers.purpose,
-          colorPreference: parsedAnswers.colorPreference,
-          animations: parsedAnswers.animations,
-          features: parsedAnswers.features,
-          complexity: parsedAnswers.complexity
+          purpose: args.answers.purpose as string,
+          colorPreference: args.answers.colorPreference as string,
+          animations: args.answers.animations as string,
+          features: args.answers.features as string[],
+          complexity: args.answers.complexity as string
         };
 
         const recommendations = calculateRecommendations(data, criteria);
@@ -1935,10 +1927,9 @@ function calculateRecommendations(data: any, criteria: RecommendTemplateArgs): a
     }
 
     // Feature matching
-    if (criteria.features && matchData.features) {
-      const requestedFeatures = criteria.features.split(',').map(f => f.trim().toLowerCase());
-      const matchedFeatures = requestedFeatures.filter(f => matchData.features.includes(f));
-      const featureScore = requestedFeatures.length > 0 ? (matchedFeatures.length / requestedFeatures.length) * 15 : 0;
+    if (criteria.features && criteria.features.length > 0 && matchData.features) {
+      const matchedFeatures = criteria.features.filter(f => matchData.features.includes(f));
+      const featureScore = (matchedFeatures.length / criteria.features.length) * 15;
       score += featureScore;
       if (matchedFeatures.length > 0) {
         reasons.push(`Includes ${matchedFeatures.length} of your requested features`);
