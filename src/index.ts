@@ -54,7 +54,7 @@ export default function createServer(config?: Config) {
 
   const server = new McpServer({
     name: "nextjs-react-tailwind-assistant-mcp-server",
-    version: "0.5.2",
+    version: "0.5.3",
   });
 
   // Register resources for documentation
@@ -631,7 +631,7 @@ What type of project are you building? I'll help you find the best match.`
       },
       inputSchema: {
         query: z.string().min(2).max(100).describe("The search query (e.g., 'routing', 'server actions', 'middleware')"),
-        limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
+        limit: z.number().min(1).max(20).describe("Maximum number of results to return (default: 5, max: 20)").optional().default(5)
       }
     },
     async (args: SearchDocsArgs) => {
@@ -697,7 +697,7 @@ What type of project are you building? I'll help you find the best match.`
       },
       inputSchema: {
         query: z.string().min(2).max(100).describe("The search query (e.g., 'padding', 'flex', 'dark mode')"),
-        limit: z.number().min(1).max(20).optional().default(5).describe("Maximum number of results to return (default: 5, max: 20)")
+        limit: z.number().min(1).max(20).describe("Maximum number of results to return (default: 5, max: 20)").optional().default(5)
       }
     },
     async (args: SearchDocsArgs) => {
@@ -1575,11 +1575,11 @@ What type of project are you building? I'll help you find the best match.`
         idempotentHint: true
       },
       inputSchema: {
-        purpose: z.string().optional().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content"),
-        colorPreference: z.string().optional().describe("Color preference: professional, vibrant, creative, minimal, warm, modern"),
-        animations: z.string().optional().describe("Animation level: minimal, moderate, high"),
-        features: z.array(z.string()).optional().describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce"),
-        complexity: z.string().optional().describe("Complexity preference: beginner, intermediate, advanced")
+        purpose: z.string().describe("Primary purpose: documentation, marketing, portfolio, agency, learning, event, app, media, content").optional(),
+        colorPreference: z.string().describe("Color preference: professional, vibrant, creative, minimal, warm, modern").optional(),
+        animations: z.string().describe("Animation level: minimal, moderate, high").optional(),
+        features: z.array(z.string()).describe("Required features: blog, search, darkmode, forms, cms, auth, media, ecommerce").optional(),
+        complexity: z.string().describe("Complexity preference: beginner, intermediate, advanced").optional()
       }
     },
     async (args: RecommendTemplateArgs) => {
